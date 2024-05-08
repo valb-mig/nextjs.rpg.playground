@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { socket } from "@/socket";
 interface DiceProps {
+    room: string,
     max: number
 }
 
-const Dice = ({ max }: DiceProps) => {
+const Dice = ({ room, max }: DiceProps) => {
 
     const [diceNumber, setDiceNumber] = useState(0);
     const [diceRolling, setDiceRolling] = useState(false);
 
     useEffect(() => {
-        socket.on('diceRoll', (newNumber: number) => {
-            setDiceNumber(newNumber);
-            setDiceRolling(false);
+        socket.on('res_roll_dice', (newNumber: number) => {
+            setDiceRolling(true);
+
+            const intervalId = setInterval(() => {
+                setDiceNumber(newNumber);
+                setDiceRolling(false);
+                clearInterval(intervalId);
+            }, 500)
         });
 
         return () => {
-            socket.off('diceRoll');
+            socket.off('res_roll_dice');
         };
     }, []);
 
@@ -24,9 +30,9 @@ const Dice = ({ max }: DiceProps) => {
         setDiceRolling(true);
 
         const intervalId = setInterval(() => {
-            socket.emit('rollDice', max);
+            socket.emit('req_roll_dice', {room, max});
             clearInterval(intervalId);
-        }, 1000);
+        }, 500);
     }
 
     return (
