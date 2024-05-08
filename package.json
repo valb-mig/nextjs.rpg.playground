@@ -9,12 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
+    "lucide": "^0.378.0",
+    "lucide-react": "^0.378.0",
     "net": "^1.0.2",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.51.4",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
+    "zod": "^3.23.6",
     "tls": "^0.0.1"
   },
   "devDependencies": {
