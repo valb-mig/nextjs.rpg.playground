@@ -1,6 +1,4 @@
-import { cookies } from "next/headers";
 import { useRouter } from 'next/navigation';
-import { socket } from "@/socket";
 import type { UserInfo } from "@/types/interfaces";
 import { setUserCookies } from "@/utils/handlers";
 
@@ -12,7 +10,8 @@ const useHome = () => {
 
         let userInfo: UserInfo = {
             character_name: formData.character_name,
-            room_code: formData.room_code
+            room_code: formData.room_code,
+            position: undefined
         }
 
         localStorage.setItem('userInfo', JSON.stringify(userInfo));

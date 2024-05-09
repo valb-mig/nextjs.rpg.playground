@@ -44,7 +44,7 @@ const Home = () => {
         <form onSubmit={handleSubmit(handleFormSubmit)}>
 
           <div>
-            <label htmlFor="character_name">Character Name</label>
+            <label htmlFor="character_name" className="text-white">Character Name</label>
             <input {...register("character_name")} />
             {errors.character_name && (
               <span className="text-red-500 text-sm">
@@ -54,7 +54,7 @@ const Home = () => {
           </div>
 
           <div>
-            <label htmlFor="room_code">Room Code</label>
+            <label htmlFor="room_code" className="text-white">Room Code</label>
             <input {...register("room_code")} />
             {errors.room_code && (
               <span className="text-red-500 text-sm">
@@ -63,7 +63,7 @@ const Home = () => {
             )}
           </div>
 
-          <button type="submit">Click</button>
+          <button type="submit" className="bg-blue-300">Click</button>
         </form>
       </div>
     </main>
