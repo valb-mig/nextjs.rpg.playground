@@ -10,7 +10,8 @@ export function getUserData() {
 
         let userData: UserInfo = {
             character_name: userValues.character_name,
-            room_code: userValues.room_code
+            room_code: userValues.room_code,
+            position: undefined
         }
 
         return userData;

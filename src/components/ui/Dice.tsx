@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { socket } from "@/socket";
+
 interface DiceProps {
     room: string,
     max: number
