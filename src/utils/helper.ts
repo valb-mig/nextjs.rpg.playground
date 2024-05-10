@@ -1,19 +1,34 @@
-import type { UserInfo } from '@/types/interfaces';
+import type { 
+    UserInfo 
+} from '@/types/interfaces';
 
 export function getUserData() {
     
+    if(localStorage == undefined || localStorage == null) {
+        return;
+    }
+
     let userObject = localStorage.getItem('userInfo');
 
-    if(userObject != null) {
+    if(userObject != null && userObject != undefined) {
+        try {
+            let userValues = JSON.parse(userObject);
+    
+            let userData: UserInfo = {
+                socket_id: userValues.socket_id,
+                character_name: userValues.character_name,
+                room_code: userValues.room_code,
+                position: undefined
+            }
+    
+            return userData;
 
-        let userValues = JSON.parse(userObject);
-
-        let userData: UserInfo = {
-            character_name: userValues.character_name,
-            room_code: userValues.room_code,
-            position: undefined
+        } catch(error) {
+            console.error(error);
         }
-
-        return userData;
     }
+}
+
+export function updateUserData(userInfo: UserInfo) {
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
 }

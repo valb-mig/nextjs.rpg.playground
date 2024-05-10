@@ -9,6 +9,7 @@ const useHome = () => {
     const enterRoom = async (formData: UserInfo) => {
 
         let userInfo: UserInfo = {
+            socket_id: undefined,
             character_name: formData.character_name,
             room_code: formData.room_code,
             position: undefined
@@ -24,7 +25,7 @@ const useHome = () => {
         }
     }
 
-    return {enterRoom};
+    return { enterRoom };
 }
 
 export default useHome;
