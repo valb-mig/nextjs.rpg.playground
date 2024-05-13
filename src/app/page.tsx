@@ -6,6 +6,9 @@ import { z } from 'zod';
 
 import useHome from "@/app/hooks/useHome";
 
+import Form from '@/components/ui/Form';
+import Input from '@/components/ui/Input';
+
 const ZodSchema = z.object({
   character_name: z.string(),
   room_code: z.string()
@@ -28,43 +31,37 @@ const Home = () => {
   });
 
   const handleFormSubmit: SubmitHandler<formSchema> = async (data) => {
-		try {
-      enterRoom(data);
-			reset();
-		} catch (error) {
-			setError("root", {
-				message: "Connection error",
-			});
-		}
+    enterRoom(data);
+    reset();
 	};
 
   return (
     <main className="flex flex-col w-screen h-screen bg-neutral-900">
-      <div className='flex w-full justify-center'>
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <div className='flex w-full justify-center px-2'>
 
-          <div>
-            <label htmlFor="character_name" className="text-white">Character Name</label>
-            <input {...register("character_name")} />
-            {errors.character_name && (
-              <span className="text-red-500 text-sm">
-                {errors.character_name.message}
-              </span>
-            )}
+        <Form onSubmit={handleSubmit(handleFormSubmit)} style="mt-[30vh] w-full md:w-[500px]">
+
+          <Input 
+            label="Character Name"
+            errors={errors} 
+            name="character_name" 
+            register={register}
+          />
+         
+          <Input 
+            label="Room Code" 
+            errors={errors} 
+            name="room_code" 
+            register={register}
+          />
+
+          <div className="flex w-full justify-end">
+            <button type="submit" className="bg-blue-300 p-2 rounded">
+              Enter
+            </button>
           </div>
-
-          <div>
-            <label htmlFor="room_code" className="text-white">Room Code</label>
-            <input {...register("room_code")} />
-            {errors.room_code && (
-              <span className="text-red-500 text-sm">
-                {errors.room_code.message}
-              </span>
-            )}
-          </div>
-
-          <button type="submit" className="bg-blue-300">Click</button>
-        </form>
+        </Form>
+        
       </div>
     </main>
   );
