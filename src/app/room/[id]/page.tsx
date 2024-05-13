@@ -1,19 +1,18 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { 
+    useState, 
+    useEffect 
+} from 'react';
+
+import { useRouter } from 'next/navigation';
+import { socket } from "@/socket";
 
 import { 
     User 
 } from 'lucide-react';
 
-import { socket } from "@/socket";
-
-import { 
-    getUserData,
-    updateUserData
-} from '@/utils/helper';
-
-import { useRouter } from 'next/navigation';
+import { getUserData } from '@/utils/helper';
 
 import type { 
     UserInfo,
@@ -22,6 +21,8 @@ import type {
 
 import Dice from '@/components/ui/Dice';
 import Map from '@/components/ui/Map';
+
+import socketHooks from '@/app/room/hooks/socketHooks';
 
 type ParamsType = {
     id: string
@@ -35,8 +36,15 @@ const Room = ({ params }: RoomProps) => {
     
     const router = useRouter();
 
-    const [ diceMax, setDiceMax ] = useState(4);
+    const [ diceMax,   setDiceMax ]   = useState(4);
     const [ roomUsers, setRoomUsers ] = useState<UserInfo[]>([]);
+
+    const { 
+        resHello, 
+        resEnterRoom, 
+        resMapMovement,
+        resRollDice
+     } = socketHooks();
 
     useEffect(() => {
 
@@ -47,82 +55,36 @@ const Room = ({ params }: RoomProps) => {
             return;
         }
     
-        socket.on('res_hello', (usersObject: RoomUsersObject) => {
-
-            console.log(usersObject);
-
-            let users: UserInfo[] = [];
-
-            Object.keys(usersObject).map((key) => {
-
-                let user: UserInfo = usersObject[key];
-                users.push(user);
-            });
-
-            setRoomUsers(users);
-        });
-
-        socket.on('res_enter_room', (socketId: string) => {
-
-            userData = getUserData();
-
-            if(userData != undefined) {
-
-                console.log(socketId);
-                console.log(userData.character_name);
-                console.log(userData.socket_id);
-
-                if(userData.socket_id == undefined) {
-
-                    let updateUser: UserInfo = {
-                        socket_id: socketId,
-                        character_name: userData.character_name,
-                        room_code: userData.room_code,
-                        position: userData.position,
-                    };
-        
-                    updateUserData(updateUser);
-                }
-            }
-
-            socket.emit('req_hello', {
-                'room': params.id, 
-                'user_data': JSON.stringify(userData)
-            });
-        });
-
         socket.emit('req_enter_room', {
             'room': params.id, 
             'user_data': JSON.stringify(userData)
         });
 
+        socket.on('res_hello', (usersObject: RoomUsersObject) => {
+            setRoomUsers(resHello(usersObject));
+        });
+
+        socket.on('res_enter_room', (socketId: string) => {
+            resEnterRoom(socketId, params.id)
+        });
+
         socket.on('res_map_movement', (moveUser: UserInfo, usersObject: RoomUsersObject) => {
-            
-            if(moveUser.socket_id != undefined) {
+            setRoomUsers(resMapMovement(moveUser, usersObject))
+        });
 
-                let users: UserInfo[] = [];
-
-                Object.keys(usersObject).map((key) => {
-                    let user: UserInfo = usersObject[key];
-
-                    if(key === moveUser.socket_id) {
-                        user = moveUser;
-                    }
-                    
-                    users.push(user);
-                });
-
-                setRoomUsers(users);
-            }
+        socket.on('res_roll_dice', (usersObject: RoomUsersObject, rollUser: UserInfo) => {
+            setRoomUsers(resRollDice(usersObject, rollUser));
         });
 
         return () => {
             socket.off('res_hello');
             socket.off('res_enter_room');
             socket.off('res_map_movement');
+            socket.off('res_roll_dice');
         };
-        
-    }, [])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ ])
 
     return (
         <main className="flex flex-col w-screen h-screen bg-neutral-900">
@@ -130,14 +92,16 @@ const Room = ({ params }: RoomProps) => {
             <div className='flex w-full gap-2 p-2 border-b border-neutral-800 bg-neutral-900 absolute rounded'>
                 {roomUsers ? 
                     Object.values(roomUsers).map((user: UserInfo, index) => (
-                        <div key={index} className='bg-neutral-800 p-2 rounded text-white'>
+                        <div key={user.socket_id} className='flex flex-col gap-2 bg-neutral-800 p-2 rounded text-white'>
                             <span className='flex gap-2'>
-                                <User className='bg-neutral-700 rounded-full p-1'/>{user.character_name}
+                                <User className='bg-neutral-700 rounded-full p-1'/>
+                                {user.character_name}
+                            </span>
+                            <span className='flex justify-center items-center w-5 h-5 p-2 bg-neutral-50 text-black rounded'>
+                                {user.dice}
                             </span>
                         </div>
-                    )) 
-                    : 
-                    (
+                    )) : (
                         <span>Loading party...</span>
                     )
                 }

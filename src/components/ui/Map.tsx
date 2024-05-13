@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { socket } from "@/socket";
 import { getUserData } from '@/utils/helper';
+
+import { 
+    User 
+} from 'lucide-react';
 
 import type { 
     UserInfo
@@ -30,7 +34,7 @@ const Mapa = ({ roomUsers }: MapaProps) => {
             {Array.from({ length: columns }).map((_, colIndex) => (
                 <div
                     key={colIndex}
-                    className="flex items-center justify-center bg-gray-300 border border-blue-500 p-2 cursor-pointer h-full"
+                    className="flex items-center justify-center bg-gray-300 border border-blue-500 p-2 cursor-pointer h-full relative"
                     onClick={() => handleClick(rowIndex, colIndex)}
                 >
                     { roomUsers.map((user) => 
@@ -38,10 +42,15 @@ const Mapa = ({ roomUsers }: MapaProps) => {
                             user.position.row == rowIndex 
                                 &&
                             user.position.col == colIndex
-                        ) &&(
-                            <span key={user.socket_id}>
-                                {user.character_name}
-                            </span>
+                        ) && (
+                            <>
+                                <span key={user.socket_id} className='flex flex-col gap-1 text-white'>
+                                    <User className='bg-neutral-700 rounded-full p-1'/>
+                                </span>
+                                <p className='absolute z-[1] bg-neutral-700 text-sm rounded text-white -bottom-1'>
+                                    {user.character_name}
+                                </p>
+                            </>
                         )
                     )}
                 </div>
