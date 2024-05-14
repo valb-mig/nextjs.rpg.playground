@@ -12,8 +12,6 @@ import { socket } from "@/socket";
 
 const socketHooks = () => {
 
-    const userData = getUserData();
-
     const resHello = (usersObject: RoomUsersObject) => {
 
         let users: UserInfo[] = [];
@@ -28,6 +26,8 @@ const socketHooks = () => {
     }
 
     const resEnterRoom = (socketId: string, room: string) => {
+
+        let userData = getUserData();
 
         if(userData != undefined) {
 
