@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { socket } from "@/socket";
+
+import { 
+    getUserData
+} from '@/utils/helper';
+
+import type { 
+    UserInfo,
+    RoomUsersObject
+} from '@/types/interfaces';
+
 interface DiceProps {
     room: string,
     max: number
@@ -11,11 +21,12 @@ const Dice = ({ room, max }: DiceProps) => {
     const [diceRolling, setDiceRolling] = useState(false);
 
     useEffect(() => {
-        socket.on('res_roll_dice', (newNumber: number) => {
+
+        socket.on('res_roll_dice', (usersObject: RoomUsersObject, rollUser: UserInfo) => {
             setDiceRolling(true);
 
             const intervalId = setInterval(() => {
-                setDiceNumber(newNumber);
+                setDiceNumber(rollUser.dice ? rollUser.dice : 0);
                 setDiceRolling(false);
                 clearInterval(intervalId);
             }, 500)
@@ -27,12 +38,22 @@ const Dice = ({ room, max }: DiceProps) => {
     }, []);
 
     const rollDice = () => {
-        setDiceRolling(true);
 
-        const intervalId = setInterval(() => {
-            socket.emit('req_roll_dice', {room, max});
-            clearInterval(intervalId);
-        }, 500);
+        let userData = getUserData();
+
+        if(userData != undefined) {
+            
+            setDiceRolling(true);
+
+            const intervalId = setInterval(() => {
+                socket.emit('req_roll_dice', {
+                    room: room, 
+                    max:  max, 
+                    user_data: JSON.stringify(userData)
+                });
+                clearInterval(intervalId);
+            }, 500);
+        }
     }
 
     return (
@@ -46,7 +67,6 @@ const Dice = ({ room, max }: DiceProps) => {
                 </div>
             ) : (
                 <div className='flex justify-center items-center bg-neutral-50 w-40 h-40 rounded animate-spin'>
-                    {/* Pode colocar uma animação de rolagem aqui se desejar */}
                 </div>
             )}
         </>
