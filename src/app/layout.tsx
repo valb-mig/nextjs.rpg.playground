@@ -6,7 +6,7 @@ import '/public/css/global.css';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "RPG - Playground",
+  title: "🎲 RPG - Playground | %s",
   description: "Um playground para jogar seu rpg",
 };
 
