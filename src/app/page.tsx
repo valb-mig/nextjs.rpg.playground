@@ -6,6 +6,9 @@ import { z } from 'zod';
 
 import useHome from "@/app/hooks/useHome";
 
+import { getUserData } from '@/utils/helper';
+
+import Button from '@/components/ui/Button';
 import Form from '@/components/ui/Form';
 import Input from '@/components/ui/Input';
 
@@ -17,6 +20,8 @@ const ZodSchema = z.object({
 type formSchema = z.infer<typeof ZodSchema>;
 
 const Home = () => {
+
+  let userData = getUserData();
 
   const { enterRoom } = useHome();
 
@@ -36,7 +41,21 @@ const Home = () => {
 	};
 
   return (
-    <main className="flex flex-col w-screen h-screen bg-neutral-900">
+    <main className="flex flex-col w-screen h-screen bg-neutral-950">
+      
+      <div className="flex w-full justify-end p-2">
+        { userData !== undefined && userData !== null && (
+          <div className="flex flex-col gap-2 bg-neutral-800 p-2 rounded-lg">
+            <span className="rounded-lg bg-neutral-800 text-white">
+              Bem-vindo de volta, {userData.character_name}
+            </span>
+            <button onClick={() => {enterRoom(userData)}} className="bg-blue-300 p-2 rounded">
+              Voltar para sala <b>{userData.room_code}</b>
+            </button>
+          </div>
+        )}
+      </div>
+
       <div className='flex w-full justify-center px-2'>
 
         <Form onSubmit={handleSubmit(handleFormSubmit)} style="mt-[30vh] w-full md:w-[500px]">
