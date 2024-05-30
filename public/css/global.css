@@ -2,3 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
+
+
+:root {
+    --rpg-brown-1: #663131;
+    --rpg-brown-2: #592528;
+    --rpg-brown-3: #4d1c20;
+    --rpg-brown-4: #381319;
+
+    --rpg-green-1: #E0BD9C;
+    --rpg-green-2: #C19B7B;
+    --rpg-green-3: #A18E6A;
+    --rpg-green-4: #8A7A5F;
+}

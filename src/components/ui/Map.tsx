@@ -28,13 +28,13 @@ const Mapa = ({ roomUsers }: MapaProps) => {
     };
 
     return (
-        <div className="grid grid-cols-10 w-full bg-blue-500 h-80 p-1 rounded">
+        <div className="grid grid-cols-10 w-full bg-neutral-900 h-80 p-1 rounded">
         {Array.from({ length: rows }).map((_, rowIndex) => (
             <div key={rowIndex} className="flex flex-col">
             {Array.from({ length: columns }).map((_, colIndex) => (
                 <div
                     key={colIndex}
-                    className="flex items-center justify-center bg-gray-300 border border-blue-500 p-2 cursor-pointer h-full relative"
+                    className="flex items-center justify-center bg-neutral-800 border-2 border-neutral-900 p-2 cursor-pointer h-full relative rounded-lg"
                     onClick={() => handleClick(rowIndex, colIndex)}
                 >
                     { roomUsers.map((user) => 

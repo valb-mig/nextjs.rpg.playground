@@ -32,6 +32,10 @@ export function getUserData() {
     }
 }
 
+export function cleanUserData() {
+    localStorage.removeItem('userInfo');
+}
+
 export function updateUserData(userInfo: UserInfo) {
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
 }

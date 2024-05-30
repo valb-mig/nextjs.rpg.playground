@@ -9,10 +9,16 @@ import { useRouter } from 'next/navigation';
 import { socket } from "@/socket";
 
 import { 
-    User 
+    User,
+    LogOut,
+    MapIcon,
+    MapPin
 } from 'lucide-react';
 
-import { getUserData } from '@/utils/helper';
+import { 
+    getUserData,
+    cleanUserData
+} from '@/utils/helper';
 
 import type { 
     UserInfo,
@@ -20,6 +26,7 @@ import type {
 } from '@/types/interfaces';
 
 import Dice from '@/components/ui/Dice';
+import Button from '@/components/ui/Button';
 import Map from '@/components/ui/Map';
 
 import socketHooks from '@/app/room/hooks/socketHooks';
@@ -84,33 +91,55 @@ const Room = ({ params }: RoomProps) => {
         };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ ])
+    }, [])
 
     return (
-        <main className="flex flex-col w-screen h-screen bg-neutral-900">
+        <main className="flex flex-col h-screen bg-neutral-950">
 
-            <div className='flex w-full gap-2 p-2 border-b border-neutral-800 bg-neutral-900 absolute rounded'>
-                {roomUsers ? 
-                    Object.values(roomUsers).map((user: UserInfo, index) => (
-                        <div key={user.uuid} className='flex flex-col gap-2 bg-neutral-800 p-2 rounded text-white'>
-                            <span className='flex gap-2'>
-                                <User className='bg-neutral-700 rounded-full p-1'/>
-                                {user.character_name}
-                            </span>
-                            <span className='flex justify-center items-center w-5 h-5 p-2 bg-neutral-50 text-black rounded'>
-                                {user.dice}
-                            </span>
-                        </div>
-                    )) : (
-                        <span>Loading party...</span>
-                    )
-                }
-            </div>
+            <header className='flex p-2 w-ful'>
+                <div className='flex justify-between w-full gap-2 p-2 bg-neutral-900 rounded-lg'>
+                    <div>
+                        {roomUsers ? 
+                            Object.values(roomUsers).map((user: UserInfo) => (
+                                <div key={user.uuid} className='flex flex-col gap-2 bg-neutral-800 p-2 rounded-lg text-white'>
+                                    <span className='flex gap-2'>
+                                        <User className='bg-neutral-700 rounded-full p-1'/>
+                                        {user.character_name}
+                                    </span>
+                                    <span className='flex justify-center items-center w-5 h-5 p-2 bg-neutral-50 text-black rounded'>
+                                        {user.dice}
+                                    </span>
+                                </div>
+                            )) : (
+                                <span>Loading party...</span>
+                            )
+                        }
+                    </div>
+
+                    <div id="buttons" className='flex gap-2 items-center'>
+                        <Button onClick={() => {
+                            cleanUserData(); 
+                            router.push('/');
+                        }} className="bg-red-300 hover:bg-red-400 p-2 rounded text-red-900 font-bold">
+                            <LogOut className='bg-red-200 p-1 rounded-lg text-lg'/>Logout
+                        </Button>
+                    </div>
+                </div>
+            </header>
             
             <div className='flex justify-center w-full h-full'>
 
-                <section id='map-section' className='flex justify-center items-center h-full w-2/3 border-r border-neutral-800 p-4'>
+                <section id='map-section' className='flex flex-col justify-start items-center h-full w-2/3 border-r border-neutral-800 p-4 gap-2'>
+                    <span className='flex gap-2 items-center w-full text-white text-3xl'>
+                        <MapIcon/>Map
+                    </span>
                     <Map roomUsers={roomUsers}/>
+                    
+                    <span className='flex gap-2 items-center w-full text-white text-3xl'>
+                        <MapPin/>Location
+                    </span>
+
+                    <img src='https://placehold.co/600x400?text=Hello+World' alt='map-location' className='rounded-lg'/>
                 </section>
 
                 <section id="dice-section" className='flex flex-col justify-center items-center gap-2 w-1/3'>
