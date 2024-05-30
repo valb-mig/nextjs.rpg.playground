@@ -44,7 +44,7 @@ const Mapa = ({ roomUsers }: MapaProps) => {
                             user.position.col == colIndex
                         ) && (
                             <>
-                                <span key={user.socket_id} className='flex flex-col gap-1 text-white'>
+                                <span key={user.uuid} className='flex flex-col gap-1 text-white'>
                                     <User className='bg-neutral-700 rounded-full p-1'/>
                                 </span>
                                 <p className='absolute z-[1] bg-neutral-700 text-sm rounded text-white -bottom-1'>
