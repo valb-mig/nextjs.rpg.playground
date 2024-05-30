@@ -5,6 +5,7 @@ import type {
 } from "@/types/interfaces";
 
 import { setUserCookies } from "@/utils/handlers";
+import {v4 as uuidv4} from 'uuid';
 
 type FormData = {
     character_name: string,
@@ -18,7 +19,7 @@ const useHome = () => {
     const enterRoom = async (formData: FormData) => {
 
         let userInfo: UserInfo = {
-            socket_id: undefined,
+            uuid: uuidv4(),
             character_name: formData.character_name,
             room_code: formData.room_code,
             position: undefined,

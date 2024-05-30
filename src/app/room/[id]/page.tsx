@@ -92,7 +92,7 @@ const Room = ({ params }: RoomProps) => {
             <div className='flex w-full gap-2 p-2 border-b border-neutral-800 bg-neutral-900 absolute rounded'>
                 {roomUsers ? 
                     Object.values(roomUsers).map((user: UserInfo, index) => (
-                        <div key={user.socket_id} className='flex flex-col gap-2 bg-neutral-800 p-2 rounded text-white'>
+                        <div key={user.uuid} className='flex flex-col gap-2 bg-neutral-800 p-2 rounded text-white'>
                             <span className='flex gap-2'>
                                 <User className='bg-neutral-700 rounded-full p-1'/>
                                 {user.character_name}

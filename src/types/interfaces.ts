@@ -4,7 +4,7 @@ export type MapPosition = {
 }
 
 export interface UserInfo {
-    socket_id: string | undefined,
+    uuid: string,
     character_name: string,
     room_code: string,
     position: MapPosition | undefined,

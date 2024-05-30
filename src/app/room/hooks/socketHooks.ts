@@ -17,7 +17,6 @@ const socketHooks = () => {
         let users: UserInfo[] = [];
 
         Object.keys(usersObject).map((key) => {
-
             let user: UserInfo = usersObject[key];
             users.push(user);
         });
@@ -31,18 +30,15 @@ const socketHooks = () => {
 
         if(userData != undefined) {
 
-            if(userData.socket_id == undefined) {
+            let updateUser: UserInfo = {
+                uuid: userData.uuid,
+                character_name: userData.character_name,
+                room_code: userData.room_code,
+                position: userData.position,
+                dice: undefined
+            };
 
-                let updateUser: UserInfo = {
-                    socket_id: socketId,
-                    character_name: userData.character_name,
-                    room_code: userData.room_code,
-                    position: userData.position,
-                    dice: undefined
-                };
-    
-                updateUserData(updateUser);
-            }
+            updateUserData(updateUser);
         }
 
         socket.emit('req_hello', {
@@ -59,7 +55,7 @@ const socketHooks = () => {
 
             let user: UserInfo = usersObject[key];
 
-            if(key === moveUser.socket_id) {
+            if(user.uuid === moveUser.uuid) {
                 user = moveUser;
             }
             
@@ -77,7 +73,7 @@ const socketHooks = () => {
 
             let user: UserInfo = usersObject[key];
 
-            if(user.socket_id == rollUser.socket_id) {
+            if(user.uuid == rollUser.uuid) {
                 user.dice = rollUser.dice;
             }
 
