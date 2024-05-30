@@ -16,7 +16,7 @@ export function getUserData() {
                 let userValues = JSON.parse(userObject);
         
                 let userData: UserInfo = {
-                    socket_id: userValues.socket_id,
+                    uuid: userValues.uuid,
                     character_name: userValues.character_name,
                     room_code: userValues.room_code,
                     position: userValues.position,
