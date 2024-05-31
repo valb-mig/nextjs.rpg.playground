@@ -22,9 +22,10 @@ const useHome = () => {
             uuid: uuidv4(),
             character_name: formData.character_name,
             room_code: formData.room_code,
+            role: undefined,
             position: undefined,
             dice: undefined
-        }
+        };
 
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
 

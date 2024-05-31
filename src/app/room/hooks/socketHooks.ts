@@ -35,7 +35,8 @@ const socketHooks = () => {
                 character_name: userData.character_name,
                 room_code: userData.room_code,
                 position: userData.position,
-                dice: undefined
+                dice: undefined,
+                role: userData.role
             };
 
             updateUserData(updateUser);
