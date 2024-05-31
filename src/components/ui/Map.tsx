@@ -38,7 +38,7 @@ const Mapa = ({ roomUsers, userData = getUserData() }: MapaProps) => {
                     className="relative flex items-center justify-center bg-neutral-800 hover:bg-neutral-700 border-2 border-neutral-900 p-2 cursor-pointer rounded-lg size-full"
                     onClick={() => handleClick(rowIndex, colIndex)}
                 >
-                    <span className='absolute text-neutral-900 text-sm font-bold'>{rowIndex} x {colIndex}</span>
+                    <span key={rowIndex+colIndex} className='absolute text-neutral-900 text-sm font-bold'>{rowIndex} x {colIndex}</span>
 
                     { roomUsers.map((user) => 
                         user.position && (
@@ -46,8 +46,8 @@ const Mapa = ({ roomUsers, userData = getUserData() }: MapaProps) => {
                                 &&
                             user.position.col == colIndex
                         ) && (
-                            <span className='flex justify-center relative items-center'>
-                                <div key={user.uuid} className='flex flex-col relative gap-1 text-white'>
+                            <span key={user.uuid} className='flex justify-center relative items-center'>
+                                <div className='flex flex-col relative gap-1 text-white'>
                                     <User className={`rounded-full p-1 ${userData?.uuid == user.uuid ? "bg-emerald-700" : "bg-neutral-700"}`}/>
                                 </div>
                                 <p className={`absolute z-[1] text-sm rounded text-white -bottom-6 truncate px-2 ${userData?.uuid == user.uuid ? "bg-emerald-700" : "bg-neutral-700"}`}>
