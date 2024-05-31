@@ -8,12 +8,11 @@ import useHome from "@/app/hooks/useHome";
 
 import { getUserData } from '@/utils/helper';
 
-import Button from '@/components/ui/Button';
 import Form from '@/components/ui/Form';
 import Input from '@/components/ui/Input';
 
 const ZodSchema = z.object({
-  character_name: z.string(),
+  character_name: z.string().max(10),
   room_code: z.string()
 });
 

@@ -7,8 +7,9 @@ export interface UserInfo {
     uuid: string,
     character_name: string,
     room_code: string,
-    position: MapPosition | undefined,
-    dice: number | undefined
+    position?: MapPosition,
+    dice?: number,
+    role?: string
 }
 
 export interface RoomUsersObject {
