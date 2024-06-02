@@ -29,7 +29,7 @@ const Mapa = ({ roomUsers, userData = getUserData() }: MapaProps) => {
     };
 
     return (
-        <div className="grid grid-cols-10 w-full bg-neutral-900 h-80 p-1 rounded">
+        <div className="grid grid-cols-10 w-full bg-neutral-900 h-full p-1 rounded">
         {Array.from({ length: rows }).map((_, rowIndex) => (
             <div key={rowIndex} className="flex flex-col">
             {Array.from({ length: columns }).map((_, colIndex) => (

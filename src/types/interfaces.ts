@@ -1,3 +1,8 @@
+export type RoomData = {
+    location?: string,
+    showcase?: string
+}
+
 export type MapPosition = {
     row: number,
     col: number

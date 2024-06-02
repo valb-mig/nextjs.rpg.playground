@@ -1,11 +1,12 @@
 interface InputProps {
     label: string, 
     name: string, 
-    errors: any, 
-    register: any
+    errors?: any, 
+    register?: any,
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input = ({ label, name, errors, register }: InputProps) => {
+const Input = ({ label, name, onChange, errors, register }: InputProps) => {
     return(
         <div className="flex flex-col w-full">
             <div>
@@ -13,11 +14,22 @@ const Input = ({ label, name, errors, register }: InputProps) => {
                     {label}
                 </label>
             </div>
-            <input 
-                {...register(name)} 
-                className="rounded-b rounded-e bg-neutral-800 border border-neutral-700 outline-none text-white p-2"
-            />
-            {errors[name] && (
+            
+            {onChange ? (
+                <input 
+                    className="rounded-b rounded-e bg-neutral-800 border border-neutral-700 outline-none text-white p-2"
+                    name={name}
+                    onChange={onChange}
+                />
+            ) : (
+                <input 
+                    {...(register ? register(name) : {})}
+                    className="rounded-b rounded-e bg-neutral-800 border border-neutral-700 outline-none text-white p-2"
+                    name={name}
+                />
+            )}
+            
+            {errors && errors[name] && (
               <span className="text-red-500 text-sm">
                 {errors[name].message}
               </span>
