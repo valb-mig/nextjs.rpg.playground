@@ -81,6 +81,8 @@ const socketHooks = () => {
             users.push(user);
         });
 
+        console.log(users);
+        
         return users;
     }
 

@@ -43,7 +43,7 @@ const Home = () => {
     <main className="flex flex-col w-screen h-screen bg-neutral-950">
       
       <div className="flex w-full justify-end p-2">
-        { userData !== undefined && userData !== null && (
+        { userData && (
           <div className="flex flex-col gap-2 bg-neutral-800 p-2 rounded-lg">
             <span className="rounded-lg bg-neutral-800 text-white">
               Bem-vindo de volta, {userData.character_name}

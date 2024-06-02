@@ -35,6 +35,7 @@ const Dice = ({ room, max }: DiceProps) => {
         return () => {
             socket.off('res_roll_dice');
         };
+
     }, []);
 
     const rollDice = () => {
