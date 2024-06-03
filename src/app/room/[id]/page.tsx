@@ -68,7 +68,7 @@ const Room = ({ params }: RoomProps) => {
 
         handleSocket({setRoomUsers, setRoomData, roomData, params});
 
-    })
+    }, [])
 
     return (
         <main className={"flex flex-col h-screen bg-neutral-950 overflow-y-scroll"}>
