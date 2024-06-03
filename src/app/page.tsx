@@ -1,42 +1,25 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from 'zod';
 
-import useHome from "@/app/hooks/useHome";
+import { getUserData } from '@/handlers/handleUser';
+import useHome from "@/hooks/useHome";
 
-import { getUserData } from '@/utils/helper';
-
-import Form from '@/components/ui/Form';
-import Input from '@/components/ui/Input';
+import Form from '@ui/Form';
 
 const ZodSchema = z.object({
-  character_name: z.string().max(10),
-  room_code: z.string()
+  character_name: z.string().min(1).max(10),
+  room_code: z.string().min(1)
 });
-
-type formSchema = z.infer<typeof ZodSchema>;
 
 const Home = () => {
 
-  let userData = getUserData();
+  const userData = getUserData();
 
   const { enterRoom } = useHome();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setError,
-    formState: { errors },
-  } = useForm<formSchema>({
-    resolver: zodResolver(ZodSchema),
-  });
-
-  const handleFormSubmit: SubmitHandler<formSchema> = async (data) => {
+  const onFormSubmit = async (data: any) => {
     enterRoom(data);
-    reset();
 	};
 
   return (
@@ -57,20 +40,16 @@ const Home = () => {
 
       <div className='flex w-full justify-center px-2'>
 
-        <Form onSubmit={handleSubmit(handleFormSubmit)} style="mt-[30vh] w-full md:w-[500px]">
+        <Form.Body onSubmit={onFormSubmit} schema={ZodSchema} style="mt-[30vh] w-full md:w-[500px]">
 
-          <Input 
+          <Form.Input
             label="Character Name"
-            errors={errors} 
             name="character_name" 
-            register={register}
           />
          
-          <Input 
+          <Form.Input
             label="Room Code" 
-            errors={errors} 
-            name="room_code" 
-            register={register}
+            name="room_code"
           />
 
           <div className="flex w-full justify-end">
@@ -78,7 +57,7 @@ const Home = () => {
               Enter
             </button>
           </div>
-        </Form>
+        </Form.Body>
         
       </div>
     </main>

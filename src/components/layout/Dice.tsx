@@ -1,14 +1,16 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { socket } from "@/socket";
 
 import { 
     getUserData
-} from '@/utils/helper';
+} from '@/handlers/handleUser';
 
 import type { 
     UserInfo,
     RoomUsersObject
-} from '@/types/interfaces';
+} from '@/types';
 
 interface DiceProps {
     room: string,

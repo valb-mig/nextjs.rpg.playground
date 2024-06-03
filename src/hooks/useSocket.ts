@@ -1,16 +1,16 @@
 import type { 
     UserInfo,
     RoomUsersObject
-} from '@/types/interfaces';
+} from '@/types';
 
 import { 
     getUserData,
     updateUserData
-} from '@/utils/helper';
+} from '@/handlers/handleUser';
 
 import { socket } from "@/socket";
 
-const socketHooks = () => {
+const useSocket = () => {
 
     const resHello = (usersObject: RoomUsersObject) => {
 
@@ -81,12 +81,10 @@ const socketHooks = () => {
             users.push(user);
         });
 
-        console.log(users);
-        
         return users;
     }
 
     return { resHello, resEnterRoom, resMapMovement, resRollDice };
 }
 
-export default socketHooks;
+export default useSocket;

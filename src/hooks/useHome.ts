@@ -1,11 +1,11 @@
+"use client";
+
 import { useRouter } from 'next/navigation';
 
-import type { 
-    UserInfo
-} from "@/types/interfaces";
+import type { UserInfo } from "@/types";
 
-import { setUserCookies } from "@/utils/handlers";
-import {v4 as uuidv4} from 'uuid';
+import { setUserCookies } from "@/handlers/handleCookie";
+import { v4 as uuidv4 } from 'uuid';
 
 type FormData = {
     character_name: string,

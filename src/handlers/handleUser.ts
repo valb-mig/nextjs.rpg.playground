@@ -2,7 +2,7 @@
 
 import type { 
     UserInfo 
-} from '@/types/interfaces';
+} from '@/types';
 
 export function getUserData() {
     

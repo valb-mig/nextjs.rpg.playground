@@ -1,6 +1,9 @@
+"use client";
+
 import React from 'react';
+
 import { socket } from "@/socket";
-import { getUserData } from '@/utils/helper';
+import { getUserData } from '@/handlers/handleUser';
 
 import { 
     User 
@@ -8,7 +11,7 @@ import {
 
 import type { 
     UserInfo
-} from '@/types/interfaces';
+} from '@/types';
 
 interface MapaProps {
     roomUsers: UserInfo[],
