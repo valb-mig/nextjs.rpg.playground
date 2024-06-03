@@ -1,9 +1,6 @@
 "use client";
 
-import React, { 
-    useState, 
-    useEffect 
-} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 import { socket } from "@/socket";
@@ -19,27 +16,22 @@ import {
 import { 
     getUserData,
     cleanUserData
-} from '@/utils/helper';
+} from '@/handlers/handleUser';
+
+import handleSocket from '@/handlers/handleSocket';
 
 import type { 
     UserInfo,
-    RoomUsersObject,
     RoomData
-} from '@/types/interfaces';
+} from '@/types';
 
-import Dice from '@/components/ui/Dice';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
-import Map from '@/components/ui/Map';
-
-import socketHooks from '@/app/room/hooks/socketHooks';
-
-type ParamsType = {
-    id: string
-}
+import Dice from '@/components/layout/Dice';
+import Map from '@/components/layout/Map';
 
 interface RoomProps {
-    params: ParamsType
+    params: { id: string }
 }
 
 const Room = ({ params }: RoomProps) => {
@@ -60,13 +52,6 @@ const Room = ({ params }: RoomProps) => {
 
     const socketUserData = Object.values(roomUsers).find((user: UserInfo) => user.uuid == userData?.uuid);
 
-    const { 
-        resHello, 
-        resEnterRoom, 
-        resMapMovement,
-        resRollDice
-    } = socketHooks();
-
     useEffect(() => {
 
         if(!getUserData()) {
@@ -81,47 +66,8 @@ const Room = ({ params }: RoomProps) => {
             'user_data': JSON.stringify(getUserData())
         });
 
-        socket.on('res_hello', (usersObject: RoomUsersObject, roomDataObject: RoomData) => {
-            setRoomUsers(resHello(usersObject));
+        handleSocket({setRoomUsers, setRoomData, roomData, params});
 
-            let location = roomDataObject && roomDataObject.location ? roomDataObject.location : roomData.location;
-            let showcase = roomDataObject && roomDataObject.showcase ? roomDataObject.showcase : roomData.showcase;
-
-            setRoomData({
-                location: location,
-                showcase: showcase
-            });
-        });
-
-        socket.on('res_enter_room', (socketId: string) => {
-            resEnterRoom(socketId, params.id)
-        });
-
-        socket.on('res_map_movement', (moveUser: UserInfo, usersObject: RoomUsersObject) => {
-            setRoomUsers(resMapMovement(moveUser, usersObject))
-        });
-
-        socket.on('res_roll_dice', (usersObject: RoomUsersObject, rollUser: UserInfo) => {
-            setRoomUsers(resRollDice(usersObject, rollUser));
-        });
-
-        socket.on('res_gm_room_data', (data: { key: any, value: any }) => {
-
-            setRoomData(prevRoomData => ({
-                ...prevRoomData,
-                [data.key]: data.value
-            }));
-        });
-
-        return () => {
-            socket.off('res_hello');
-            socket.off('res_enter_room');
-            socket.off('res_map_movement');
-            socket.off('res_roll_dice');
-            socket.off('res_gm_room_data');
-        };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
