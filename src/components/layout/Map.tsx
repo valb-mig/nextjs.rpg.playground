@@ -17,25 +17,32 @@ interface MapaProps {
     roomUsers: UserInfo[],
     userData?: UserInfo
 }
-const Mapa = ({ roomUsers, userData = getUserData() }: MapaProps) => {
 
-    const rows = 10;
-    const columns = 5;
+const Mapa = ({ roomUsers, userData = getUserData() }: MapaProps) => {
 
     const handleClick = (row: number, col: number) => {
 
-        socket.emit('req_map_movement', {
-            'user_data': JSON.stringify(userData),
-            'row':row,
-            'col':col
-        });
+        let clientUserData = getUserData();
+
+        if(clientUserData != undefined) {
+
+            socket.emit('req_map_movement', {
+                uuid: clientUserData?.uuid,
+                character_name: clientUserData?.character_name,
+                room_code: clientUserData.room_code,
+                dice: clientUserData?.dice,
+                role: clientUserData?.role,
+                position: clientUserData?.position
+
+            } as UserInfo, row, col);
+        }
     };
 
     return (
         <div className="grid grid-cols-10 w-full bg-neutral-900 h-full p-1 rounded">
-        {Array.from({ length: rows }).map((_, rowIndex) => (
+        {Array.from({ length: 10 }).map((_, rowIndex) => (
             <div key={rowIndex} className="flex flex-col">
-            {Array.from({ length: columns }).map((_, colIndex) => (
+            {Array.from({ length: 5 }).map((_, colIndex) => (
                 <div
                     key={colIndex}
                     className="relative flex items-center justify-center bg-neutral-800 hover:bg-neutral-700 border-2 border-neutral-900 p-2 cursor-pointer rounded-lg size-full"

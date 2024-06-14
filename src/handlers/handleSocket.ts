@@ -38,16 +38,16 @@ const handleSocket = ({ setRoomUsers, setRoomData, roomData, params }: HandleSoc
         }));
     });
 
-    socket.on('res_enter_room', (socketId: string) => {
-        resEnterRoom(socketId, params.id)
+    socket.on('res_enter_room', (userData: UserInfo) => {
+        resEnterRoom(userData)
     });
 
     socket.on('res_map_movement', (moveUser: UserInfo, usersObject: RoomUsersObject) => {
         setRoomUsers(resMapMovement(moveUser, usersObject))
     });
 
-    socket.on('res_roll_dice', (usersObject: RoomUsersObject, rollUser: UserInfo) => {
-        setRoomUsers(resRollDice(usersObject, rollUser));
+    socket.on('res_roll_dice', (rollUser: UserInfo, usersObject: RoomUsersObject) => {
+        setRoomUsers(resRollDice(rollUser, usersObject));
     });
 
     socket.on('res_gm_room_data', (data: { key: any, value: any }) => {

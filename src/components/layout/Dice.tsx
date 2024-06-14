@@ -12,19 +12,14 @@ import type {
     RoomUsersObject
 } from '@/types';
 
-interface DiceProps {
-    room: string,
-    max: number
-}
+const Dice = ({ max }: { max: number }) => {
 
-const Dice = ({ room, max }: DiceProps) => {
-
-    const [diceNumber, setDiceNumber] = useState(0);
-    const [diceRolling, setDiceRolling] = useState(false);
+    const [ diceNumber, setDiceNumber ] = useState(0);
+    const [ diceRolling, setDiceRolling ] = useState(false);
 
     useEffect(() => {
 
-        socket.on('res_roll_dice', (usersObject: RoomUsersObject, rollUser: UserInfo) => {
+        socket.on('res_roll_dice', (rollUser: UserInfo, usersObject: RoomUsersObject) => {
             setDiceRolling(true);
 
             const intervalId = setInterval(() => {
@@ -50,10 +45,13 @@ const Dice = ({ room, max }: DiceProps) => {
 
             const intervalId = setInterval(() => {
                 socket.emit('req_roll_dice', {
-                    room: room, 
-                    max:  max, 
-                    user_data: JSON.stringify(userData)
-                });
+                    uuid: userData?.uuid,
+                    character_name: userData?.character_name,
+                    room_code: userData.room_code,
+                    dice: userData?.dice,
+                    role: userData?.role,
+                    position: userData?.position
+                } as UserInfo, max );
                 clearInterval(intervalId);
             }, 500);
         }

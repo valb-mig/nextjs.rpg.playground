@@ -24,28 +24,31 @@ const useSocket = () => {
         return users;
     }
 
-    const resEnterRoom = (socketId: string, room: string) => {
+    const resEnterRoom = (userData: UserInfo) => {
 
-        let userData = getUserData();
+        let clientUserData = getUserData();
 
-        if(userData != undefined) {
+        if(userData != undefined ) {
 
-            let updateUser: UserInfo = {
-                uuid: userData.uuid,
-                character_name: userData.character_name,
-                room_code: userData.room_code,
-                position: userData.position,
-                dice: undefined,
-                role: userData.role
-            };
+            if(clientUserData?.uuid == userData.uuid) {
 
-            updateUserData(updateUser);
+                let updateUser: UserInfo = {
+                    uuid: userData?.uuid,
+                    character_name: userData?.character_name,
+                    room_code: userData.room_code,
+                    dice: userData?.dice,
+                    role: userData?.role,
+                    position: userData?.position
+                };
+    
+                updateUserData(updateUser);
+            }
+            
+            socket.emit('req_hello', userData);
+            
+        } else {
+            console.log("Erro ao tentar entrar na sala");
         }
-
-        socket.emit('req_hello', {
-            'room': room, 
-            'user_data': JSON.stringify(userData)
-        });
     }
 
     const resMapMovement = (moveUser: UserInfo, usersObject: RoomUsersObject) => {
@@ -66,7 +69,7 @@ const useSocket = () => {
         return users;
     }
 
-    const resRollDice = (usersObject: RoomUsersObject, rollUser: UserInfo) => {
+    const resRollDice = (rollUser: UserInfo, usersObject: RoomUsersObject) => {
 
         let users: UserInfo[] = [];
 

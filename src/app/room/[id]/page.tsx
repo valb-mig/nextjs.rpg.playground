@@ -61,10 +61,16 @@ const Room = ({ params }: RoomProps) => {
     
         setUserData(getUserData());
 
+        let clientUserData = getUserData();
+
         socket.emit('req_enter_room', {
-            'room': params.id, 
-            'user_data': JSON.stringify(getUserData())
-        });
+            uuid: clientUserData?.uuid,
+            character_name: clientUserData?.character_name,
+            room_code: params.id,
+            dice: clientUserData?.dice,
+            role: clientUserData?.role,
+            position: clientUserData?.position
+        } as UserInfo);
 
         handleSocket({setRoomUsers, setRoomData, roomData, params});
 
@@ -135,9 +141,9 @@ const Room = ({ params }: RoomProps) => {
                                     onClick={() => {
                                         setRoomData({...roomData, location: roomLocation});
                                         socket.emit('req_gm_room_data', {
-                                            'room': params.id, 
-                                            'key': 'location',
-                                            'value': roomLocation
+                                            room: params.id, 
+                                            key: 'location',
+                                            value: roomLocation
                                         });
                                     }} 
                                     className="p-2 rounded text-neutral-100 font-bold bg-blue-400 transition-all hover:bg-blue-500"
@@ -148,7 +154,6 @@ const Room = ({ params }: RoomProps) => {
                         ) : (
                             <span className='flex gap-2 items-center w-full text-white text-3xl'>
                                 <MapIcon/>Map
-                                {userData?.role}
                             </span>
                         )}
                         
@@ -170,9 +175,9 @@ const Room = ({ params }: RoomProps) => {
                                     onClick={() => {
                                         setRoomData({...roomData, showcase: roomShowcase});
                                         socket.emit('req_gm_room_data', {
-                                            'room': params.id, 
-                                            'key': 'showcase',
-                                            'value': roomShowcase
+                                            room: params.id, 
+                                            key: 'showcase',
+                                            value: roomShowcase
                                         });
                                     }} 
                                     className="p-2 rounded text-neutral-100 font-bold bg-blue-400 transition-all hover:bg-blue-500"
@@ -183,7 +188,6 @@ const Room = ({ params }: RoomProps) => {
                         ) : (
                             <span className='flex gap-2 items-center w-full text-white text-3xl'>
                                 <Backpack/>Showcase Item
-                                {userData?.role}
                             </span>
                         )}
                         
@@ -220,7 +224,7 @@ const Room = ({ params }: RoomProps) => {
                                 </span>
                             ))}
                             </div>
-                            <Dice max={diceMax} room={params.id}/>
+                            <Dice max={diceMax}/>
                         </div>
                     </section>  
                     
