@@ -10,6 +10,8 @@ import { v4 as uuidv4 } from 'uuid';
 type FormData = {
     character_name: string,
     room_code: string,
+    character_token: string,
+    character_image: File
 }
 
 const useHome = () => {
@@ -18,6 +20,8 @@ const useHome = () => {
 
     const enterRoom = async (formData: FormData) => {
 
+        console.log(formData);
+        
         let userInfo: UserInfo = {
             uuid: uuidv4(),
             character_name: formData.character_name,
