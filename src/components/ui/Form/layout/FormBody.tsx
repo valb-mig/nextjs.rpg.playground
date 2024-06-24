@@ -30,7 +30,7 @@ const Body = ({ children, onSubmit, schema, style }: FormProps) => {
     };
 
     return(
-        <form onSubmit={handleSubmit(handleFormSubmit)} className={`flex flex-col gap-2 bg-neutral-900 p-2 rounded border-b-2 border-b-neutral-800 ${style ? style : ''}`}>
+        <form onSubmit={handleSubmit(handleFormSubmit)} className={`flex flex-col gap-2 bg-shade-4 p-2 rounded shadow-md ${style ? style : ''}`}>
             <FormProvider register={register} errors={errors}>
                 {children}
             </FormProvider>
