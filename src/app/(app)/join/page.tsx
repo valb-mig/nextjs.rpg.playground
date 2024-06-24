@@ -1,107 +1,104 @@
 "use client";
 
 import { z } from 'zod';
-import { getUserData } from '@/handlers/handleUser';
 import Link from 'next/link';
 
 import { 
   LogIn,
-  Dices,
-  Plus
+  Dices
 } from 'lucide-react';
 
-import useHome from "@/hooks/useHome";
+import useJoin from "@/hooks/useJoin";
 
 import Form from '@ui/Form';
 import Button from '@ui/Button';
 
-const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+import Breadcrumbs from "@layout/Breadcrumbs";
 
 const ZodSchema = z.object({
-    character_token: z.string().min(1),
-    character_name: z.string().min(1).max(10),
-    room_code: z.string().min(1),
-    character_image: z.any()
+    name:  z.string().min(1),
+    token: z.string().min(1).max(10),
+    room:  z.string().min(1),
+    image: z.any()
 });
 
 const Join = () => {
 
-  const userData = getUserData();
-
-  const { enterRoom } = useHome();
+  const { joinRoom } = useJoin();
 
     const onFormSubmit = async (data: any) => {
-        enterRoom(data);
+
+        joinRoom(data);
     };
 
   return (
     <main className="flex flex-col w-screen h-screen bg-background-default">
-      
-        { userData && (
-            <div className="flex w-full justify-end p-2">
-                <div className="flex flex-col gap-2 bg-neutral-800 p-2 rounded-lg">
-                    <span className="rounded-lg bg-neutral-800 text-white">
-                        Bem-vindo de volta, {userData.character_name}
-                    </span>
-                    <button onClick={() => {enterRoom(userData)}} className="bg-blue-300 p-2 rounded">
-                        Voltar para sala <b>{userData.room_code}</b>
-                    </button>
+        
+        <Breadcrumbs items={[
+            { name: 'Home', href: '/' }, 
+            { name: 'Join', href: '/join' }
+        ]} />
+    
+        <div className='flex gap-2 w-full h-full items-center px-2'>
+
+            <div className='flex flex-col justify-center items-center gap-2 w-1/2'>
+
+                <div className='flex w-full justify-center items-center p-4'>
+                    <h1 className='flex gap-2 text-foreground-1 text-4xl items-center'>
+                        <Dices width={50} height={50}/> Join
+                    </h1>
                 </div>
+
+                <Form.Body onSubmit={onFormSubmit} schema={ZodSchema} style="w-full md:w-[500px]">
+                    <div className='flex justify-center w-full items-center gap-2'>
+                        <img src='https://via.placeholder.com/60x60' className='border-2 border-blue-300 rounded-full' width={60} height={60} />
+
+                        <Form.Input
+                            label="User image"
+                            name="image" 
+                            type="file"
+                        />
+                    </div>
+
+                    <Form.Input
+                        label="Username"
+                        name="name" 
+                        type="text"
+                    />
+
+                    <Form.Input
+                        label="Token"
+                        name="token"
+                        type="password"
+                    />
+                    
+                    <Form.Input
+                        label="Room" 
+                        name="room"
+                        type="text"
+                    />
+
+                    <div className="flex w-full justify-end">
+                        <div className='flex gap-2 items-center'>
+                            <Link href="/connect" className='flex items-center justify-center text-shade-1 w-full bg-shade-4 hover:bg-shade-3 p-1 px-2 transition rounded-full'>
+                                <LogIn width={30} height={30} className='text-shade-1'/>
+                                Connect
+                            </Link>
+                            <Button type="submit">
+                                <LogIn/>
+                                Join
+                            </Button>
+                        </div>
+                    </div>
+                </Form.Body>
             </div>
-        )}
 
-        <div className='flex w-full justify-center items-center p-4 mt-[20vh]'>
-            <h1 className='flex gap-2 text-foreground-1 text-4xl items-center'>
-                <Dices width={50} height={50}/> Join
-            </h1>
-        </div>
-
-        <div className='flex flex-col gap-2 w-full justify-center items-center px-2'>
-
-            <Form.Body onSubmit={onFormSubmit} schema={ZodSchema} style="w-full md:w-[500px]">
-
-            <div className='flex justify-center w-full items-center gap-2'>
-                <img src='https://via.placeholder.com/60x60' className='border-2 border-blue-300 rounded-full' width={60} height={60} />
-
-                <Form.Input
-                    label="Character image"
-                    name="character_image" 
-                    type="file"
-                />
+            <div className='flex flex-col justify-center items-center gap-2 h-full w-1/2'>
+                <span className='text-5xl text-foreground-1 font-bold text-center'>
+                    Start a new history
+                    <p className='text-sm italic text-foreground-4'>"Create a new character and start a new history"</p>
+                </span>
             </div>
-
-            <Form.Input
-                label="Character name"
-                name="character_name" 
-                type="text"
-            />
-
-            <Form.Input
-                label="Character token"
-                name="character_token"
-                type="password"
-            />
-            
-            <Form.Input
-                label="Room code" 
-                name="room_code"
-                type="text"
-            />
-
-            <div className="flex w-full justify-end">
-                <div className='flex gap-2 items-center'>
-                    <Link href="/create" className='flex items-center justify-center text-shade-1 w-full bg-shade-4 hover:bg-shade-3 p-1 px-2 transition rounded-full'>
-                        <Plus width={30} height={30} className='text-shade-1'/>
-                        Create Room
-                    </Link>
-                    <Button type="submit">
-                        <LogIn/>
-                        Enter
-                    </Button>
-                </div>
-            </div>
-            </Form.Body>
         </div>
     </main>
   );

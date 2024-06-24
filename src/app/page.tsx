@@ -1,18 +1,22 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
+import Header from '@layout/Header';
 
 const Home = () => {
 
   const router = useRouter();
 
   return (
-    <main className="flex flex-col w-screen h-screen bg-neutral-950 overflow-y-scroll text-neutral-100">
-      <div>Home</div>
-      <button onClick={() => router.push('/join')}>Join Room</button>  
-      <button onClick={() => router.push('/create')}>Create Room</button>
-    </main>
-    
+    <>
+      <Header />
+
+      <main className="flex flex-col w-screen h-screen bg-background-default overflow-y-scroll text-neutral-100">
+        <button onClick={() => router.push('/join')}>(Player) Join Room</button>  
+        <button onClick={() => router.push('/create')}>(GM) Create Room</button>
+        <button onClick={() => router.push('/connect')}>Connect to Room</button>
+      </main>
+    </>
   );
 };
 

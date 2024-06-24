@@ -21,7 +21,7 @@ const Input = ({ type, label, name }: InputProps) => {
             </div>
            
             <input 
-                {...register(name)}
+                { ...register(name) }
                 className="rounded-b rounded-e bg-transparent border border-shade-3 outline-none text-white p-2"
                 name={name}
                 type={type}
