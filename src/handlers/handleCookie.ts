@@ -1,6 +1,5 @@
 "use server";
 
-import type { UserInfo } from "@/types";
 import { cookies } from "next/headers";
 
 export async function setUserCookies (userInfo: UserInfo) {

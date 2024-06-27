@@ -8,7 +8,7 @@ import {
   Dices
 } from 'lucide-react';
 
-import useJoin from "@/hooks/useJoin";
+import useJoin from "@hooks/useJoin";
 
 import Form from '@ui/Form';
 import Button from '@ui/Button';

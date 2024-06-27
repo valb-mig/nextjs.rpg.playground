@@ -1,9 +1,5 @@
 "use client";
 
-import type { 
-    UserInfo 
-} from '@/types';
-
 export function getUserData() {
     
     if (typeof window === 'undefined' || localStorage === undefined) {

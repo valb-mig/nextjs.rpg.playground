@@ -7,11 +7,6 @@ import {
     getUserData
 } from '@/handlers/handleUser';
 
-import type { 
-    UserInfo,
-    RoomUsersObject
-} from '@/types';
-
 const Dice = ({ max }: { max: number }) => {
 
     const [ diceNumber, setDiceNumber ] = useState(0);

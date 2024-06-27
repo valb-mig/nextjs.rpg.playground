@@ -1,14 +1,18 @@
 import { useFormContext } from '@ui/Form/config/context';
+import React from 'react';
 import { FieldError } from 'react-hook-form';
 
 interface InputProps {
     label: string, 
     name: string, 
     type?: string,
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
+    children?: React.ReactNode,
+    value?: any,
+    disabled?: boolean
 }
 
-const Input = ({ type, label, name }: InputProps) => {
+const Input = ({ type, label, name, value, disabled, children }: InputProps) => {
     
     const { register, errors } = useFormContext();
 
@@ -20,18 +24,25 @@ const Input = ({ type, label, name }: InputProps) => {
                 </label>
             </div>
            
-            <input 
-                { ...register(name) }
-                className="rounded-b rounded-e bg-transparent border border-shade-3 outline-none text-white p-2"
-                name={name}
-                type={type}
-            />
+            <div className={`flex relative w-full rounded-b rounded-e ${ disabled ? 'bg-shade-3' : 'bg-transparent'} border border-shade-3 text-white`}>
+                <input 
+                    { ...register(name) }
+                    className="w-full p-2 bg-transparent outline-none"
+                    name={name}
+                    type={type}
+                    value={value}
+                />
+                <span className='absolute right-2 top-1/2 -translate-y-1/2 text-foreground-4 text-sm'>
+                    { children }
+                </span>
+            </div>
             
             {errors && (errors[name] as FieldError)?.message && (
               <span className="text-red-500 text-sm">
                 {(errors[name] as FieldError).message}
               </span>
             )}
+
         </div>
     );
 }

@@ -9,10 +9,6 @@ import {
     User 
 } from 'lucide-react';
 
-import type { 
-    UserInfo
-} from '@/types';
-
 interface MapaProps {
     roomUsers: UserInfo[],
     userData?: UserInfo

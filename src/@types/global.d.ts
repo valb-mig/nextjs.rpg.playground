@@ -1,14 +1,14 @@
-export type RoomData = {
+interface RoomData {
     location?: string,
     showcase?: string
 }
 
-export type MapPosition = {
+interface MapPosition {
     row: number,
     col: number
 }
 
-export interface UserInfo {
+interface UserInfo {
     uuid: string,
     character_name: string,
     room_code: string,
@@ -17,6 +17,6 @@ export interface UserInfo {
     role?: string
 }
 
-export interface RoomUsersObject {
+interface RoomUsersObject {
     [index: string]: UserInfo;
 }

@@ -20,11 +20,6 @@ import {
 
 import handleSocket from '@/handlers/handleSocket';
 
-import type { 
-    UserInfo,
-    RoomData
-} from '@/types';
-
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Dice from '@/components/layout/Dice';

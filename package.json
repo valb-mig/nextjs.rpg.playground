@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
+    "@supabase/supabase-js": "^2.44.1",
     "lucide": "^0.378.0",
     "lucide-react": "^0.378.0",
     "net": "^1.0.2",
@@ -19,12 +20,13 @@
     "react-hook-form": "^7.52.0",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
+    "tailwind-variants": "^0.2.1",
     "tls": "^0.0.1",
     "uuid": "^9.0.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^20.14.4",
+    "@types/node": "^20.14.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^9.0.8",
@@ -32,7 +34,7 @@
     "eslint-config-next": "14.2.3",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.2"
   },
   "browser": {
     "fs": false,

@@ -1,13 +1,7 @@
 "use client";
 
 import { socket } from "@/socket";
-import useSocket from '@/hooks/useSocket';
-
-import type { 
-    UserInfo,
-    RoomUsersObject,
-    RoomData
-} from '@/types';
+import useSocket from '@hooks/useSocket';
 
 interface HandleSocketProps {
     setRoomUsers: (data: UserInfo[]) => void,

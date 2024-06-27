@@ -1,7 +1,4 @@
-import type { 
-    UserInfo,
-    RoomUsersObject
-} from '@/types';
+"use client";
 
 import { 
     getUserData,
