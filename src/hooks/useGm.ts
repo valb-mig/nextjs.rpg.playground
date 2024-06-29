@@ -1,6 +1,6 @@
 "use client";
 
-import { createUserAndRoom } from '@/helpers/createHelper';
+import { createUserAndRoom } from '@/helpers/userHelper';
 
 type FormData = {
     name: string,
@@ -8,15 +8,16 @@ type FormData = {
     room: string
 };
 
-const useCreate = () => {
+const useGm = () => {
     
     const createRoom = async (formData: FormData) => {
 
         // TODO: Hash token
-        let user = await createUserAndRoom(formData);
+        let user = await createUserAndRoom('gm', formData);
+        console.log(user);
     }
 
     return { createRoom };
 }
 
-export default useCreate;
+export default useGm;

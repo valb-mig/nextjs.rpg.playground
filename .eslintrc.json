@@ -1,7 +1,9 @@
 {
-  "extends": "next/core-web-vitals",
 
+  "extends": "next/core-web-vitals",
+  
   "rules": {
-    "react-hooks/rules-of-hooks": "off"
+    "react-hooks/rules-of-hooks": "off",
+    "indent-legacy": ["error", 2]
   }
 }

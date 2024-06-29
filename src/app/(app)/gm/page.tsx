@@ -7,7 +7,7 @@ import {
 
 import { z } from 'zod';
 import Link from 'next/link';
-import useCreate from '@hooks/useCreate';
+import useGm from '@hooks/useGm';
 
 import { 
   LogIn,
@@ -32,9 +32,9 @@ const ZodSchema = z.object({
     token: z.string().min(1)
 });
 
-const Create = () => {
+const GM = () => {
 
-    const { createRoom } = useCreate();
+    const { createRoom } = useGm();
     const [ roomCode, setRoomCode ] = useState<string>('');
 
     useEffect(() => {
@@ -43,16 +43,11 @@ const Create = () => {
 
     const onFormSubmit = async (data: FormData) => {
         data.room = roomCode;
-        createRoom(data)
+        createRoom(data);
     };
 
     return (
         <main className="flex flex-col w-screen h-screen bg-background-default">
-        
-            <Breadcrumbs items={[
-                { name: 'Home', href: '/' }, 
-                { name: 'Create', href: '/create' }
-            ]} />
 
             <div className='flex gap-2 w-full h-full items-center px-2'>
 
@@ -118,4 +113,4 @@ const Create = () => {
     );
 }
 
-export default Create;
+export default GM;

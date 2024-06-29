@@ -2,20 +2,19 @@
 
 import { useRouter } from 'next/navigation';
 import { setUserCookies } from "@/handlers/handleCookie";
+import { loginUser } from '@/helpers/connectHelper';
 import { v4 as uuidv4 } from 'uuid';
 
 type FormData = {
     name: string,
-    room: string,
-    token: string,
-    image: File
+    token: string
 }
 
-const useJoin = () => {
+const useConnect = () => {
 
     const router = useRouter();
 
-    const joinRoom = async (formData: FormData) => {
+    const connectUser = async (formData: FormData) => {
 
         // [TODO] Connect to database
 
@@ -34,11 +33,11 @@ const useJoin = () => {
             await setUserCookies(userInfo);
             router.push(`/room/${formData.room}`);
         } catch (e) {
-            console.error('[useJoin] Error tying to set cookie: ', e);
+            console.error('[usePlayer] Error tying to set cookie: ', e);
         }
     }
 
-    return { joinRoom };
+    return { connectUser };
 }
 
-export default useJoin;
+export default useConnect;

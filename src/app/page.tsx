@@ -12,8 +12,6 @@ const Home = () => {
       <Header />
 
       <main className="flex flex-col w-screen h-screen bg-background-default overflow-y-scroll text-neutral-100">
-        <button onClick={() => router.push('/join')}>(Player) Join Room</button>  
-        <button onClick={() => router.push('/create')}>(GM) Create Room</button>
         <button onClick={() => router.push('/connect')}>Connect to Room</button>
       </main>
     </>
