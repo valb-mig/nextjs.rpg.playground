@@ -1,90 +1,77 @@
 "use client";
 
-import { 
-    getUserData,
-    updateUserData
-} from '@/handlers/handleUser';
+import { getUserData, updateUserData } from "@/handlers/handleUser";
 
 import { socket } from "@/socket";
 
 const useSocket = () => {
+  const resHello = (usersObject: RoomUsersObject) => {
+    let users: UserInfo[] = [];
 
-    const resHello = (usersObject: RoomUsersObject) => {
+    Object.keys(usersObject).map((key) => {
+      let user: UserInfo = usersObject[key];
+      users.push(user);
+    });
 
-        let users: UserInfo[] = [];
+    return users;
+  };
 
-        Object.keys(usersObject).map((key) => {
-            let user: UserInfo = usersObject[key];
-            users.push(user);
-        });
+  const resEnterRoom = (userData: UserInfo) => {
+    let clientUserData = getUserData();
 
-        return users;
+    if (userData != undefined) {
+      if (clientUserData?.uuid == userData.uuid) {
+        let updateUser: UserInfo = {
+          uuid: userData?.uuid,
+          character_name: userData?.character_name,
+          room_code: userData.room_code,
+          dice: userData?.dice,
+          role: userData?.role,
+          position: userData?.position,
+        };
+
+        updateUserData(updateUser);
+      }
+
+      socket.emit("req_hello", userData);
+    } else {
+      console.log("Erro ao tentar entrar na sala");
     }
+  };
 
-    const resEnterRoom = (userData: UserInfo) => {
+  const resMapMovement = (moveUser: UserInfo, usersObject: RoomUsersObject) => {
+    let users: UserInfo[] = [];
 
-        let clientUserData = getUserData();
+    Object.keys(usersObject).map((key) => {
+      let user: UserInfo = usersObject[key];
 
-        if(userData != undefined ) {
+      if (user.uuid === moveUser.uuid) {
+        user = moveUser;
+      }
 
-            if(clientUserData?.uuid == userData.uuid) {
+      users.push(user);
+    });
 
-                let updateUser: UserInfo = {
-                    uuid: userData?.uuid,
-                    character_name: userData?.character_name,
-                    room_code: userData.room_code,
-                    dice: userData?.dice,
-                    role: userData?.role,
-                    position: userData?.position
-                };
-    
-                updateUserData(updateUser);
-            }
-            
-            socket.emit('req_hello', userData);
-            
-        } else {
-            console.log("Erro ao tentar entrar na sala");
-        }
-    }
+    return users;
+  };
 
-    const resMapMovement = (moveUser: UserInfo, usersObject: RoomUsersObject) => {
+  const resRollDice = (rollUser: UserInfo, usersObject: RoomUsersObject) => {
+    let users: UserInfo[] = [];
 
-        let users: UserInfo[] = [];
+    Object.keys(usersObject).map((key) => {
+      let user: UserInfo = usersObject[key];
 
-        Object.keys(usersObject).map((key) => {
+      if (user.uuid == rollUser.uuid) {
+        user.dice = rollUser.dice;
+      }
 
-            let user: UserInfo = usersObject[key];
+      users.push(user);
+    });
 
-            if(user.uuid === moveUser.uuid) {
-                user = moveUser;
-            }
-            
-            users.push(user);
-        });
+    return users;
+  };
 
-        return users;
-    }
-
-    const resRollDice = (rollUser: UserInfo, usersObject: RoomUsersObject) => {
-
-        let users: UserInfo[] = [];
-
-        Object.keys(usersObject).map((key) => {
-
-            let user: UserInfo = usersObject[key];
-
-            if(user.uuid == rollUser.uuid) {
-                user.dice = rollUser.dice;
-            }
-
-            users.push(user);
-        });
-
-        return users;
-    }
-
-    return { resHello, resEnterRoom, resMapMovement, resRollDice };
-}
+  return { resHello, resEnterRoom, resMapMovement, resRollDice };
+};
 
 export default useSocket;

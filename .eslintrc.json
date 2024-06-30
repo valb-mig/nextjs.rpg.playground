@@ -1,7 +1,8 @@
 {
-
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "es5",
   "extends": "next/core-web-vitals",
-  
   "rules": {
     "react-hooks/rules-of-hooks": "off",
     "indent-legacy": ["error", 2]

@@ -1,41 +1,43 @@
-import { z } from 'zod';
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from 'react';
+import React from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
-import FormProvider from '@ui/Form/config/context';
+import FormProvider from "@ui/Form/config/context";
 
 interface FormProps {
-    children: React.ReactNode,
-    onSubmit: (data: any) => void,
-    style?: string,
-    schema: any
+  children: React.ReactNode;
+  onSubmit: (data: any) => void;
+  style?: string;
+  schema: any;
 }
 
 const Body = ({ children, onSubmit, schema, style }: FormProps) => {
+  type formSchema = z.infer<typeof schema>;
 
-    type formSchema = z.infer<typeof schema>;
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<formSchema>({
+    resolver: zodResolver(schema),
+  });
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm<formSchema>({
-        resolver: zodResolver(schema),
-    });
+  const handleFormSubmit: SubmitHandler<formSchema> = async (data) => {
+    onSubmit(data);
+  };
 
-    const handleFormSubmit: SubmitHandler<formSchema> = async (data) => {
-        onSubmit(data);
-    };
-
-    return(
-        <form onSubmit={handleSubmit(handleFormSubmit)} className={`flex flex-col gap-2 p-2 rounded shadow-md ${style ? style : ''}`}>
-            <FormProvider register={register} errors={errors}>
-                {children}
-            </FormProvider>
-        </form>
-    );
-}
+  return (
+    <form
+      onSubmit={handleSubmit(handleFormSubmit)}
+      className={`flex flex-col gap-2 p-2 rounded shadow-md ${style ? style : ""}`}
+    >
+      <FormProvider register={register} errors={errors}>
+        {children}
+      </FormProvider>
+    </form>
+  );
+};
 
 export default Body;

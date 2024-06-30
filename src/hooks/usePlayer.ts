@@ -1,23 +1,19 @@
 "use client";
 
-import { createUserAndRoom } from '@/helpers/userHelper';
+import { createUserAndRoom } from "@/helpers/userHelper";
 
 type FormData = {
-    name: string,
-    token: string,
-    room: string
+  name: string;
+  token: string;
+  room: string;
 };
 
 const usePlayer = () => {
-    
-    const joinRoom = async (formData: FormData) => {
+  const joinRoom = async (formData: FormData) => {
+    await createUserAndRoom("player", formData);
+  };
 
-        // TODO: Hash token
-        let user = await createUserAndRoom('player', formData);
-        
-    }
-
-    return { joinRoom };
-}
+  return { joinRoom };
+};
 
 export default usePlayer;
