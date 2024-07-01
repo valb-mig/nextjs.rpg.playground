@@ -7,19 +7,14 @@ type FormData = {
   token: string;
 };
 
-export const loginUser = async (formData: FormData) => {
+export const getUserData = async (formData: FormData) => {
+
   try {
-    const user = await selectUser(formData.name, formData.token);
-
-    if (!user) {
-      throw new Error("User not found");
-    }
-
-    return user;
+    return await selectUser(formData.name, formData.token) 
   } catch (e) {
-    console.error("[useConnect] Error tying to login user: ", e);
+    console.error("[Helper] Error tying to login user: ", e);
   }
-
+  
   return;
 };
 
@@ -43,7 +38,7 @@ const selectUser = async (name: string, token: string) => {
     .eq("token", token);
 
   if (error) {
-    console.log(error);
+    console.error(error);
     return;
   }
 

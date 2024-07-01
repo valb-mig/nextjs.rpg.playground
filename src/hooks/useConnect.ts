@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { setUserCookies } from "@/handlers/handleCookie";
-import { loginUser } from "@/helpers/connectHelper";
+import { getUserData } from "@/helpers/connectHelper";
 
 type FormData = {
   name: string;
@@ -13,10 +13,9 @@ const useConnect = () => {
   const router = useRouter();
 
   const connectUser = async (formData: FormData) => {
-    let user = await loginUser(formData);
+    let user = await getUserData(formData);
 
     if (!user) {
-      console.error("[usePlayer] Error tying to login user: ", user);
       return;
     }
 
@@ -35,6 +34,8 @@ const useConnect = () => {
     } catch (e) {
       console.error("[usePlayer] Error tying to set cookie: ", e);
     }
+
+    return user;
   };
 
   return { connectUser };

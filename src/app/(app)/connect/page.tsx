@@ -6,6 +6,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 
 import { Plus, RadioTower, X } from "lucide-react";
+import { Toaster, toast } from "sonner";
 
 import useConnect from "@hooks/useConnect";
 
@@ -14,8 +15,8 @@ import Button from "@ui/Button";
 import Alert from "@ui/Alert";
 
 const ZodSchema = z.object({
-  name: z.string().min(1),
-  token: z.string().min(1),
+  name: z.string().min(1, "Name is required"),
+  token: z.string().min(1, "Token is required")
 });
 
 const Connect = () => {
@@ -27,17 +28,29 @@ const Connect = () => {
   const { connectUser } = useConnect();
 
   const onFormSubmit = async (data: any) => {
-    await connectUser(data)
-      .then(() => {
-        setLoading(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+
+    setLoading(true);
+
+    try {
+      let user = await connectUser(data)
+      
+      if(!user) {
+        toast.error("User not found");
+        return;
+      }
+
+    } catch(e) {
+      console.error(e);
+      toast.error("Error tying to login user");
+    } finally {
+      setLoading(false);
+    };
   };
 
   return (
     <main className="flex flex-col w-screen h-screen bg-background-default">
+      <Toaster richColors position="bottom-right" />
+
       {modalOpen && (
         <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/50 p-4">
           <dialog className="fixed inset-0 z-10 flex items-center justify-center bg-transparent p-4">

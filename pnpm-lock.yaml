@@ -41,6 +41,9 @@ importers:
       socket.io-client:
         specifier: ^4.7.5
         version: 4.7.5
+      sonner:
+        specifier: ^1.5.0
+        version: 1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwind-variants:
         specifier: ^0.2.1
         version: 0.2.1(tailwindcss@3.4.4)
@@ -1525,6 +1528,12 @@ packages:
   socket.io@4.7.5:
     resolution: {integrity: sha512-DmeAkF6cwM9jSfmp6Dr/5/mfMwb5Z5qRrSXLpo3Fq5SqyU8CMF15jIN4ZhfSwu35ksM1qmHZDQ/DK5XTccSTvA==}
     engines: {node: '>=10.2.0'}
+
+  sonner@1.5.0:
+    resolution: {integrity: sha512-FBjhG/gnnbN6FY0jaNnqZOMmB73R+5IiyYAw8yBj7L54ER7HB3fOSE5OFiQiE2iXWxeXKvg6fIP4LtVppHEdJA==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
 
   source-map-js@1.2.0:
     resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
@@ -3455,6 +3464,11 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
+
+  sonner@1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   source-map-js@1.2.0: {}
 

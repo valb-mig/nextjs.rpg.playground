@@ -20,3 +20,7 @@ interface UserInfo {
 interface RoomUsersObject {
   [index: string]: UserInfo;
 }
+
+interface ErrorObject {
+  message: string;
+}

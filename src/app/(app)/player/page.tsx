@@ -2,8 +2,10 @@
 
 import { z } from "zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { LogIn, Dices } from "lucide-react";
+import { Toaster, toast } from "sonner";
 
 import usePlayer from "@hooks/usePlayer";
 
@@ -11,20 +13,31 @@ import Form from "@ui/Form";
 import Button from "@ui/Button";
 
 const ZodSchema = z.object({
-  name: z.string().min(1),
-  token: z.string().min(1).max(10),
-  room: z.string().min(1),
+  name: z.string().min(1, "Name is required"),
+  token: z.string().min(1, "Token is required"),
+  room: z.string().min(1, "Room is required")
 });
 
 const Player = () => {
+  
   const { joinRoom } = usePlayer();
+  const router = useRouter();
 
   const onFormSubmit = async (data: any) => {
-    joinRoom(data);
+    let response = await joinRoom(data);
+
+    if ("message" in response) {
+      toast.error(response.message);
+    } else {
+      router.push(`/connect`);
+    }
   };
 
   return (
     <main className="flex flex-col w-screen h-screen bg-background-default">
+
+      <Toaster richColors position="bottom-right" />
+
       <div className="flex gap-2 w-full h-full items-center px-2">
         <div className="flex flex-col justify-center items-center gap-2 w-full lg:w-1/2">
           <div className="flex w-full justify-center items-center p-4">

@@ -15,6 +15,7 @@ type FormData = {
 };
 
 export const createUserAndRoom = async (role: string, formData: FormData) => {
+
   let user: User = {
     uuid: uuidv4(),
     name: formData.name,
@@ -22,6 +23,7 @@ export const createUserAndRoom = async (role: string, formData: FormData) => {
   };
 
   try {
+
     let roleID = await selectRoleID(role);
 
     if (!roleID) {
@@ -44,7 +46,7 @@ export const createUserAndRoom = async (role: string, formData: FormData) => {
       roomID = await seletRoomByName(formData.room);
 
       if (!roomID) {
-        throw new Error("Error selecting room");
+        throw new Error("Room not found");
       }
     }
 
@@ -63,9 +65,11 @@ export const createUserAndRoom = async (role: string, formData: FormData) => {
     if (!createdUserRoom) {
       throw new Error("Error creating user room");
     }
-  } catch (e) {
-    console.error(e);
+  } catch (error: any) {
+    throw new Error(error.message);
   }
+
+  return user;
 };
 
 async function selectRoleID(role: string) {
