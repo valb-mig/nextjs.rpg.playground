@@ -17,6 +17,12 @@ interface UserInfo {
   role?: string;
 }
 
+interface RoomInfo {
+  id: string;
+  room: string;
+  name?: string;
+}
+
 interface RoomUsersObject {
   [index: string]: UserInfo;
 }
