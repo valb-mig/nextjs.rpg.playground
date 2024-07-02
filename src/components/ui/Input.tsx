@@ -18,19 +18,21 @@ const Input = ({ label, name, onChange, errors, register }: InputProps) => {
         </label>
       </div>
 
-      {onChange ? (
-        <input
-          className="rounded-b rounded-e bg-neutral-800 border border-neutral-700 outline-none text-white p-2"
-          name={name}
-          onChange={onChange}
-        />
-      ) : (
-        <input
-          {...(register ? register(name) : {})}
-          className="rounded-b rounded-e bg-neutral-800 border border-neutral-700 outline-none text-white p-2"
-          name={name}
-        />
-      )}
+      <span className="rounded-b rounded-e bg-neutral-800 border border-neutral-700 outline-none text-white p-2">
+        {onChange ? (
+          <input
+            className="bg-transparent"
+            name={name}
+            onChange={onChange}
+          />
+        ) : (
+          <input
+            {...(register ? register(name) : {})}
+            className="bg-transparent"
+            name={name}
+          />
+        )}
+      </span>
 
       {errors && errors[name] && (
         <span className="text-red-500 text-sm">{errors[name].message}</span>

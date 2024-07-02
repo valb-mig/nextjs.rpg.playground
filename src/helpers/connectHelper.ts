@@ -1,6 +1,7 @@
 "use client";
 
 import supabase from "@lib/supabaseClient";
+import { verifyPassword } from "@utils/hashPassword";
 
 type FormData = {
   name: string;
@@ -10,15 +11,29 @@ type FormData = {
 export const getUserData = async (formData: FormData) => {
 
   try {
-    return await selectUser(formData.name, formData.token) 
+
+    let selectedUser = await selectUser(formData.name) 
+
+    if (!selectedUser) {
+      throw new Error("User not found");
+    }
+
+    const isMatch = verifyPassword(formData.token, selectedUser.token, selectedUser.salt);
+
+    if(!isMatch) {
+      throw new Error("Invalid token");
+    }
+
+    return selectedUser;
+
   } catch (e) {
-    console.error("[Helper] Error tying to login user: ", e);
+    console.error("[connectHelper]: ", e);
   }
   
   return;
 };
 
-const selectUser = async (name: string, token: string) => {
+const selectUser = async (name: string) => {
   const { data, error } = await supabase
     .from("users_tb")
     .select(
@@ -27,15 +42,10 @@ const selectUser = async (name: string, token: string) => {
       uuid,
       name,
       token,
-      users_room_tb (
-        user_id, 
-        room_id,
-        role_id
-      )
+      salt
     `,
     )
-    .eq("name", name)
-    .eq("token", token);
+    .eq("name", name);
 
   if (error) {
     console.error(error);

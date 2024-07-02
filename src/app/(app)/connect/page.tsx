@@ -6,13 +6,12 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 
 import { Plus, RadioTower, X } from "lucide-react";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 import useConnect from "@hooks/useConnect";
 
 import Form from "@ui/Form";
 import Button from "@ui/Button";
-import Alert from "@ui/Alert";
 
 const ZodSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -22,9 +21,7 @@ const ZodSchema = z.object({
 const Connect = () => {
   const router = useRouter();
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-
+  const [ loading, setLoading ] = useState(false);
   const { connectUser } = useConnect();
 
   const onFormSubmit = async (data: any) => {
@@ -32,12 +29,15 @@ const Connect = () => {
     setLoading(true);
 
     try {
-      let user = await connectUser(data)
+      let response = await connectUser(data)
       
-      if(!user) {
-        toast.error("User not found");
+      if(!response) {
+        toast.error("user not found");
         return;
       }
+
+      toast.success("User connected");
+      router.push(`/dashboard`);
 
     } catch(e) {
       console.error(e);
@@ -49,55 +49,6 @@ const Connect = () => {
 
   return (
     <main className="flex flex-col w-screen h-screen bg-background-default">
-      <Toaster richColors position="bottom-right" />
-
-      {modalOpen && (
-        <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/50 p-4">
-          <dialog className="fixed inset-0 z-10 flex items-center justify-center bg-transparent p-4">
-            <div className="w-full  p-6 bg-shade-5 rounded border border-shade-4 shadow-xl">
-              <div className="flex w-full justify-between">
-                <h2 className="text-xl font-bold text-foreground-1 w-full">
-                  Choose your role
-                </h2>
-                <X
-                  className="w-8 h-8 text-foreground-4 hover:text-foreground-1 hover:scale-105 transition cursor-pointer"
-                  onClick={() => setModalOpen(false)}
-                />
-              </div>
-
-              <div className="flex flex-col lg:flex-row gap-4 items-start p-2">
-                <a
-                  className="text-start w-full bg-transparent p-2 rounded-lg hover:bg-shade-4 hover:text-foreground-1 hover:scale-105 transition"
-                  href="/gm"
-                >
-                  <span className="text-2xl font-bold text-foreground-4">
-                    Game Master
-                  </span>
-                  <Alert
-                    type="info"
-                    title="Info"
-                    message="You are a game master, you can create and manage your games, and invite players to join your games."
-                  />
-                </a>
-
-                <a
-                  className="text-start w-full bg-transparent p-2 rounded-lg hover:bg-shade-4 hover:text-foreground-1 hover:scale-105 transition"
-                  href="/player"
-                >
-                  <span className="text-2xl font-bold text-foreground-4">
-                    Player
-                  </span>
-                  <Alert
-                    type="info"
-                    title="Info"
-                    message="You are a player, you can join games and play them."
-                  />
-                </a>
-              </div>
-            </div>
-          </dialog>
-        </div>
-      )}
 
       <div className="flex gap-2 w-full h-full items-center px-2">
         <div className="flex flex-col justify-center items-center gap-2 w-full lg:w-1/2">
@@ -113,17 +64,17 @@ const Connect = () => {
               schema={ZodSchema}
               style="w-full md:w-[500px] bg-shade-4"
             >
-              <Form.Input label="name" name="name" type="text" />
+              <Form.Input label="Username" name="name" type="text" />
 
-              <Form.Input label="token" name="token" type="password" />
+              <Form.Input label="Token" name="token" type="password" />
 
               <div className="flex w-full justify-end">
                 <div className="flex gap-2 items-center">
                   <span
                     className="flex items-center justify-center text-shade-1 w-full bg-shade-4 hover:bg-shade-3 p-1 px-2 transition rounded-full gap-2 cursor-pointer"
-                    onClick={() => setModalOpen(true)}
+                    onClick={() => router.push("/create")}
                   >
-                    dont have an account?
+                    Dont have an account?
                   </span>
                   <Button type="submit" loading={loading}>
                     <Plus />

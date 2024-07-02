@@ -13,20 +13,17 @@ const useConnect = () => {
   const router = useRouter();
 
   const connectUser = async (formData: FormData) => {
+    
     let user = await getUserData(formData);
 
     if (!user) {
       return;
     }
 
-    console.log(user);
-
     const userInfo = {
       uuid: user.uuid,
       name: user.name
     };
-
-    localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
     try {
       await setUserCookies(userInfo);

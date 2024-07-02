@@ -5,26 +5,27 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { LogIn, Dices } from "lucide-react";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
-import usePlayer from "@hooks/usePlayer";
+import useCreate from "@hooks/useCreate";
 
 import Form from "@ui/Form";
 import Button from "@ui/Button";
 
 const ZodSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  token: z.string().min(1, "Token is required"),
-  room: z.string().min(1, "Room is required")
+  token: z.string().min(1, "Token is required")
 });
 
-const Player = () => {
-  
-  const { joinRoom } = usePlayer();
+const Create = () => {
+
   const router = useRouter();
 
+  const { createUser } = useCreate();
+
   const onFormSubmit = async (data: any) => {
-    let response = await joinRoom(data);
+
+    let response = await createUser(data);
 
     if ("message" in response) {
       toast.error(response.message);
@@ -36,13 +37,11 @@ const Player = () => {
   return (
     <main className="flex flex-col w-screen h-screen bg-background-default">
 
-      <Toaster richColors position="bottom-right" />
-
       <div className="flex gap-2 w-full h-full items-center px-2">
         <div className="flex flex-col justify-center items-center gap-2 w-full lg:w-1/2">
           <div className="flex w-full justify-center items-center p-4">
             <h1 className="flex gap-2 text-foreground-1 text-4xl items-center">
-              <Dices width={50} height={50} /> Join
+              <Dices width={50} height={50} /> Create
             </h1>
           </div>
 
@@ -55,20 +54,17 @@ const Player = () => {
 
             <Form.Input label="Token" name="token" type="password" />
 
-            <Form.Input label="Room" name="room" type="text" />
-
             <div className="flex w-full justify-end">
               <div className="flex gap-2 items-center">
                 <Link
                   href="/connect"
                   className="flex items-center justify-center text-shade-1 w-full bg-shade-4 hover:bg-shade-3 p-1 px-2 transition rounded-full"
                 >
-                  <LogIn width={30} height={30} className="text-shade-1" />
-                  Connect
+                  Already have an account?
                 </Link>
                 <Button type="submit">
                   <LogIn />
-                  Join
+                  Create
                 </Button>
               </div>
             </div>
@@ -79,7 +75,7 @@ const Player = () => {
           <span className="text-5xl text-foreground-1 font-bold text-center">
             Start a new history
             <p className="text-sm italic text-foreground-4">
-              {"Create a new character and start a new history"}
+              {"Start your journey"}
             </p>
           </span>
         </div>
@@ -88,4 +84,4 @@ const Player = () => {
   );
 };
 
-export default Player;
+export default Create;

@@ -1,17 +1,17 @@
 "use client";
 
-import { createUserAndRoom } from "@/helpers/userHelper";
+import { insertUser } from "@/helpers/userHelper";
 
 type FormData = {
   name: string;
   token: string;
-  room: string;
 };
 
-const usePlayer = () => {
-  const joinRoom = async (formData: FormData) => {
+const useCreate = () => {
+
+  const createUser = async (formData: FormData) => {
     try {
-      let createdUser = await createUserAndRoom("player", formData);
+      let createdUser = await insertUser(formData);
 
       if (!createdUser) {
         throw new Error("User creation failed");
@@ -24,7 +24,7 @@ const usePlayer = () => {
     }
   };
 
-  return { joinRoom };
+  return { createUser };
 };
 
-export default usePlayer;
+export default useCreate;

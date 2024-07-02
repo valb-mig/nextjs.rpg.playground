@@ -24,6 +24,7 @@
       "@helpers/*": ["./src/helpers/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@lib/*": ["./src/lib/*"],
+      "@utils/*": ["./src/utils/*"],
       "@db/*": ["./src/@types/db/*"]
     }
   },
