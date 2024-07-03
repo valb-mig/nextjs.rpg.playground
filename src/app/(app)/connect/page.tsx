@@ -1,17 +1,16 @@
 "use client";
 
 import { useState } from "react";
-
-import { z } from "zod";
 import { useRouter } from "next/navigation";
-
-import { Plus, RadioTower, X } from "lucide-react";
 import { toast } from "sonner";
-
-import useConnect from "@hooks/useConnect";
+import { z } from "zod";
 
 import Form from "@ui/Form";
 import Button from "@ui/Button";
+
+import { Plus, RadioTower, X } from "lucide-react";
+
+import useConnect from "@hooks/useConnect";
 
 const ZodSchema = z.object({
   name: z.string().min(1, "Name is required"),

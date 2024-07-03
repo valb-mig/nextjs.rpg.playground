@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, ReactNode, FC } from "react";
 import { UseFormRegister, FieldValues, FieldErrors } from "react-hook-form";
 
 interface FormContextProps {
@@ -22,7 +22,7 @@ interface FormProviderProps {
   errors: FieldErrors;
 }
 
-const FormProvider: React.FC<FormProviderProps> = ({
+const FormProvider: FC<FormProviderProps> = ({
   children,
   register,
   errors,

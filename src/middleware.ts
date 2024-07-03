@@ -3,11 +3,11 @@
 import { cookies } from "next/headers";
 
 import { NextResponse, NextRequest } from "next/server";
-import { checkRoom } from "@/handlers/handleCookie";
+import { checkRoom, checkSession } from "@/handlers/handleCookie";
 
 export async function middleware(request: NextRequest) {
 
-  const userCookies: boolean = cookies().has("session_rpg_playground");
+  const session = await checkSession();
   const nextPathname = new URL(request.nextUrl).pathname;
 
   /*
@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
 
   if (nextPathname.startsWith("/room")) {
 
-    if (!userCookies) {
+    if (!session) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
@@ -34,12 +34,27 @@ export async function middleware(request: NextRequest) {
 
   if(nextPathname.startsWith("/dashboard")) {
 
-    if (!userCookies) {
+    if (!session) {
       return NextResponse.redirect(new URL("/connect", request.url));
+    }
+  }
+
+  /*
+   * Route: '/connect'
+   */
+
+  if(nextPathname.startsWith("/connect")) {
+
+    if (session) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   }
 }
 
 export const config = {
-  matcher: ["/room/:path*", "/dashboard"],
+  matcher: [
+    "/room/:path*", 
+    "/dashboard", 
+    "/connect"
+  ],
 };

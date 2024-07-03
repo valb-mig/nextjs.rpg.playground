@@ -21,6 +21,9 @@ interface RoomInfo {
   id: string;
   room: string;
   name?: string;
+  role?: string;
+  character: string;
+  created_at?: string;
 }
 
 interface RoomUsersObject {
@@ -29,4 +32,9 @@ interface RoomUsersObject {
 
 interface ErrorObject {
   message: string;
+}
+
+interface DbDefault {
+  id?: number;
+  created_at?: string;
 }

@@ -1,8 +1,6 @@
-export interface User {
-  id?: number;
-  uuid: string;
+export interface User extends DbDefault {
   name: string;
+  uuid: string;
   salt: string;
   token: string;
-  created_at?: string;
 }

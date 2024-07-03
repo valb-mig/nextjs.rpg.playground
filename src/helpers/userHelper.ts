@@ -45,25 +45,14 @@ export const insertUser = async (formData: FormData) => {
   return user;
 };
 
-export const selectUserRooms = async (uuid: string) => {
-
-  let userCharacters = await selectUserCharacters(uuid);
-
-  console.log(userCharacters?.users_characters_tb); // TODO: Increment rooms
-}
-
-export const selectUserCharacters = async (uuid: string) => {
+export const selectCharactersInfo = async (uuid: string) => {
 
   try {
     const { data, error } = await supabase
       .from("users_tb")
       .select(`
         id,
-        name, 
         uuid, 
-        token, 
-        salt,
-
         users_characters_tb (
           id,
           name,
@@ -71,26 +60,31 @@ export const selectUserCharacters = async (uuid: string) => {
           user_id,
           role_id,
 
-          rooms_tb (
+          rooms_tb!inner (
             id,
             name,
-            room
+            room,
+            created_at
+          ),
+
+          roles_tb!inner (
+            id,
+            name
           )
         )
       `)
       .eq("uuid", uuid);
 
     if (error) {
-      console.error(error);
-      return;
+      throw new Error(error.message);
     }
 
-    if (!data) {
-      throw new Error("Error selecting user");
+    if (!data[0]) {
+      throw new Error("User characters info not found");
     }
-
+  
     return data[0];
-
+    
   } catch (error: any) {
     throw new Error(error.message);
   }

@@ -14,6 +14,10 @@ export async function setUserCookies(userInfo: { uuid: string; name: string }) {
   }
 }
 
+export async function checkSession() {
+  return cookies().has("session_rpg_playground");
+}
+
 export async function getUserCookies() {
   let userCookies = cookies().get("session_rpg_playground");
 

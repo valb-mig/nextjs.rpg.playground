@@ -8,7 +8,7 @@ const Home = () => {
 
   return (
     <>
-      <Header />
+      <Header.Home />
 
       <main className="flex flex-col w-screen h-screen bg-background-default overflow-y-scroll text-neutral-100">
 

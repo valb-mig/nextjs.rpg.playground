@@ -3,10 +3,12 @@
 import Notification from "@ui/Notification";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return <>
+  return (
+  <>
     <Notification />
-    {children}
-  </>;
+      {children}
+    </>
+  )
 };
 
 export default Layout;
