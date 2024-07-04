@@ -1,13 +1,15 @@
 "use server";
 
-import { cookies } from "next/headers";
-
 import { NextResponse, NextRequest } from "next/server";
-import { checkRoom, checkSession } from "@/handlers/handleCookie";
+import { checkSession, getUserCookies } from "@/handlers/handleCookie";
+import { selectUserRoom } from "@/helpers/userHelper";
+import { toast } from "sonner";
 
 export async function middleware(request: NextRequest) {
 
   const session = await checkSession();
+  const cookieData = await getUserCookies();
+
   const nextPathname = new URL(request.nextUrl).pathname;
 
   /*
@@ -16,15 +18,24 @@ export async function middleware(request: NextRequest) {
 
   if (nextPathname.startsWith("/room")) {
 
-    if (!session) {
+    if (!session || !cookieData) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
     const pathParts = nextPathname.split("/");
     const roomParam = pathParts[pathParts.length - 1];
 
-    if ((await checkRoom(roomParam)) === false) {
-      return NextResponse.redirect(new URL("/", request.url));
+    try {
+      let checkRoom = await selectUserRoom(cookieData.uuid, roomParam);
+
+      if(!checkRoom) {
+        toast.error("Room not found");
+        return NextResponse.redirect(new URL("/dashboard", request.url));
+      }
+      
+    } catch (error: any) {
+      toast.error(error.message);
+      return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   } 
   

@@ -1,7 +1,6 @@
 const RoomSidebar = () => {
     return (
-        <aside className="">
-            Room
+        <aside className="bg-transparent border-r border-shade-4 w-64">
         </aside>
     );
 };

@@ -3,7 +3,6 @@
 import { tv } from "tailwind-variants";
 
 import { Info, TriangleAlert, Skull } from "lucide-react";
-("");
 
 const Alert = ({
   title,
@@ -21,9 +20,7 @@ const Alert = ({
       icon = <Info width={20} height={20} className="text-blue-800" />;
       break;
     case "warning":
-      icon = (
-        <TriangleAlert width={20} height={20} className="text-yellow-800" />
-      );
+      icon = <TriangleAlert width={20} height={20} className="text-yellow-800" />;
       break;
     case "error":
       icon = <Skull width={20} height={20} className="text-red-800" />;

@@ -1,5 +1,3 @@
-"use client";
-
 import supabase from "@lib/supabaseClient";
 
 import type { User } from "@db/users_tb";
@@ -85,6 +83,43 @@ export const selectCharactersInfo = async (uuid: string) => {
   
     return data[0];
     
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export const selectUserRoom = async (uuid: string, room: string) => {
+  try {
+
+    const { data: roomsData, error: roomsError } = await supabase
+      .from("rooms_tb")
+      .select("id")
+      .eq("room", room)
+      .single();
+    
+    if (roomsError) {
+      throw new Error("Room don't exist");
+    }
+
+    const { data, error } = await supabase
+      .from("users_tb")
+      .select(`
+        id,
+        uuid, 
+        users_characters_tb (
+          room_id,
+          user_id
+        )
+      `)
+      .eq("uuid", uuid)
+      .eq("users_characters_tb.room_id", roomsData.id);
+
+    if (error) {
+      throw new Error("Room is not avaliable");
+    }
+
+    return data;
+
   } catch (error: any) {
     throw new Error(error.message);
   }

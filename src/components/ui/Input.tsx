@@ -1,38 +1,48 @@
 interface InputProps {
-  label: string;
+  label?: string;
   name: string;
+  placeholder?: string;
   errors?: any;
   register?: any;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  children?: React.ReactNode;
 }
 
-const Input = ({ label, name, onChange, errors, register }: InputProps) => {
+const Input = ({ label, name, placeholder, onChange, errors, register, children }: InputProps) => {
+
   return (
     <div className="flex flex-col w-full">
-      <div>
+
+      {label && (
         <label
           htmlFor={name}
-          className="text-white text-sm bg-neutral-700 p-1 rounded-t"
+          className="text-white text-sm bg-shade-4 p-1 rounded-t"
         >
           {label}
         </label>
-      </div>
+      )}
 
-      <span className="rounded-b rounded-e bg-neutral-800 border border-neutral-700 outline-none text-white p-2">
+      <div className="bg-shade-4 border border-shade-3 outline-none text-white rounded-full">
+        <span >
+          { children }
+        </span>
+
         {onChange ? (
           <input
-            className="bg-transparent"
+            className="bg-transparent w-full h-8 p-2"
             name={name}
             onChange={onChange}
+            placeholder={placeholder}
           />
         ) : (
           <input
             {...(register ? register(name) : {})}
-            className="bg-transparent"
+            className="bg-transparent h-8 p-2"
             name={name}
+            placeholder={placeholder}
           />
         )}
-      </span>
+      </div>
 
       {errors && errors[name] && (
         <span className="text-red-500 text-sm">{errors[name].message}</span>

@@ -16,15 +16,15 @@ const useDashboard = () => {
                 
                 let userRooms: RoomInfo[] = [];
     
-                userCharactersInfo.users_characters_tb.forEach((value) => {
+                userCharactersInfo.users_characters_tb.forEach((value: any) => {
 
                     userRooms.push({
-                        id: value.rooms_tb[0]?.id,
-                        room: value.rooms_tb[0]?.room,
-                        name: value.rooms_tb[0]?.name,
+                        id: value.rooms_tb.id,
+                        room: value.rooms_tb.room,
+                        name: value.rooms_tb.name,
                         character: value.name,
-                        role: value.roles_tb[0]?.name,
-                        created_at: value.rooms_tb[0]?.created_at
+                        role: value.roles_tb.name,
+                        created_at: value.rooms_tb.created_at
                     });
                 });
     

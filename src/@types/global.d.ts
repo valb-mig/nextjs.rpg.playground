@@ -17,13 +17,17 @@ interface UserInfo {
   role?: string;
 }
 
+interface CookieData {
+  uuid: string;
+  name: string;
+}
 interface RoomInfo {
   id: string;
   room: string;
-  name?: string;
+  name: string;
   role?: string;
   character: string;
-  created_at?: string;
+  created_at: string;
 }
 
 interface RoomUsersObject {

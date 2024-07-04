@@ -22,23 +22,9 @@ export async function getUserCookies() {
   let userCookies = cookies().get("session_rpg_playground");
 
   if (userCookies != null) {
-    let userObject = JSON.parse(userCookies.value);
+    let userObject: CookieData = JSON.parse(userCookies.value);
     return userObject;
   }
 
   return null;
-}
-
-export async function checkRoom(url: string) {
-  let userCookies = cookies().get("session_rpg_playground");
-
-  if (userCookies != null) {
-    let userObject = JSON.parse(userCookies.value);
-
-    if (userObject.room_code == url) {
-      return true;
-    }
-  }
-
-  return false;
 }
