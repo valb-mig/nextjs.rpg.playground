@@ -75,7 +75,7 @@ const Connect = () => {
                   >
                     Dont have an account?
                   </span>
-                  <Button type="submit" loading={loading}>
+                  <Button type="submit" role="success" loading={loading}>
                     <Plus />
                     Connect
                   </Button>

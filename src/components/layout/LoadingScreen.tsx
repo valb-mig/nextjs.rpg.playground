@@ -7,8 +7,8 @@ const LoadingScreen = ({ loading }: { loading: boolean }) => {
     <>
         { loading && (
             <div 
-            className="absolute h-screen w-screen flex items-center justify-center backdrop-blur-lg bg-transparent" 
-            popover="auto"
+              className="absolute h-screen w-screen flex items-center justify-center backdrop-blur-lg bg-transparent z-50" 
+              popover="auto"
             >
                 <LoaderIcon className="text-primary h-12 w-12 animate-spin" />
             </div>

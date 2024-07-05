@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { z } from "zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,10 +22,12 @@ const ZodSchema = z.object({
 const Create = () => {
 
   const router = useRouter();
-
   const { createUser } = useCreate();
+  const [ loading, setLoading ] = useState(false);
 
   const onFormSubmit = async (data: any) => {
+
+    setLoading(true);
 
     let response = await createUser(data);
 
@@ -32,6 +36,8 @@ const Create = () => {
     } else {
       router.push(`/connect`);
     }
+
+    setLoading(false);
   };
 
   return (
@@ -62,7 +68,7 @@ const Create = () => {
                 >
                   Already have an account?
                 </Link>
-                <Button type="submit">
+                <Button type="submit" role="success" loading={loading}>
                   <LogIn />
                   Create
                 </Button>
