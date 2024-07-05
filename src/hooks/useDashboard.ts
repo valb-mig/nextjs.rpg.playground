@@ -1,6 +1,7 @@
 "use client";
 
 import { selectCharactersInfo } from "@helpers/userHelper";
+import { enterRoom, checkRoomExists } from "@helpers/roomHelper";
 import { getUserCookies } from "@/handlers/handleCookie";
 
 const useDashboard = () => {
@@ -8,6 +9,10 @@ const useDashboard = () => {
     const getUserRooms = async () => {
 
         let cookies = await getUserCookies();
+
+        if(!cookies) {
+            return { message: "Invalid cookies" };
+        }
 
         try {
             let userCharactersInfo = await selectCharactersInfo(cookies.uuid);
@@ -38,7 +43,53 @@ const useDashboard = () => {
         return { message: "User not found" };
     };
 
-    return { getUserRooms };
+    const joinRoom = async (room: string) => {
+        // TODO: Join room
+    };
+
+
+    const checkRoom = async (room: string): Promise<ResponseObject> => {
+        
+        let cookies = await getUserCookies();
+    
+        if (!cookies) {
+            return { 
+                status: "error", 
+                message: "Invalid cookies", 
+                data: null 
+            };
+        }
+    
+        try {
+
+            let response = await checkRoomExists(room);
+    
+            if (!response) {
+                return { 
+                    status: "error", 
+                    message: "Room does not exist", 
+                    data: null 
+                };
+            }
+    
+            console.log(response);
+            
+
+            return { 
+                status: "success", 
+                message: "Room exists", 
+                data: response 
+            };
+        } catch (error: any) {
+            return { 
+                status: "error", 
+                message: error.message, 
+                data: null 
+            };
+        }
+    };
+
+    return { getUserRooms, joinRoom, checkRoom };
 };
 
 export default useDashboard;

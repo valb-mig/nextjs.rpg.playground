@@ -2,8 +2,6 @@
 
 import supabase from "@lib/supabaseClient";
 
-import type { Room } from "@db/rooms_tb";
-
 export const checkRoomExists = async (roomName: string) => {
   const { data, error } = await supabase
     .from("rooms_tb")
@@ -16,5 +14,13 @@ export const checkRoomExists = async (roomName: string) => {
     return false;
   }
 
+  if (!data) {
+    return false;
+  }
+
   return true;
+};
+
+export const enterRoom = async (uuid: string, room: string) => {
+  // const { data, error } = await supabase
 };

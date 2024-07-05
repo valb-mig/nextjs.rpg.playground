@@ -8,7 +8,14 @@ import { z } from "zod";
 import Form from "@ui/Form";
 import Button from "@ui/Button";
 
-import { Plus, RadioTower, X } from "lucide-react";
+import { 
+  Plus, 
+  RadioTower, 
+  X,
+  User,
+  EyeOffIcon,
+  EyeIcon
+} from "lucide-react";
 
 import useConnect from "@hooks/useConnect";
 
@@ -18,9 +25,11 @@ const ZodSchema = z.object({
 });
 
 const Connect = () => {
+  
   const router = useRouter();
 
   const [ loading, setLoading ] = useState(false);
+  const [ showPassword, setShowPassword ] = useState(false);
   const { connectUser } = useConnect();
 
   const onFormSubmit = async (data: any) => {
@@ -63,9 +72,15 @@ const Connect = () => {
               schema={ZodSchema}
               style="w-full md:w-[500px] bg-shade-4"
             >
-              <Form.Input label="Username" name="name" type="text" />
+              <Form.Input label="Username" name="name" type="text">
+                <User />
+              </Form.Input>
 
-              <Form.Input label="Token" name="token" type="password" />
+              <Form.Input label="Token" name="token" type={showPassword ? "text" : "password"}>
+                <span onClick={() => setShowPassword(!showPassword)} className="text-sm cursor-pointer hover:text-primary transition">
+                  {showPassword ? <EyeIcon /> : <EyeOffIcon />}
+                </span>
+              </Form.Input>
 
               <div className="flex w-full justify-end">
                 <div className="flex gap-2 items-center">

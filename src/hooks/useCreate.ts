@@ -5,6 +5,7 @@ import { insertUser } from "@/helpers/userHelper";
 type FormData = {
   name: string;
   token: string;
+  email: string;
 };
 
 const useCreate = () => {

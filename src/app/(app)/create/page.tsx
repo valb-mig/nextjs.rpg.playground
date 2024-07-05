@@ -6,7 +6,14 @@ import { z } from "zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { LogIn, Dices } from "lucide-react";
+import { 
+  LogIn, 
+  Dices,
+  User,
+  Mail,
+  EyeOffIcon,
+  EyeIcon
+} from "lucide-react";
 import { toast } from "sonner";
 
 import useCreate from "@hooks/useCreate";
@@ -16,14 +23,17 @@ import Button from "@ui/Button";
 
 const ZodSchema = z.object({
   name: z.string().min(1, "Name is required"),
+  email: z.string().min(1, "Email is required"),
   token: z.string().min(1, "Token is required")
 });
 
 const Create = () => {
 
   const router = useRouter();
-  const { createUser } = useCreate();
+
   const [ loading, setLoading ] = useState(false);
+  const [ showPassword, setShowPassword ] = useState(false);
+  const { createUser } = useCreate();
 
   const onFormSubmit = async (data: any) => {
 
@@ -56,9 +66,19 @@ const Create = () => {
             schema={ZodSchema}
             style="w-full md:w-[500px] bg-shade-4"
           >
-            <Form.Input label="Username" name="name" type="text" />
+            <Form.Input label="Username" name="name" type="text">
+              <User />
+            </Form.Input>
 
-            <Form.Input label="Token" name="token" type="password" />
+            <Form.Input label="Email" name="email" type="email">
+              <Mail />
+            </Form.Input>
+
+            <Form.Input label="Token" name="token" type="password">
+              <span onClick={() => setShowPassword(!showPassword)} className="text-sm cursor-pointer hover:text-primary transition">
+                {showPassword ? <EyeIcon /> : <EyeOffIcon />}
+              </span>
+            </Form.Input>
 
             <div className="flex w-full justify-end">
               <div className="flex gap-2 items-center">

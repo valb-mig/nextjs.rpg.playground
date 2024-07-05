@@ -42,3 +42,9 @@ interface DbDefault {
   id?: number;
   created_at?: string;
 }
+
+interface ResponseObject {
+  status: "success" | "error";
+  message: string;
+  data: any;  
+}

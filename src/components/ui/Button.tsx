@@ -26,7 +26,7 @@ const Button = ({
   const variants = tv({
     variants: {
       style: {
-        action: "size-8 p-2",
+        action: "w-14 h-12",
         button: "p-1 px-2"
       },
       role: {
@@ -46,14 +46,14 @@ const Button = ({
   return (
     <button
       type={type || "button"}
-      className={`flex items-center gap-2 border-2 rounded-full transition ${loading ? "bg-transparent" : ""} ${className} ${variants({ style: style, role: role })}`}
+      className={`flex justify-center items-center gap-2 border-2 rounded-full transition ${loading ? "bg-transparent" : ""} ${className} ${variants({ style: style, role: role })}`}
       onClick={onClick}
       disabled={loading ? true : false}
     >
       {loading ? (
         <>
           <span className="border-blue-300">
-            <LoaderIcon className="h-4 w-4 animate-spin" />
+            <LoaderIcon className="size-4 animate-spin" />
           </span>
           loading...
         </>

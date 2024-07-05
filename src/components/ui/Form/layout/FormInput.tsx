@@ -10,6 +10,8 @@ interface InputProps {
   children?: React.ReactNode;
   value?: any;
   disabled?: boolean;
+  placeholder?: string;
+  autofocus?: boolean;
 }
 
 const Input = ({
@@ -19,37 +21,45 @@ const Input = ({
   value,
   disabled,
   children,
+  placeholder,
+  autofocus
 }: InputProps) => {
+  
   const { register, errors } = useFormContext();
 
   return (
-    <div className="flex flex-col w-full">
-      <div>
-        <label
-          htmlFor={name}
-          className="text-foreground-2 text-sm bg-shade-3 p-1 rounded-t"
-        >
-          {label}
-        </label>
-      </div>
+    <div className="flex flex-col w-full relative gap-2">
 
-      <div
-        className={`flex relative w-full rounded-b rounded-e ${disabled ? "bg-shade-3" : "bg-transparent"} border border-shade-3 text-white`}
-      >
+      { label && (
+        <div className="absolute -top-4 left-7">
+          <label
+            htmlFor={name}
+            className="text-foreground-3 text-xs px-1 rounded-full bg-shade-3 border border-shade-2"
+          >
+            {label}
+          </label>
+        </div>
+      )}
+
+      <div className={`flex items-center bg-shade-4 border border-shade-3 text-white rounded-full outline-1 outline-primary w-full p-2 ${disabled ? "bg-shade-3" : "bg-transparent"}`}>
+
+        <span className="text-shade-2 pl-1">
+          { children }
+        </span>
+
         <input
           {...register(name)}
-          className="w-full p-2 bg-transparent outline-none"
+          className="bg-transparent w-full h-8 p-2 outline-none"
           name={name}
           type={type}
           value={value}
+          placeholder={placeholder}
+          autoFocus={autofocus}
         />
-        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-foreground-4 text-sm">
-          {children}
-        </span>
       </div>
 
       {errors && (errors[name] as FieldError)?.message && (
-        <span className="text-red-500 text-sm">
+        <span className="text-red-500 text-sm text-center">
           {(errors[name] as FieldError).message}
         </span>
       )}

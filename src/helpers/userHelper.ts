@@ -6,15 +6,17 @@ import { hashPassword } from "@utils/hashPassword";
 
 type FormData = {
   name: string;
+  email: string;
   token: string;
 };
 
 export const insertUser = async (formData: FormData) => {
 
-  const { hash, salt } = await hashPassword(formData.token);
+  const { hash, salt } = hashPassword(formData.token);
 
   let user: User = {
     uuid: uuidv4(),
+    email: formData.email,
     name: formData.name,
     token: hash,
     salt: salt
