@@ -1,6 +1,4 @@
-export interface Room {
-  id?: number;
+export interface Room extends DbDefault {
   name?: string;
   room: string;
-  created_at?: string;
 }

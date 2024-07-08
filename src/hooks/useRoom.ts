@@ -1,9 +1,9 @@
 "use client";
 
-import { selectCharacterData } from "@helpers/userHelper";
+import { selectCharacterData, selectRoomData } from "@helpers/roomHelper";
 import { getUserCookies } from "@/handlers/handleCookie";
 
-const useRoom = () => {
+const useRoom = (roomId: string) => {
 
     const getCharacterInfo = async (): Promise<ResponseObject> => {
 
@@ -19,39 +19,95 @@ const useRoom = () => {
         }
 
         try {
-            let userCharactersInfo = await selectCharacterData(cookies.uuid);
-        
-            if(userCharactersInfo) {
-                
-                let userRooms: RoomInfo[] = [];
-    
-                userCharactersInfo.users_characters_tb.forEach((value: any) => {
 
-                    userRooms.push({
-                        id: value.rooms_tb.id,
-                        room: value.rooms_tb.room,
-                        name: value.rooms_tb.name,
-                        character: value.name,
-                        role: value.roles_tb.name,
-                        created_at: value.rooms_tb.created_at
-                    });
-                });
-    
-                return userRooms;
+            const characterData = await selectCharacterData(cookies.uuid, roomId);
+        
+            let characterInfo: CharacterInfo;
+
+            if(characterData) {
+
+                characterInfo = {
+                    name: characterData.name,
+                    life: characterData.characters_info_tb[0].life,
+                    notes: characterData.characters_info_tb[0].notes,
+                    age: characterData.characters_info_tb[0].age,
+                    gold: characterData.characters_info_tb[0].gold,
+                    character_id: characterData.characters_info_tb[0].character_id,
+                    inventory: characterData.characters_inventory_tb,
+                    stats: characterData.characters_stats_tb
+                };
+
+                return { 
+                    status: "success", 
+                    message: "Character info loaded", 
+                    data: characterInfo 
+                };
             }
+
+            throw new Error("Character not found");
             
         } catch (error: any) {
-            return { message: error.message };
-        }
 
-        return { message: "User not found" };
+            return {
+                status: "error",
+                message: error.message,
+                data: null
+            };
+        }
     };
 
-    const joinRoom = async (room: string) => {
+    const getRoomData = async (): Promise<ResponseObject> => {
+
+        let cookies = await getUserCookies();
+
+        if(!cookies) {
+
+            return { 
+                status: "error", 
+                message: "Invalid cookies", 
+                data: null
+            };
+        }
+
+        try {
+
+            const roomData = await selectRoomData(cookies.uuid, roomId);
+        
+            let roomInfo: RoomInfo;
+
+            if(roomData) {
+
+                roomInfo = {
+                    id: roomData.id,
+                    room: roomData.room,
+                    name: roomData.name,
+                    created_at: roomData.created_at
+                };
+
+                return { 
+                    status: "success", 
+                    message: "Room info loaded", 
+                    data: roomInfo 
+                };
+            }
+
+            throw new Error("Room not found");
+            
+        } catch (error: any) {
+
+            return {
+                status: "error",
+                message: error.message,
+                data: null
+            };
+        }
+    };
+
+    const joinRoom = async () => {
         // TODO: Join room
     };
 
-    return { getCharacterInfo, joinRoom };
+    return { getCharacterInfo, joinRoom, getRoomData };
 };
 
 export default useRoom;

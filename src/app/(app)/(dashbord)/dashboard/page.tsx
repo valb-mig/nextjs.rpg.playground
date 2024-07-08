@@ -50,7 +50,7 @@ const Dashboard = () => {
     
     if (response.status === "success") {
       toast.info(response.message);
-      router.push(`/room/${data.room}/character`);
+      router.push(`/room/${data.room}/details`);
     } else {
       toast.error(response.message);
     }
@@ -180,7 +180,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="flex gap-2 items-center p-2">
-                        <Button role="success" style="button" onClick={ () => router.push(`/room/${room.room}/character`) }>
+                        <Button role="success" style="button" onClick={ () => router.push(`/room/${room.room}`) }>
                           <LogIn className="size-4" /> Join
                         </Button>
                       </div>

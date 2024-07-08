@@ -22,6 +22,7 @@ const config: Config = {
           '3': '#232F3A',
           '4': '#151A23',
           '5': '#0A0C10',
+          'ghost': '#161B24',
         },
         foreground: {
           '1': '#F4F8F9',

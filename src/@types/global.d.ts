@@ -17,16 +17,14 @@ interface UserInfo {
   role?: string;
 }
 
-interface CookieData {
-  uuid: string;
-  name: string;
-}
+/* Room */
+
 interface RoomInfo {
   id: string;
   room: string;
   name: string;
   role?: string;
-  character: string;
+  character?: string;
   created_at: string;
 }
 
@@ -34,8 +32,35 @@ interface RoomUsersObject {
   [index: string]: UserInfo;
 }
 
-interface ErrorObject {
-  message: string;
+/* Characters */
+
+interface CharacterInfo {
+  name: string;
+  life: number;
+  notes: string;
+  age: number;
+  gold: number;
+  character_id: number;
+  inventory: CharacterInventory[];
+  stats: CharacterStats[];
+}
+
+interface CharacterStats {
+  stat: string;
+  value: string;
+}
+
+interface CharacterInventory {
+  item: string;
+  quant: number;
+  icon?: string;
+}
+
+/* Config */
+
+interface CookieData {
+  uuid: string;
+  name: string;
 }
 
 interface DbDefault {

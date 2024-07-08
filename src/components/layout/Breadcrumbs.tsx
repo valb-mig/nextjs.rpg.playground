@@ -2,8 +2,12 @@
 
 import Link from "next/link";
 
+import {
+  DotIcon
+} from "lucide-react";
+
 interface BreadcrumbsProps {
-  items: Array<{ name: string; href: string }>;
+  items: Array<{ name: string; href?: string }>;
 }
 
 const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
@@ -13,9 +17,12 @@ const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
         {items.map((item, index) => (
           <div key={item.name} className="flex gap-2 items-center">
             <Link
-              href={item.href}
+              href={item.href || ""}
               className="text-xs flex items-center justify-center text-shade-1 w-full bg-shade-5 hover:bg-shade-4 p-1 px-2 transition rounded-full"
             >
+              {!item.href && (
+                <DotIcon className="w-4 h-4" />
+              )}
               {item.name}
             </Link>
 

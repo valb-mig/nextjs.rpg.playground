@@ -1,5 +1,3 @@
-export interface Role {
-  id?: number;
+export interface Role extends DbDefault {
   name: string;
-  created_at?: string;
 }
