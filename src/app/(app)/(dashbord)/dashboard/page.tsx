@@ -50,7 +50,7 @@ const Dashboard = () => {
     
     if (response.status === "success") {
       toast.info(response.message);
-      router.push(`/room/${data.room}/register`);
+      router.push(`/room/${data.room}/character`);
     } else {
       toast.error(response.message);
     }
@@ -79,8 +79,6 @@ const Dashboard = () => {
     } catch (error) {
       console.error(error);
     }
-
-    getUserRooms();
   }, []);
 
   const searchedRooms = rooms.filter((room) => room.name.toLowerCase().includes(search.toLowerCase()));
@@ -159,7 +157,7 @@ const Dashboard = () => {
                         <div className="text-sm font-medium">{room.character}</div>
                         <span role="tag" className="text-xs bg-shade-2 text-foreground-1 font-bold rounded-full p-1 px-2">{room.role}</span>
                       </div>
-                      <Button role="default" style="button" onClick={() => router.push(`/dashboard/room/${room.room}/details`)}>
+                      <Button role="default" style="button" onClick={() => router.push(`/room/${room.room}/details`)}>
                         <Newspaper /> Details
                       </Button>
                     </div>
@@ -173,7 +171,7 @@ const Dashboard = () => {
                           Room
                           <div className="relative flex gap-2 items-center text-lg font-medium bg-shade-3 p-1 px-2 rounded-full">
                             {room.room}
-                            <Copy className="text-shade-2 size-4 hover:text-primary cursor-pointer" onClick={() => navigator.clipboard.writeText(room.room)} />
+                            <Copy className="text-shade-2 size-4 hover:text-primary cursor-pointer" onClick={() => {navigator.clipboard.writeText(room.room); toast.success("Copied to clipboard")}} />
                           </div>
                         </div>
 
@@ -182,7 +180,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="flex gap-2 items-center p-2">
-                        <Button role="success" style="button" onClick={ () => router.push(`/room/${room.room}`) }>
+                        <Button role="success" style="button" onClick={ () => router.push(`/room/${room.room}/character`) }>
                           <LogIn className="size-4" /> Join
                         </Button>
                       </div>

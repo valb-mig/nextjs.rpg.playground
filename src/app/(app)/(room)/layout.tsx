@@ -1,0 +1,17 @@
+"use client";
+
+import Header from "@layout/Header";
+
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <main className="flex flex-col size-fit bg-background-default text-foreground-1">
+      <Header.Room />
+
+      <section role="content" className="flex w-screen h-full">
+        {children}
+      </section>
+    </main>
+  );
+};
+
+export default Layout;

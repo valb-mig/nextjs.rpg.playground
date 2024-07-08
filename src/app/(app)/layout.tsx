@@ -4,8 +4,8 @@ import Notification from "@ui/Notification";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-  <>
-    <Notification />
+    <>
+      <Notification />
       {children}
     </>
   )

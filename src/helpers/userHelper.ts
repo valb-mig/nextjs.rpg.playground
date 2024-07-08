@@ -88,7 +88,7 @@ export const selectCharactersInfo = async (uuid: string) => {
   } catch (error: any) {
     throw new Error(error.message);
   }
-}
+};
 
 export const selectUserRoom = async (uuid: string, room: string) => {
   try {
@@ -125,4 +125,4 @@ export const selectUserRoom = async (uuid: string, room: string) => {
   } catch (error: any) {
     throw new Error(error.message);
   }
-}
+};

@@ -43,10 +43,9 @@ const useDashboard = () => {
         return { message: "User not found" };
     };
 
-    const joinRoom = async (room: string) => {
-        // TODO: Join room
+    const createRoom = async (room: string) => {
+        // TODO: Create room
     };
-
 
     const checkRoom = async (room: string): Promise<ResponseObject> => {
         
@@ -89,7 +88,7 @@ const useDashboard = () => {
         }
     };
 
-    return { getUserRooms, joinRoom, checkRoom };
+    return { getUserRooms, createRoom, checkRoom };
 };
 
 export default useDashboard;

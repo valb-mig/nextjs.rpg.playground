@@ -23,10 +23,14 @@ export async function middleware(request: NextRequest) {
     }
 
     const pathParts = nextPathname.split("/");
-    const roomParam = pathParts[pathParts.length - 1];
+
+    const roomParams = {
+      'room': pathParts[2],
+      'action': pathParts[3],
+    };
 
     try {
-      let checkRoom = await selectUserRoom(cookieData.uuid, roomParam);
+      let checkRoom = await selectUserRoom(cookieData.uuid, roomParams.room);
 
       if(!checkRoom) {
         toast.error("Room not found");

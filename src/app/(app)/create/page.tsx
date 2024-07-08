@@ -64,9 +64,9 @@ const Create = () => {
           <Form.Body
             onSubmit={onFormSubmit}
             schema={ZodSchema}
-            style="w-full md:w-[500px] bg-shade-4"
+            style="w-full md:w-[500px] bg-shade-4 p-4 rounded-lg"
           >
-            <Form.Input label="Username" name="name" type="text">
+            <Form.Input label="Username" name="name" type="text" autofocus>
               <User />
             </Form.Input>
 

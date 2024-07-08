@@ -5,7 +5,7 @@ import Sidebar from "@layout/Sidebar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="flex flex-col w-screen h-full bg-background-default text-foreground-1">
+    <main className="flex flex-col size-fit bg-background-default text-foreground-1">
       <Header.App />
 
       <section role="content" className="flex w-screen h-full">
