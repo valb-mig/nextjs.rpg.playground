@@ -1,7 +1,5 @@
 "use client";
 
-import { getUserData, updateUserData } from "@/handlers/handleUser";
-
 import { socket } from "@/socket";
 
 const useSocket = () => {

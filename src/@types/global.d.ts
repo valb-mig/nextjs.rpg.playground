@@ -35,6 +35,7 @@ interface RoomUsersObject {
 /* Characters */
 
 interface CharacterInfo {
+  id?: number;
   name: string;
   life: number;
   notes: string;

@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { socket } from "@/socket";
 
-import { getUserData } from "@/handlers/handleUser";
-
 const Dice = ({ max }: { max: number }) => {
   const [diceNumber, setDiceNumber] = useState(0);
   const [diceRolling, setDiceRolling] = useState(false);

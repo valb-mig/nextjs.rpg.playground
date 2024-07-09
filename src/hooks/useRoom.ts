@@ -1,6 +1,11 @@
 "use client";
 
-import { selectCharacterData, selectRoomData } from "@helpers/roomHelper";
+import { 
+    selectCharacterData, 
+    selectRoomData
+
+} from "@helpers/roomHelper";
+
 import { getUserCookies } from "@/handlers/handleCookie";
 
 const useRoom = (roomId: string) => {
@@ -27,6 +32,7 @@ const useRoom = (roomId: string) => {
             if(characterData) {
 
                 characterInfo = {
+                    id: characterData.id,
                     name: characterData.name,
                     life: characterData.characters_info_tb[0].life,
                     notes: characterData.characters_info_tb[0].notes,
@@ -103,8 +109,51 @@ const useRoom = (roomId: string) => {
         }
     };
 
-    const joinRoom = async () => {
-        // TODO: Join room
+    const joinRoom = async (): Promise<ResponseObject> => {
+
+        let cookies = await getUserCookies();
+
+        if(!cookies) {
+
+            return { 
+                status: "error", 
+                message: "Invalid cookies", 
+                data: null
+            };
+        }
+
+        try {
+
+            const roomData = await selectRoomData(cookies.uuid, roomId);
+        
+            let roomInfo: RoomInfo;
+
+            if(roomData) {
+
+                roomInfo = {
+                    id: roomData.id,
+                    room: roomData.room,
+                    name: roomData.name,
+                    created_at: roomData.created_at
+                };
+
+                return { 
+                    status: "success", 
+                    message: "Room info loaded", 
+                    data: roomInfo 
+                };
+            }
+
+            throw new Error("Room not found");
+            
+        } catch (error: any) {
+
+            return {
+                status: "error",
+                message: error.message,
+                data: null
+            };
+        }
     };
 
     return { getCharacterInfo, joinRoom, getRoomData };

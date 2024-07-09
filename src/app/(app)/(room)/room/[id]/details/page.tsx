@@ -10,14 +10,12 @@ import LoadingScreen from "@layout/LoadingScreen";
 import ToolBar from "@layout/ToolBar";
 import Modal from "@layout/Modal";
 
-const Details = ({ ...url }: any) => {
-
-  const roomId = url.params.id;
+const Details = ({ params }: { params: {id: string} }) => {
 
   const [ loading, setLoading ] = useState(true);
   const [ characterInfo, setCharacterInfo ] = useState<CharacterInfo>();
   const [ roomData, setRoomData ] = useState<RoomInfo>();
-  const { getCharacterInfo, getRoomData } = useRoom(roomId);
+  const { getCharacterInfo, getRoomData } = useRoom(params.id);
 
   useEffect(() => {
 
@@ -68,11 +66,11 @@ const Details = ({ ...url }: any) => {
         characterInfo ? 
         (
           <div className="flex w-full justify-center">
-            <div className="w-2/3">
+            <div className="w-3/4">
               <Breadcrumbs  
                 items={[
                   { name: "Home", href: "/dashboard" }, 
-                  { name: "Room", href: "/room/"+roomId },
+                  { name: "Room", href: "/room/"+params.id },
                   { name: "Details" }
                 ]}
               />

@@ -1,7 +1,7 @@
 "use client";
 
 import { selectCharactersInfo } from "@helpers/userHelper";
-import { enterRoom, checkRoomExists } from "@helpers/roomHelper";
+import { checkRoomExists } from "@helpers/roomHelper";
 import { getUserCookies } from "@/handlers/handleCookie";
 
 const useDashboard = () => {

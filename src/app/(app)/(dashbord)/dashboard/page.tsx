@@ -44,13 +44,12 @@ const Dashboard = () => {
 
   const onFormSubmit = async (data: { room: string }) => {
 
-    setRoomModal(false);
-
     let response = await checkRoom(data.room);
     
     if (response.status === "success") {
       toast.info(response.message);
       router.push(`/room/${data.room}/details`);
+      setRoomModal(false);
     } else {
       toast.error(response.message);
     }

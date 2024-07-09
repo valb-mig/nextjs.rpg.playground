@@ -1,10 +1,6 @@
 "use client";
 
-import React from "react";
-
 import { socket } from "@/socket";
-import { getUserData } from "@/handlers/handleUser";
-
 import { User } from "lucide-react";
 
 interface MapaProps {
