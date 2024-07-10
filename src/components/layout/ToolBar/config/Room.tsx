@@ -1,6 +1,7 @@
 "use client";
 
 import itemIcons from "@utils/itemIcons";
+import Dice from "@layout/Dice";
 
 import {
     User,
@@ -114,8 +115,9 @@ const ToolBarDetails = ({ info }: { info: CharacterInfo }) => {
                             <Dice5 className="size-7 text-primary rotate-12"/>&nbsp;
                             Dice
                         </span>
-                        <div className="">
-                        </div>
+                    </div>
+                    <div className="flex justify-center items-center p-2">
+                        <Dice max={4} />
                     </div>
                 </section>
             </div>

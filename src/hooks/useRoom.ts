@@ -1,12 +1,8 @@
 "use client";
 
-import { 
-    selectCharacterData, 
-    selectRoomData
+import { selectCharacterData, selectRoomData } from "@services/roomService";
 
-} from "@helpers/roomHelper";
-
-import { getUserCookies } from "@/handlers/handleCookie";
+import { getUserCookies } from "@utils/cookies";
 
 const useRoom = (roomId: string) => {
 
@@ -32,7 +28,6 @@ const useRoom = (roomId: string) => {
             if(characterData) {
 
                 characterInfo = {
-                    id: characterData.id,
                     name: characterData.name,
                     life: characterData.characters_info_tb[0].life,
                     notes: characterData.characters_info_tb[0].notes,

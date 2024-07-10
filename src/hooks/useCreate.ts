@@ -1,6 +1,6 @@
 "use client";
 
-import { insertUser } from "@/helpers/userHelper";
+import { insertUser } from "@services/userService";
 
 type FormData = {
   name: string;
@@ -10,19 +10,30 @@ type FormData = {
 
 const useCreate = () => {
 
-  const createUser = async (formData: FormData) => {
+  const createUser = async (formData: FormData): Promise<ResponseObject> => {
+
     try {
+
       let createdUser = await insertUser(formData);
 
       if (!createdUser) {
         throw new Error("User creation failed");
       }
 
-      return createdUser;
+      return {
+        status: "success",
+        message: "User created",
+        data: createdUser
+      };
 
     } catch (error: any) {
-      return { message: error.message };
+      return {
+        status: "error",
+        message: error.message,
+        data: null
+      };
     }
+    
   };
 
   return { createUser };

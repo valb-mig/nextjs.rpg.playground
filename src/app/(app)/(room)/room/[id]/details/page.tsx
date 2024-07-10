@@ -27,9 +27,7 @@ const Details = ({ params }: { params: {id: string} }) => {
         
         const response = await getRoomData();
         
-        console.log('TESTE: ', response);
-        
-        if ("error" in response) {
+        if (response.status === "error") {
           toast.error(response.message);
         } else {
           setRoomData(response.data); 
@@ -40,7 +38,7 @@ const Details = ({ params }: { params: {id: string} }) => {
 
         const response = await getCharacterInfo();
 
-        if ("error" in response) {
+        if (response.status === "error") {
           toast.error(response.message);
         } else {
           setCharacterInfo(response.data); 

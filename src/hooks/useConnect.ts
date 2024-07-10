@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { setUserCookies } from "@/handlers/handleCookie";
-import { getUserData } from "@/helpers/connectHelper";
+import { setUserCookies } from "@utils/cookies";
+import { getUserData } from "@services/connectService";
 
 type FormData = {
   name: string;
@@ -12,15 +12,20 @@ type FormData = {
 const useConnect = () => {
   const router = useRouter();
 
-  const connectUser = async (formData: FormData) => {
+  const connectUser = async (formData: FormData): Promise<ResponseObject> => {
     
     let user = await getUserData(formData);
 
     if (!user) {
-      return;
+      
+      return { 
+        status: "error", 
+        message: "User not found", 
+        data: null 
+      };
     }
 
-    const userInfo = {
+    const userInfo: CookieData = {
       uuid: user.uuid,
       name: user.name
     };
@@ -28,11 +33,21 @@ const useConnect = () => {
     try {
       await setUserCookies(userInfo);
       router.push(`/dashboard`);
-    } catch (e) {
-      console.error("[usePlayer] Error tying to set cookie: ", e);
-    }
 
-    return user;
+      return {
+        status: "success",
+        message: "User connected",
+        data: null
+      }
+    } catch (e) {
+      console.error("[Error] Error tying to set cookie: ", e);
+
+      return {
+        status: "error",
+        message: "Error tying to set cookie",
+        data: null
+      }
+    }
   };
 
   return { connectUser };

@@ -4,73 +4,58 @@ import { socket } from "@/socket";
 import useSocket from "@hooks/useSocket";
 
 interface HandleSocketProps {
-  setRoomUsers: (data: UserInfo[]) => void;
+  setRoomCharacters: (data: CharacterSocketInfo[]) => void;
   setRoomData: (data: (prevRoomData: RoomData) => RoomData) => void;
   roomData: RoomData;
   params: { id: string };
 }
 
 const handleSocket = ({
-  setRoomUsers,
+  setRoomCharacters,
   setRoomData,
   roomData,
   params,
 }: HandleSocketProps) => {
   const { resHello, resEnterRoom, resMapMovement, resRollDice } = useSocket();
 
-  socket.on(
-    "res_hello",
-    (usersObject: RoomUsersObject, roomDataObject: RoomData) => {
-      setRoomUsers(resHello(usersObject));
+  socket.on( "res_hello", ( characterSocketObject: RoomCharacterSocketInfo ) => {
 
-      let location =
-        roomDataObject && roomDataObject.location
-          ? roomDataObject.location
-          : roomData.location;
-      let showcase =
-        roomDataObject && roomDataObject.showcase
-          ? roomDataObject.showcase
-          : roomData.showcase;
+    let roomCharacters: CharacterSocketInfo[] = [];
 
-      setRoomData((prevRoomData) => ({
-        ...prevRoomData,
-        location: location,
-        showcase: showcase,
-      }));
-    },
-  );
+    Object.keys(characterSocketObject).map((key) => {
+      let user: CharacterSocketInfo = characterSocketObject[key];
+      roomCharacters.push(user);
+    });
 
-  socket.on("res_enter_room", (userData: UserInfo) => {
-    resEnterRoom(userData);
+    setRoomCharacters(roomCharacters);
   });
 
-  socket.on(
-    "res_map_movement",
-    (moveUser: UserInfo, usersObject: RoomUsersObject) => {
-      setRoomUsers(resMapMovement(moveUser, usersObject));
-    },
-  );
+  // socket.on(
+  //   "res_map_movement",
+  //   (moveUser: UserInfo, usersObject: RoomUsersObject) => {
+  //     setRoomUsers(resMapMovement(moveUser, usersObject));
+  //   },
+  // );
 
-  socket.on(
-    "res_roll_dice",
-    (rollUser: UserInfo, usersObject: RoomUsersObject) => {
-      setRoomUsers(resRollDice(rollUser, usersObject));
-    },
-  );
+  // socket.on(
+  //   "res_roll_dice",
+  //   (rollUser: UserInfo, usersObject: RoomUsersObject) => {
+  //     setRoomUsers(resRollDice(rollUser, usersObject));
+  //   },
+  // );
 
-  socket.on("res_gm_room_data", (data: { key: any; value: any }) => {
-    setRoomData((prevRoomData) => ({
-      ...prevRoomData,
-      [data.key]: data.value,
-    }));
-  });
+  // socket.on("res_gm_room_data", (data: { key: any; value: any }) => {
+  //   setRoomData((prevRoomData) => ({
+  //     ...prevRoomData,
+  //     [data.key]: data.value,
+  //   }));
+  // });
 
   return () => {
     socket.off("res_hello");
-    socket.off("res_enter_room");
-    socket.off("res_map_movement");
-    socket.off("res_roll_dice");
-    socket.off("res_gm_room_data");
+    // socket.off("res_map_movement");
+    // socket.off("res_roll_dice");
+    // socket.off("res_gm_room_data");
   };
 };
 

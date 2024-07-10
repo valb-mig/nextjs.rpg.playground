@@ -15,13 +15,13 @@ export const getUserData = async (formData: FormData) => {
     let selectedUser = await selectUser(formData.name) 
 
     if (!selectedUser) {
-      throw new Error("User not found");
+      return;
     }
 
     const isMatch = verifyPassword(formData.token, selectedUser.token, selectedUser.salt);
 
     if(!isMatch) {
-      throw new Error("Invalid token");
+      return;
     }
 
     return selectedUser;

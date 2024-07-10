@@ -1,8 +1,8 @@
 "use server";
 
 import { NextResponse, NextRequest } from "next/server";
-import { checkSession, getUserCookies } from "@/handlers/handleCookie";
-import { selectUserRoom } from "@/helpers/userHelper";
+import { checkSession, getUserCookies } from "@utils/cookies";
+import { selectUserRoom } from "@services/userService";
 import { toast } from "sonner";
 
 export async function middleware(request: NextRequest) {

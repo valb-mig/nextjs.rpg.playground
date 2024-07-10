@@ -3,19 +3,14 @@ interface RoomData {
   showcase?: string;
 }
 
-interface MapPosition {
-  row: number;
-  col: number;
-}
-
-interface UserInfo {
-  uuid: string;
-  name: string;
-  room: string;
-  position?: MapPosition;
-  dice?: number;
-  role?: string;
-}
+// interface UserInfo {
+//   uuid: string;
+//   name: string;
+//   room: string;
+//   position?: MapPosition;
+//   dice?: number;
+//   role?: string;
+// }
 
 /* Room */
 
@@ -28,14 +23,9 @@ interface RoomInfo {
   created_at: string;
 }
 
-interface RoomUsersObject {
-  [index: string]: UserInfo;
-}
-
 /* Characters */
 
 interface CharacterInfo {
-  id?: number;
   name: string;
   life: number;
   notes: string;
@@ -56,6 +46,20 @@ interface CharacterInventory {
   quant: number;
   icon?: string;
 }
+
+interface CharacterSocketInfo extends CharacterInfo {
+  room: string;
+  dice?: number;
+  position?: {
+    row: number;
+    col: number;
+  };
+}
+
+interface RoomCharacterSocketInfo {
+  [index: string]: CharacterSocketInfo;
+}
+
 
 /* Config */
 

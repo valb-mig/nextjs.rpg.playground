@@ -21,7 +21,7 @@
       "@/*":  ["./src/*"],
       "@ui/*": ["./src/components/ui/*"],
       "@layout/*": ["./src/components/layout/*"],
-      "@helpers/*": ["./src/helpers/*"],
+      "@services/*": ["./src/services/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@lib/*": ["./src/lib/*"],
       "@utils/*": ["./src/utils/*"],

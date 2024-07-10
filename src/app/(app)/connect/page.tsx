@@ -39,14 +39,13 @@ const Connect = () => {
     try {
       let response = await connectUser(data)
       
-      if(!response) {
-        toast.error("user not found");
+      if(response.status === "error") {
+        toast.error(response.message);
         return;
+      } else {
+        toast.success(response.message);
+        router.push(`/dashboard`);
       }
-
-      toast.success("User connected");
-      router.push(`/dashboard`);
-
     } catch(e) {
       console.error(e);
       toast.error("Error tying to login user");
