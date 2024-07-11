@@ -3,6 +3,10 @@
 import { useState, useEffect } from "react";
 import { socket } from "@/socket";
 
+import {
+  User
+} from "lucide-react";
+
 import { toast } from "sonner";
 import useRoom from "@hooks/useRoom";
 
@@ -66,20 +70,16 @@ const Room = ({ params }: { params: {id: string} }) => {
         characterInfo ? 
         (
           <div className="flex w-full justify-center">
-            <div className="w-3/4">
+            <div className="flex flex-col w-3/4 justify-between">
 
-              {roomCharacters && roomCharacters.map((character: CharacterInfo, index: number) => (
-                <div key={index} className="flex flex-col items-center">
-                  <div className="flex flex-col items-center">
-                    <p className="text-center text-xl font-bold">{character.name}</p>
+              <div className="flex gap-2 w-full p-2 overflow-x-scroll">
+                { roomCharacters && roomCharacters.map((character: CharacterInfo, index: number) => (
+                  <div key={index} className="flex w-fit items-center min-w-fit bg-shade-4 pr-2 gap-2 rounded-full h-7">
+                    <User className="w-7 h-7 border border-shade-3 p-1 rounded-full" />
+                    <p className="text-center text-xs sm:text-sm font-bold">{character.name}</p>
                   </div>
-                  <div className="flex flex-col items-center">
-                    <p className="text-center text-xl font-bold">Life: {character.life}</p>
-                    <p className="text-center text-xl font-bold">Gold: {character.gold}</p>
-                    <p className="text-center text-xl font-bold">Age: {character.age}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
 
               <div className="flex h-full">
               </div>
