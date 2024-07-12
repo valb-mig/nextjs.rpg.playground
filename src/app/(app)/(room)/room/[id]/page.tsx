@@ -3,30 +3,31 @@
 import { useState, useEffect } from "react";
 import { socket } from "@/socket";
 
-import {
-  User
-} from "lucide-react";
+import { User } from "lucide-react";
+import { useRoomContext } from "@/context/RoomContext";
 
 import { toast } from "sonner";
 import useRoom from "@hooks/useRoom";
 
 import handleSocket from "@/handlers/handleSocket";
 
-import Breadcrumbs from "@layout/Breadcrumbs";
 import LoadingScreen from "@layout/LoadingScreen";
 import ToolBar from "@layout/ToolBar";
 
 const Room = ({ params }: { params: {id: string} }) => {
 
-  const [ characterInfo, setCharacterInfo ] = useState<CharacterInfo>();
-  const [ roomCharacters, setRoomCharacters ] = useState<CharacterSocketInfo[]>([]);
-  
-  const [ loading, setLoading ] = useState(false);
+  const { 
+    characterInfo, 
+    setCharacterInfo,
+    
+    roomData, 
+    setRoomData,
 
-  const [roomData, setRoomData] = useState<RoomData>({
-    location: "https://i.imgur.com/krXmihl.jpeg",
-    showcase: "https://i.imgur.com/vElW0OZg.jpg",
-  });
+    roomCharacters, 
+    setRoomCharacters
+  } = useRoomContext();
+
+  const [ loading, setLoading ] = useState(false);
 
   const { getCharacterInfo } = useRoom(params.id);
 
@@ -54,7 +55,7 @@ const Room = ({ params }: { params: {id: string} }) => {
       loadCharacterInfo();
   
       /* Sockets */
-      handleSocket({ setRoomCharacters, setRoomData, roomData, params });
+      handleSocket(params.id);
 
     } catch (error) {
       console.error(error);

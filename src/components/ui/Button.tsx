@@ -51,12 +51,12 @@ const Button = ({
       disabled={loading ? true : false}
     >
       {loading ? (
-        <>
+        <div className="flex gap-2 items-center text-primary">
           <span className="border-blue-300">
             <LoaderIcon className="size-4 animate-spin" />
           </span>
           loading...
-        </>
+        </div>
       ) : (
         children
       )}

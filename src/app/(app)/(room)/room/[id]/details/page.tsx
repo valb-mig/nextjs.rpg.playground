@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
+import { useRoomContext } from "@/context/RoomContext";
 import useRoom from "@hooks/useRoom";
 
 import Breadcrumbs from "@layout/Breadcrumbs";
@@ -13,9 +14,9 @@ import Modal from "@layout/Modal";
 const Details = ({ params }: { params: {id: string} }) => {
 
   const [ loading, setLoading ] = useState(true);
-  const [ characterInfo, setCharacterInfo ] = useState<CharacterInfo>();
-  const [ roomData, setRoomData ] = useState<RoomInfo>();
   const { getCharacterInfo, getRoomData } = useRoom(params.id);
+
+  const { characterInfo, setCharacterInfo, roomData, setRoomData } = useRoomContext();
 
   useEffect(() => {
 

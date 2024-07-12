@@ -10,12 +10,8 @@ interface HandleSocketProps {
   params: { id: string };
 }
 
-const handleSocket = ({
-  setRoomCharacters,
-  setRoomData,
-  roomData,
-  params,
-}: HandleSocketProps) => {
+const handleSocket = (roomId: string) => {
+  
   const { resHello, resEnterRoom, resMapMovement, resRollDice } = useSocket();
 
   socket.on( "res_hello", ( characterSocketObject: RoomCharacterSocketInfo ) => {
