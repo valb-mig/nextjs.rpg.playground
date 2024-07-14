@@ -14,21 +14,12 @@ import handleSocket from "@/handlers/handleSocket";
 import LoadingScreen from "@layout/LoadingScreen";
 import ToolBar from "@layout/ToolBar";
 
-const Room = ({ params }: { params: {id: string} }) => {
+const Room = ({ params }: { params: { id: string} }) => {
 
-  const { 
-    characterInfo, 
-    setCharacterInfo,
-    
-    roomData, 
-    setRoomData,
+  const roomContext = useRoomContext();
 
-    roomCharacters, 
-    setRoomCharacters
-  } = useRoomContext();
-
+  const { characterInfo, setCharacterInfo, roomCharacters } = roomContext;
   const [ loading, setLoading ] = useState(false);
-
   const { getCharacterInfo } = useRoom(params.id);
 
   useEffect(() => {
@@ -55,7 +46,7 @@ const Room = ({ params }: { params: {id: string} }) => {
       loadCharacterInfo();
   
       /* Sockets */
-      handleSocket(params.id);
+      handleSocket(params.id, roomContext);
 
     } catch (error) {
       console.error(error);

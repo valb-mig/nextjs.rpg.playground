@@ -1,6 +1,6 @@
-import React, { createContext, useContext, ReactNode, useState, FC } from "react";
+import { createContext, useContext, ReactNode, useState } from "react";
 
-interface RoomContextProps {
+export interface RoomContextProps {
   characterInfo: CharacterInfo | undefined;
   setCharacterInfo: (characterInfo: CharacterInfo) => void;
 
@@ -18,6 +18,8 @@ export const RoomProvider = ({ children }: { children: ReactNode }) => {
   const [ roomCharacters, setRoomCharacters ] = useState<CharacterSocketInfo[] | undefined>(undefined);
   const [ characterInfo, setCharacterInfo ] = useState<CharacterInfo | undefined>(undefined);
   const [ roomData, setRoomData ] = useState<RoomInfo | undefined>(undefined);
+
+  console.log("Context");
 
   return (
     <RoomContext.Provider value={{ 

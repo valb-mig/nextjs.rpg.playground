@@ -1,17 +1,13 @@
 "use client";
 
 import { socket } from "@/socket";
+import { RoomContextProps } from "@/context/RoomContext";
+
 import useSocket from "@hooks/useSocket";
 
-interface HandleSocketProps {
-  setRoomCharacters: (data: CharacterSocketInfo[]) => void;
-  setRoomData: (data: (prevRoomData: RoomData) => RoomData) => void;
-  roomData: RoomData;
-  params: { id: string };
-}
+const handleSocket = ( roomId: string, roomContext: RoomContextProps ) => {
 
-const handleSocket = (roomId: string) => {
-  
+  const { setRoomCharacters } = roomContext;
   const { resHello, resEnterRoom, resMapMovement, resRollDice } = useSocket();
 
   socket.on( "res_hello", ( characterSocketObject: RoomCharacterSocketInfo ) => {
