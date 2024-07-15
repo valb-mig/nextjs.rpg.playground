@@ -35,20 +35,25 @@ const useSocket = () => {
     return users;
   };
 
-  const resRollDice = (rollUser: UserInfo, usersObject: RoomUsersObject) => {
-    let users: UserInfo[] = [];
+  const resRollDice = ( characterInfo: CharacterSocketInfo, roomCharacters: RoomCharacterSocketInfo ) => {
 
-    Object.keys(usersObject).map((key) => {
-      let user: UserInfo = usersObject[key];
+    console.log(roomCharacters);
 
-      if (user.uuid == rollUser.uuid) {
-        user.dice = rollUser.dice;
-      }
+    let updatedRoomCharacters: RoomCharacterSocketInfo = {};
 
-      users.push(user);
-    });
+    // [TODO] Ajust
 
-    return users;
+    // Object.keys(roomCharacters).map((key) => {
+    //   let user: CharacterSocketInfo = roomCharacters[key];
+
+    //   if (user.uuid == rollUser.uuid) {
+    //     user.dice = rollUser.dice;
+    //   }
+
+    //   users.push(user);
+    // });
+
+    return updatedRoomCharacters;
   };
 
   return { resHello, resEnterRoom, resMapMovement, resRollDice };

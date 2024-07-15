@@ -1,28 +1,23 @@
 "use client";
 
+import { useRoomContext } from "@/context/RoomContext";
+
 import { useState } from "react";
 import { socket } from "@/socket";
 
 const Dice = ({ max }: { max: number }) => {
 
-  const [diceNumber, setDiceNumber] = useState(0);
-  const [diceRolling, setDiceRolling] = useState(false);
+  const { roomCharacters, setRoomCharacters } = useRoomContext();
+
+  const [ diceNumber, setDiceNumber ] = useState(0);
+  const [ diceRolling, setDiceRolling ] = useState(false);
 
   const rollDice = () => {
 
     setDiceRolling(true);
 
     const intervalId = setInterval(() => {
-      socket.emit("req_roll_dice", {
-          uuid: userData?.uuid,
-          character_name: userData?.character_name,
-          room_code: userData.room_code,
-          dice: userData?.dice,
-          role: userData?.role,
-          position: userData?.position,
-        } as UserInfo,
-        max,
-      );
+      socket.emit("req_roll_dice", max);
       clearInterval(intervalId);
     }, 500);
   };

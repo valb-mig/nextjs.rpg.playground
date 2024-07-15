@@ -15,7 +15,7 @@ const ToolBarDetails = ({ info }: { info: CharacterInfo }) => {
     return (
         <aside className="flex flex-col gap-2 justify-between p-2 w-1/4 h-full border-l border-l-shade-4">
 
-            <section role="heading" className="flex gap-2 items-center  rounded-lg">
+            <section className="flex gap-2 items-center  rounded-lg">
                 <User className="w-10 h-10 border border-shade-3 p-2 rounded-full" /> 
                 <h2 className="text-foreground-1 text-lg font-medium">
                     { info.name }

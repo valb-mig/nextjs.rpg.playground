@@ -29,12 +29,9 @@ const handleSocket = ( roomId: string, roomContext: RoomContextProps ) => {
   //   },
   // );
 
-  // socket.on(
-  //   "res_roll_dice",
-  //   (rollUser: UserInfo, usersObject: RoomUsersObject) => {
-  //     setRoomUsers(resRollDice(rollUser, usersObject));
-  //   },
-  // );
+  socket.on("res_roll_dice", ( characterInfo: CharacterSocketInfo, roomCharacters: RoomCharacterSocketInfo ) => {
+    setRoomCharacters(resRollDice(characterInfo, roomCharacters));
+  });
 
   // socket.on("res_gm_room_data", (data: { key: any; value: any }) => {
   //   setRoomData((prevRoomData) => ({
