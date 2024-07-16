@@ -29,6 +29,7 @@ const useRoom = (roomId: string) => {
 
                 characterInfo = {
                     name: characterData.name,
+                    room: characterData.rooms_tb[0].room,
                     life: characterData.characters_info_tb[0].life,
                     notes: characterData.characters_info_tb[0].notes,
                     age: characterData.characters_info_tb[0].age,

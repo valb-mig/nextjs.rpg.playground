@@ -2,12 +2,16 @@
 
 import { useRoomContext } from "@/context/RoomContext";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { socket } from "@/socket";
 
 const Dice = ({ max }: { max: number }) => {
 
-  const { roomCharacters, setRoomCharacters } = useRoomContext();
+  const { 
+    characterInfo,
+    roomCharacters, 
+    roomData
+  } = useRoomContext();
 
   const [ diceNumber, setDiceNumber ] = useState(0);
   const [ diceRolling, setDiceRolling ] = useState(false);
@@ -17,10 +21,24 @@ const Dice = ({ max }: { max: number }) => {
     setDiceRolling(true);
 
     const intervalId = setInterval(() => {
-      socket.emit("req_roll_dice", max);
+      socket.emit("req_roll_dice",
+        characterInfo,
+        max
+      );
       clearInterval(intervalId);
     }, 500);
   };
+
+  useEffect(() => {
+
+    if(!roomData?.dice) {
+      return;
+    }
+
+    setDiceNumber(roomData.dice);
+    setDiceRolling(false);
+
+  }, [roomData]);
 
   return (
     <>

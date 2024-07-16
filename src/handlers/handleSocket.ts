@@ -7,7 +7,12 @@ import useSocket from "@hooks/useSocket";
 
 const handleSocket = ( roomId: string, roomContext: RoomContextProps ) => {
 
-  const { setRoomCharacters } = roomContext;
+  const { 
+    setRoomCharacters,
+    roomData,
+    setRoomData
+  } = roomContext;
+
   const { resHello, resEnterRoom, resMapMovement, resRollDice } = useSocket();
 
   socket.on( "res_hello", ( characterSocketObject: RoomCharacterSocketInfo ) => {
@@ -29,8 +34,9 @@ const handleSocket = ( roomId: string, roomContext: RoomContextProps ) => {
   //   },
   // );
 
-  socket.on("res_roll_dice", ( characterInfo: CharacterSocketInfo, roomCharacters: RoomCharacterSocketInfo ) => {
-    setRoomCharacters(resRollDice(characterInfo, roomCharacters));
+  socket.on("res_roll_dice", ( roomCharacters: RoomCharacterSocketInfo, dice: number ) => {
+    // setRoomCharacters(); // Atualizar o responsavel pelo dado
+    setRoomData({...roomData, dice: dice});
   });
 
   // socket.on("res_gm_room_data", (data: { key: any; value: any }) => {

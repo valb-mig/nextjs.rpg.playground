@@ -33,7 +33,7 @@ const Dashboard = () => {
   const router = useRouter();
 
   const [ loading, setLoading ] = useState(true);
-  const [ rooms, setRooms ] = useState<RoomInfo[]>([]);
+  const [ rooms, setRooms ] = useState<RoomSocketInfo[]>([]);
   const [ roomModal, setRoomModal ] = useState(false);
   const [ search, setSearch ] = useState("");
   const { getUserRooms, checkRoom } = useDashboard();

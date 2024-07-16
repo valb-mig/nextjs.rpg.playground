@@ -1,14 +1,14 @@
 import { createContext, useContext, ReactNode, useState } from "react";
 
 export interface RoomContextProps {
-  characterInfo: CharacterInfo | undefined;
-  setCharacterInfo: (characterInfo: CharacterInfo) => void;
+  characterInfo: CharacterSocketInfo | undefined;
+  setCharacterInfo: (characterInfo: CharacterSocketInfo) => void;
 
   roomCharacters: CharacterSocketInfo[] | undefined;
   setRoomCharacters: (roomCharacters: CharacterSocketInfo[]) => void;
 
-  roomData: RoomInfo | undefined;
-  setRoomData: (roomData: RoomInfo) => void;
+  roomData: RoomSocketInfo | undefined;
+  setRoomData: (roomData: RoomSocketInfo) => void;
 }
 
 const RoomContext = createContext<RoomContextProps | undefined>(undefined);
@@ -16,8 +16,8 @@ const RoomContext = createContext<RoomContextProps | undefined>(undefined);
 export const RoomProvider = ({ children }: { children: ReactNode }) => {
 
   const [ roomCharacters, setRoomCharacters ] = useState<CharacterSocketInfo[] | undefined>(undefined);
-  const [ characterInfo, setCharacterInfo ] = useState<CharacterInfo | undefined>(undefined);
-  const [ roomData, setRoomData ] = useState<RoomInfo | undefined>(undefined);
+  const [ characterInfo, setCharacterInfo ] = useState<CharacterSocketInfo | undefined>(undefined);
+  const [ roomData, setRoomData ] = useState<RoomSocketInfo | undefined>(undefined);
 
   console.log("Context");
 

@@ -15,6 +15,10 @@ export const selectCharacterData = async (uuid: string, room: string) => {
     .select(`
       id,
       name,
+      room_id,
+      rooms_tb (
+        room
+      ),
       characters_info_tb (
         character_id,
         life,

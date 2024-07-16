@@ -19,7 +19,7 @@ const useDashboard = () => {
         
             if(userCharactersInfo) {
                 
-                let userRooms: RoomInfo[] = [];
+                let userRooms: UserRoomsData[] = [];
     
                 userCharactersInfo.users_characters_tb.forEach((value: any) => {
 
