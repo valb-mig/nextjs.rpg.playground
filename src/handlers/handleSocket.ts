@@ -34,9 +34,10 @@ const handleSocket = ( roomId: string, roomContext: RoomContextProps ) => {
   //   },
   // );
 
-  socket.on("res_roll_dice", ( roomCharacters: RoomCharacterSocketInfo, dice: number ) => {
-    // setRoomCharacters(); // Atualizar o responsavel pelo dado
+  socket.on("res_roll_dice", ( dice: number ) => {
+
     setRoomData({...roomData, dice: dice});
+    // setRoomCharacters(roomCharacters); // Atualizar o responsavel pelo dado
   });
 
   // socket.on("res_gm_room_data", (data: { key: any; value: any }) => {

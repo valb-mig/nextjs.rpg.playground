@@ -7,7 +7,7 @@ export interface RoomContextProps {
   roomCharacters: CharacterSocketInfo[] | undefined;
   setRoomCharacters: (roomCharacters: CharacterSocketInfo[]) => void;
 
-  roomData: RoomSocketInfo | undefined;
+  roomData: RoomSocketInfo;
   setRoomData: (roomData: RoomSocketInfo) => void;
 }
 
@@ -17,9 +17,16 @@ export const RoomProvider = ({ children }: { children: ReactNode }) => {
 
   const [ roomCharacters, setRoomCharacters ] = useState<CharacterSocketInfo[] | undefined>(undefined);
   const [ characterInfo, setCharacterInfo ] = useState<CharacterSocketInfo | undefined>(undefined);
-  const [ roomData, setRoomData ] = useState<RoomSocketInfo | undefined>(undefined);
-
-  console.log("Context");
+  
+  const [ roomData, setRoomData ] = useState<RoomSocketInfo>({
+    id: "",
+    room: "",
+    name: "",
+    created_at: "",
+    dice: 0,
+    location: "",
+    showcase: ""
+  });
 
   return (
     <RoomContext.Provider value={{ 

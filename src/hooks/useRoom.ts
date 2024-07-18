@@ -29,14 +29,14 @@ const useRoom = (roomId: string) => {
 
                 characterInfo = {
                     name: characterData.name,
-                    room: characterData.rooms_tb[0].room,
-                    life: characterData.characters_info_tb[0].life,
-                    notes: characterData.characters_info_tb[0].notes,
-                    age: characterData.characters_info_tb[0].age,
-                    gold: characterData.characters_info_tb[0].gold,
-                    character_id: characterData.characters_info_tb[0].character_id,
-                    inventory: characterData.characters_inventory_tb,
-                    stats: characterData.characters_stats_tb
+                    room: roomId,
+                    life: characterData.info[0].life,
+                    notes: characterData.info[0].notes,
+                    age: characterData.info[0].age,
+                    gold: characterData.info[0].gold,
+                    character_id: characterData.info[0].character_id,
+                    inventory: characterData.inventory,
+                    stats: characterData.stats
                 };
 
                 return { 

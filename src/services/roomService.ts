@@ -9,24 +9,21 @@ export const selectCharacterData = async (uuid: string, room: string) => {
   }
 
   let characterId =  await selectCharacterId(uuid, room);
-
+  
   const { data, error } = await supabase
     .from("users_characters_tb")
     .select(`
       id,
       name,
       room_id,
-      rooms_tb (
-        room
-      ),
-      characters_info_tb (
+      info:characters_info_tb (
         character_id,
         life,
         notes,
         age,
         gold
       ),
-      characters_inventory_tb!left (
+      inventory:characters_inventory_tb!left (
         character_id,
         id,
         item,
@@ -34,10 +31,14 @@ export const selectCharacterData = async (uuid: string, room: string) => {
         quant,
         active
       ),
-      characters_stats_tb!left (
+      stats:characters_stats_tb!left (
         character_id,
         stat,
         value
+      ),
+      rooms_tb (
+        id,
+        room
       )
     `)
     .eq("id", characterId)
@@ -45,10 +46,6 @@ export const selectCharacterData = async (uuid: string, room: string) => {
 
   if (error) {
     console.log(error);
-    return null;
-  }
-
-  if (!data) {
     return null;
   }
 

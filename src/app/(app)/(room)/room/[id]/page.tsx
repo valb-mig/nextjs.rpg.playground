@@ -43,7 +43,9 @@ const Room = ({ params }: { params: { id: string} }) => {
         setLoading(false);
       };
 
-      loadCharacterInfo();
+      if(!characterInfo) {
+        loadCharacterInfo();
+      }
   
       /* Sockets */
       handleSocket(params.id, roomContext);
@@ -65,12 +67,20 @@ const Room = ({ params }: { params: { id: string} }) => {
             <div className="flex flex-col w-3/4 justify-between">
 
               <div className="flex gap-2 w-full p-2 overflow-x-scroll">
-                { roomCharacters && roomCharacters.map((character: CharacterInfo, index: number) => (
+
+                { roomCharacters && roomCharacters.map((character: CharacterSocketInfo, index: number) => (
                   <div key={index} className="flex w-fit items-center min-w-fit bg-shade-4 pr-2 gap-2 rounded-full h-7">
                     <User className="w-7 h-7 border border-shade-3 p-1 rounded-full" />
                     <p className="text-center text-xs sm:text-sm font-bold">{character.name}</p>
+
+                    { character.dice && (
+                      <span className="block size-8 bg-white text-center text-black rounded">
+                        { character.dice }
+                      </span>
+                    )}
                   </div>
                 ))}
+
               </div>
 
               <div className="flex h-full">
