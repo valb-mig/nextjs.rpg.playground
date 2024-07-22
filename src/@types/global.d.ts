@@ -71,8 +71,8 @@ interface DbDefault {
   created_at?: string;
 }
 
-interface ResponseObject {
+interface ResponseObject<T> {
   status: "success" | "error";
-  message: string;
-  data: any;  
+  message?: string;
+  data?: T;  
 }

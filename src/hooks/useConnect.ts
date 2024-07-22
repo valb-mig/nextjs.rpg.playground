@@ -10,43 +10,32 @@ type FormData = {
 };
 
 const useConnect = () => {
+
   const router = useRouter();
 
-  const connectUser = async (formData: FormData): Promise<ResponseObject> => {
+  const connectUser = async (formData: FormData): Promise<ResponseObject<null>> => {
     
-    let user = await getUserData(formData);
+    let response = await getUserData(formData);
 
-    if (!user) {
-      
+    if (response.status === "error" || !response.data) {
       return { 
         status: "error", 
-        message: "User not found", 
-        data: null 
+        message: response.message
       };
     }
 
-    const userInfo: CookieData = {
+    const user = response.data;
+
+    await setUserCookies({
       uuid: user.uuid,
       name: user.name
-    };
+    });
 
-    try {
-      await setUserCookies(userInfo);
-      router.push(`/dashboard`);
+    router.push(`/dashboard`);
 
-      return {
-        status: "success",
-        message: "User connected",
-        data: null
-      }
-    } catch (e) {
-      console.error("[Error] Error tying to set cookie: ", e);
-
-      return {
-        status: "error",
-        message: "Error tying to set cookie",
-        data: null
-      }
+    return {
+      status: "success",
+      message: "Logged"
     }
   };
 

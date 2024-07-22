@@ -6,21 +6,22 @@ interface InputProps {
   type?: "text" | "password" | "email" | "number" | "file";
   placeholder?: string;
   errors?: any;
+  style?: "primary" | "secondary";
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   children?: React.ReactNode;
 }
 
-const Input = ({ label, name, placeholder, onChange, type, errors, children }: InputProps) => {
+const Input = ({ label, name, placeholder, onChange, type, errors, style, children }: InputProps) => {
 
   const variants = tv({
     variants: {
-      role: {
-        primary: "",
-        secondary: ""
+      style: {
+        primary: "bg-shade-4 border border-shade-3 text-white rounded-full outline-1 outline-primary p-2",
+        secondary: "bg-transparent border border-shade-4 text-white rounded-full outline-1 outline-primary p-2"
       },
     },
     defaultVariants: {
-      role: "primary",
+      style: "primary",
     },
   });
 
@@ -38,7 +39,7 @@ const Input = ({ label, name, placeholder, onChange, type, errors, children }: I
         </div>
       )}
 
-      <div className="flex items-center bg-shade-4 border border-shade-3 text-white rounded-full outline-1 outline-primary p-2">
+      <div className={`flex items-center ${variants({style: style})}`}>
         <span className="text-shade-2 pl-1">
           { children }
         </span>

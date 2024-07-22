@@ -5,7 +5,10 @@ import supabase from "@lib/supabaseClient";
 export const selectCharacterData = async (uuid: string, room: string) => {
 
   if(!checkUserRoomExists(uuid, room)) {
-    return null;
+    return {
+      status: "error",
+      message: "OOPS! Invalid room"
+    };
   }
 
   let characterId =  await selectCharacterId(uuid, room);
@@ -44,15 +47,20 @@ export const selectCharacterData = async (uuid: string, room: string) => {
     .eq("id", characterId)
     .single();
 
-  if (error) {
-    console.log(error);
-    return null;
+  if (error || !data) {
+    return {
+      status: "error",
+      message: "OOPS! Invalid room"
+    };
   }
 
-  return data;
+  return {
+    status: "success",
+    data: data
+  };
 };
 
-const selectCharacterId = async (uuid: string, room: string) => {
+const selectCharacterId = async (uuid: string, room: string): Promise<number | null> => {
 
   const { data, error } = await supabase
     .from("users_tb")
@@ -73,12 +81,7 @@ const selectCharacterId = async (uuid: string, room: string) => {
     .eq("users_characters_tb.rooms_tb.room", room)
     .single();
 
-  if (error) {
-    console.log("[Database]: ", error);
-    return null;
-  }
-
-  if (!data) {
+  if (error || !data) {
     return null;
   }
 
@@ -146,24 +149,20 @@ export const checkUserRoomExists = async (uuid: string, room: string) => {
 };
 
 export const checkRoomExists = async (room: string) => {
+  
   const { data, error } = await supabase
     .from("rooms_tb")
     .select("id")
     .eq("room", room)
     .single();
 
-  if (error) {
+  if (error || !data) {
     console.log(error);
     return false;
   }
-
-  if (!data) {
-    return false;
-  }
-
+  
   return true;
 };
 
 export const enterRoom = async (uuid: string, room: string) => {
-  // const { data, error } = await supabase
 };

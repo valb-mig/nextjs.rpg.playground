@@ -24,35 +24,31 @@ const Room = ({ params }: { params: { id: string} }) => {
 
   useEffect(() => {
 
-    setLoading(true);
-
-    try {
-      const loadCharacterInfo = async () => {
-
+    const loadCharacterInfo = async () => {
+      
+      setLoading(true);
+  
+      try {
         const response = await getCharacterInfo();
-
-        if (response.status === "error") {
+  
+        if (response.status === "error" || !response.data) {
           toast.error(response.message);
         } else {
-          setCharacterInfo(response.data); 
-          toast.info("Character info loaded");
+          socket.emit("req_enter_room", params.id, response.data);
+          setCharacterInfo(response.data);
         }
-
-        socket.emit("req_enter_room", params.id, response.data);
-
+      } catch (error) {
+        console.error(error);
+      } finally {
         setLoading(false);
-      };
-
-      if(!characterInfo) {
-        loadCharacterInfo();
       }
+    };
   
-      /* Sockets */
-      handleSocket(params.id, roomContext);
+    loadCharacterInfo();
 
-    } catch (error) {
-      console.error(error);
-    }
+    /* Sockets */
+    handleSocket(params.id, roomContext);
+
   }, []);
 
   return (

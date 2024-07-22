@@ -8,32 +8,41 @@ type FormData = {
   token: string;
 };
 
-export const getUserData = async (formData: FormData) => {
+type SelectedUser = {
+  id: string;
+  uuid: string;
+  name: string;
+  token: string;
+  salt: string;
+}
 
-  try {
+export const getUserData = async (formData: FormData ): Promise<ResponseObject<SelectedUser>> => {
 
-    let selectedUser = await selectUser(formData.name) 
+  let selectedUser = await selectUser(formData.name) 
 
-    if (!selectedUser) {
-      return;
-    }
-
-    const isMatch = verifyPassword(formData.token, selectedUser.token, selectedUser.salt);
-
-    if(!isMatch) {
-      return;
-    }
-
-    return selectedUser;
-
-  } catch (e) {
-    console.error("[connectHelper]: ", e);
+  if (!selectedUser) {
+    return {
+      status: "error",
+      message: "User not found"
+    };
   }
-  
-  return;
+
+  const isMatch = verifyPassword(formData.token, selectedUser.token, selectedUser.salt);
+
+  if(!isMatch) {
+    return {
+      status: "error",
+      message: "Invalid token"
+    };
+  }
+
+  return {
+    status: "success",
+    data: selectedUser
+  };
 };
 
-const selectUser = async (name: string) => {
+const selectUser = async (name: string): Promise<SelectedUser | undefined> => {
   const { data, error } = await supabase
     .from("users_tb")
     .select(
@@ -45,16 +54,12 @@ const selectUser = async (name: string) => {
       salt
     `,
     )
-    .eq("name", name);
+    .eq("name", name)
+    .single();
 
-  if (error) {
-    console.error(error);
+  if (error || !data) {
     return;
   }
 
-  if (!data) {
-    return;
-  }
-
-  return data[0];
+  return data;
 };

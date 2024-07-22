@@ -8,6 +8,9 @@ export async function setUserCookies(userInfo: { uuid: string; name: string }) {
       name: "session_rpg_playground",
       value: JSON.stringify(userInfo),
       httpOnly: true,
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+      path: "/",
+      sameSite: "strict",
     });
   } catch (error) {
     console.error("[Cookie]", error);

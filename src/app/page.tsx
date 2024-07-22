@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import Header from "@layout/Header";
 import Link from "next/link";
 
@@ -11,10 +13,12 @@ const Home = () => {
       <main className="flex flex-col w-screen h-screen bg-background-default overflow-y-scroll text-neutral-100">
         <section className="relative flex flex-col justify-center items-center mt-32">
           <div className="relative flex flex-col justify-center items-center gap-4 z-10">
-            <img
+            <Image
               src="/img/rpg-logo.svg"
               alt="logo"
-              className="w-32 h-32 pointer-events-none animate-bounce"
+              className="size-32 pointer-events-none animate-bounce"
+              width={32}
+              height={32}
             />
             <h2 className="text-center text-6xl font-bold text-foreground-1 ">
               Start your journey

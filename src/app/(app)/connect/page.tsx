@@ -11,7 +11,6 @@ import Button from "@ui/Button";
 import { 
   Plus, 
   RadioTower, 
-  X,
   User,
   EyeOffIcon,
   EyeIcon
@@ -39,16 +38,13 @@ const Connect = () => {
     try {
       let response = await connectUser(data)
       
-      if(response.status === "error") {
-        toast.error(response.message);
-        return;
-      } else {
-        toast.success(response.message);
+      toast[response.status](response.message);
+
+      if(response.status === "success") {
         router.push(`/dashboard`);
       }
     } catch(e) {
       console.error(e);
-      toast.error("Error tying to login user");
     } finally {
       setLoading(false);
     };

@@ -1,5 +1,6 @@
 "use client";
 
+import type { User } from "@db/users_tb";
 import { insertUser } from "@services/userService";
 
 type FormData = {
@@ -10,27 +11,32 @@ type FormData = {
 
 const useCreate = () => {
 
-  const createUser = async (formData: FormData): Promise<ResponseObject> => {
+  const createUser = async (formData: FormData): Promise<ResponseObject<User>> => {
 
     try {
+
+      // TODO: Specify error
 
       let createdUser = await insertUser(formData);
 
       if (!createdUser) {
-        throw new Error("User creation failed");
+
+        return {
+          status: "error",
+          message: "OOPS! Something went wrong"
+        };
       }
 
       return {
         status: "success",
-        message: "User created",
         data: createdUser
       };
 
     } catch (error: any) {
+
       return {
         status: "error",
-        message: error.message,
-        data: null
+        message: error.message
       };
     }
     

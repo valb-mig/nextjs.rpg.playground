@@ -10,7 +10,7 @@ import {
   Swords,
   DoorOpen,
   Copy,
-  Home,
+  PartyPopper,
   Plus,
   Newspaper,
   LogIn,
@@ -33,7 +33,7 @@ const Dashboard = () => {
   const router = useRouter();
 
   const [ loading, setLoading ] = useState(true);
-  const [ rooms, setRooms ] = useState<RoomSocketInfo[]>([]);
+  const [ rooms, setRooms ] = useState<UserRoomsData[]>([]);
   const [ roomModal, setRoomModal ] = useState(false);
   const [ search, setSearch ] = useState("");
   const { getUserRooms, checkRoom } = useDashboard();
@@ -46,12 +46,11 @@ const Dashboard = () => {
 
     let response = await checkRoom(data.room);
     
+    toast[response.status](response.message);
+
     if (response.status === "success") {
-      toast.info(response.message);
       router.push(`/room/${data.room}/details`);
       setRoomModal(false);
-    } else {
-      toast.error(response.message);
     }
   };
 
@@ -59,28 +58,29 @@ const Dashboard = () => {
 
     setLoading(true);
 
+    const loadUserRooms = async () => {
+
+      const response = await getUserRooms();
+
+      if(response.message) {
+        toast[response.status](response.message);
+      }
+
+      if(response.status === "success" && response.data) {
+        setRooms(response.data);
+        setLoading(false);
+      }
+    };
+
     try {
-      
-      const loadUserRooms = async () => {
-
-        const response = await getUserRooms();
-
-        if ("message" in response) {
-          toast.error(response.message);
-        } else {
-          setRooms(response);
-          setLoading(false);
-        }
-      };
-
       loadUserRooms();
-      
     } catch (error) {
       console.error(error);
     }
+    
   }, []);
 
-  const searchedRooms = rooms.filter((room) => room.name.toLowerCase().includes(search.toLowerCase()));
+  const filteredRooms = rooms.filter((room) => room.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <>
@@ -119,17 +119,18 @@ const Dashboard = () => {
 
         <div className="flex justify-between items-center w-full mb-5">
           <h1 className="flex gap-2 text-foreground-1 text-4xl items-center font-medium">
-            <Home className="text-primary size-10" />
-            Home
+            <PartyPopper className="text-primary size-10" />
+            Your party&apos;s
           </h1>
 
           <div className="flex gap-2 items-center">
             <Input 
-              name="search" 
+              name="filter" 
               placeholder="Filter rooms"
               onChange={(e) => setSearch(e.target.value)}
+              style="secondary"
             >
-              <Filter />
+              <Filter className="text-shade-4" />
             </Input>
 
             <Button role="success" style="action" onClick={() => setRoomModal(!roomModal)}>
@@ -138,27 +139,25 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="flex flex-col h-screen bg-background-default text-foreground-1">
+        <div className="flex flex-col bg-background-default text-foreground-1">
 
           { rooms.length > 0 ? (
 
             <section className="flex flex-col gap-2 w-full">
-              { searchedRooms.map((room, index) => (
+              { filteredRooms.map((room, index) => (
                   <div id={room.id} key={index} className="w-full bg-shade-4 rounded-lg hover:scale-[1.02] transition-all duration-300 border-2 border-shade-4  hover:border-primary">
 
-                    <div className="flex justify-center items-center text-2xl font-medium w-full p-2 bg-shade-3 rounded-lg">
-                      {room.name}
-                    </div>
-
                     <div className="flex justify-between items-center w-full p-2">
+
+                      <span className="flex justify-center text-2xl font-medium text-primary">
+                        {room.name}
+                      </span>
+
                       <div className="flex gap-2 items-center">
                         <Swords className="text-primary size-7" />
                         <div className="text-sm font-medium">{room.character}</div>
                         <span role="tag" className="text-xs bg-shade-2 text-foreground-1 font-bold rounded-full p-1 px-2">{room.role}</span>
                       </div>
-                      <Button role="default" style="button" onClick={() => router.push(`/room/${room.room}/details`)}>
-                        <Newspaper /> Details
-                      </Button>
                     </div>
 
                     <hr className="border-shade-3 w-full" />
@@ -168,9 +167,9 @@ const Dashboard = () => {
                         <div className="flex gap-2 items-center font-medium">
                           <DoorOpen className="text-primary size-7" />
                           Room
-                          <div className="relative flex gap-2 items-center text-lg font-medium bg-shade-3 p-1 px-2 rounded-full">
+                          <div className="relative flex gap-2 items-center text-xs font-medium bg-shade-3 p-1 px-2 rounded-full">
                             {room.room}
-                            <Copy className="text-shade-2 size-4 hover:text-primary cursor-pointer" onClick={() => {navigator.clipboard.writeText(room.room); toast.success("Copied to clipboard")}} />
+                            <Copy className="text-shade-2 size-4 hover:text-primary cursor-pointer" onClick={() => { navigator.clipboard.writeText(room.room); toast.success("Copied to clipboard") }} />
                           </div>
                         </div>
 

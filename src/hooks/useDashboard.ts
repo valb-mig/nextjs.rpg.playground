@@ -6,12 +6,23 @@ import { getUserCookies } from "@utils/cookies";
 
 const useDashboard = () => {
 
-    const getUserRooms = async () => {
+    const getPublicRooms = async (): Promise<ResponseObject<RoomInfo[]>> => {
+        return {
+            status: "error",
+            message: "Not implemented"
+        }
+    };
+
+    const getUserRooms = async (): Promise<ResponseObject<UserRoomsData[]>> => {
 
         let cookies = await getUserCookies();
 
         if(!cookies) {
-            return { message: "Invalid cookies" };
+
+            return {
+                status: "error",
+                message: "Invalid cookies"
+            }
         }
 
         try {
@@ -33,29 +44,34 @@ const useDashboard = () => {
                     });
                 });
     
-                return userRooms;
+                return {
+                    status: "success",
+                    data: userRooms
+                };
+            }
+
+            return {
+                status: "error",
+                message: "User not found"
             }
             
         } catch (error: any) {
-            return { message: error.message };
+            return {
+                status: "error",
+                message: error.message
+            };
         }
-
-        return { message: "User not found" };
     };
 
-    const createRoom = async (room: string) => {
-        // TODO: Create room
-    };
-
-    const checkRoom = async (room: string): Promise<ResponseObject> => {
+    const checkRoom = async (room: string): Promise<ResponseObject<boolean>> => {
         
         let cookies = await getUserCookies();
     
         if (!cookies) {
+
             return { 
                 status: "error", 
-                message: "Invalid cookies", 
-                data: null 
+                message: "Invalid cookies"
             };
         }
     
@@ -64,31 +80,28 @@ const useDashboard = () => {
             let response = await checkRoomExists(room);
     
             if (!response) {
+
                 return { 
                     status: "error", 
-                    message: "Room does not exist", 
-                    data: null 
+                    message: "Room does not exist"
                 };
             }
-    
-            console.log(response);
-            
 
             return { 
                 status: "success", 
-                message: "Room exists", 
                 data: response 
             };
+
         } catch (error: any) {
+
             return { 
                 status: "error", 
-                message: error.message, 
-                data: null 
+                message: error.message,
             };
         }
     };
 
-    return { getUserRooms, createRoom, checkRoom };
+    return { getPublicRooms, getUserRooms, checkRoom };
 };
 
 export default useDashboard;

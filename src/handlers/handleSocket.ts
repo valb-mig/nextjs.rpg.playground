@@ -13,8 +13,6 @@ const handleSocket = ( roomId: string, roomContext: RoomContextProps ) => {
     setRoomData
   } = roomContext;
 
-  const { resHello, resEnterRoom, resMapMovement, resRollDice } = useSocket();
-
   socket.on( "res_hello", ( characterSocketObject: RoomCharacterSocketInfo ) => {
 
     let roomCharacters: CharacterSocketInfo[] = [];
