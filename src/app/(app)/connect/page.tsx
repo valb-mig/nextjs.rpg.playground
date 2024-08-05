@@ -41,7 +41,7 @@ const Connect = () => {
       toast[response.status](response.message);
 
       if(response.status === "success") {
-        router.push(`/dashboard`);
+        router.push(`/home`);
       }
     } catch(e) {
       console.error(e);

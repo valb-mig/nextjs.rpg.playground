@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "sonner";
 
 import Input from "@/components/ui/Input";
 import Image from "next/image";
@@ -9,21 +8,30 @@ import Image from "next/image";
 import { 
     Newspaper,
     Search, 
-    Swords
+    Swords,
+    Settings,
+    X,
+    UserCircle,
+    Menu
 } from "lucide-react";
 
 import Button from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
 
-import useDashboard from "@hooks/useDashboard";
+import useHome from "@hooks/useHome";
+import { useGlobalContext } from "@/context/GlobalContext";
+import Link from "next/link";
 
 const AppHeader = () => {
     
     const router = useRouter();
 
+    const { userData } = useGlobalContext();
+
     const [ search, setSearch ] = useState("");
     const [ publicRooms, setPublicRooms ] = useState<RoomInfo[]>([]);
-    const { getPublicRooms } = useDashboard();
+    const [ showProfile, setShowProfile ] = useState(false);
+    const { getPublicRooms } = useHome();
 
     const searchPublicRooms = async (searchParam: string) => {
 
@@ -63,6 +71,7 @@ const AppHeader = () => {
                         name="search" 
                         placeholder="Search rooms"
                         onChange={(e) => searchPublicRooms(e.target.value)}
+                        style="secondary"
                     >
                         <Search />
                     </Input>
@@ -92,8 +101,51 @@ const AppHeader = () => {
                 )}
             </div>
 
-            <div>
-                teste
+            <div className="relative">
+                <Button
+                    role="inherit"
+                    style="action"
+                    onClick={() => setShowProfile(!showProfile)}
+                >
+                    {showProfile ? (
+                        <X />
+                    ) : (
+                        <Menu />
+                    )}
+                </Button>
+                
+                { showProfile && (
+                    <div className="absolute -bottom-48 right-2 flex flex-col gap-2 w-36 p-2 rounded-lg bg-shade-4 border border-shade-3 z-10">
+
+                        <div className="flex gap-2 flex-col">
+                            <div className="flex gap-2 items-center truncate">
+                                <Image src="/img/rpg-logo.svg" alt="logo" className="size-7 pointer-events-none" width={7} height={7}/>
+                                { userData?.name }
+                            </div>
+                            <div className="flex gap-2 items-center">
+                                <p className="bg-shade-3 px-2 rounded-full">xp</p>
+                                <span className="text-primary">100</span>
+                            </div>
+                        </div>
+
+                        <hr className="border-shade-3 w-full" />
+
+                        <ul>
+                            <li className="p-1">
+                                <Link href="/settings" className="flex gap-2 items-center px-2 text-foreground-1 rounded-full hover:bg-primary/10 text-lg font-medium">                                    <Settings className="text-primary size-6" />
+                                    Profile
+                                </Link>
+                            </li>
+                            <li className="p-1">
+                                <Link href="#" className="flex gap-2 items-center text-foreground-1 rounded-full px-2 hover:bg-danger/10 text-lg font-medium">
+                                    <X className="text-danger size-6" />
+                                    Logout
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                )}
+
             </div>
         </header>
     );

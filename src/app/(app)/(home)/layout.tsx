@@ -5,10 +5,10 @@ import Sidebar from "@layout/Sidebar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="text-neutral-100 max-h-screen h-screen overflow-y-scroll">
+    <main className="flex flex-col h-full text-neutral-100 overflow-y-scroll">
       <Header.App />
 
-      <section role="content" className="flex">
+      <section role="content" className="flex h-full">
         <Sidebar.App />
         {children}
       </section>

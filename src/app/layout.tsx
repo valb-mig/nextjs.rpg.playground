@@ -17,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="br">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="h-screen">{children}</div>
+      </body>
     </html>
   );
 }

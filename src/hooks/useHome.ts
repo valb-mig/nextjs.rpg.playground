@@ -4,7 +4,7 @@ import { selectCharactersInfo } from "@services/userService";
 import { checkRoomExists } from "@services/roomService";
 import { getUserCookies } from "@utils/cookies";
 
-const useDashboard = () => {
+const useHome = () => {
 
     const getPublicRooms = async (): Promise<ResponseObject<RoomInfo[]>> => {
         return {
@@ -104,4 +104,4 @@ const useDashboard = () => {
     return { getPublicRooms, getUserRooms, checkRoom };
 };
 
-export default useDashboard;
+export default useHome;

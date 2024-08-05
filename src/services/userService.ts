@@ -126,3 +126,37 @@ export const selectUserRoom = async (uuid: string, room: string) => {
     throw new Error(error.message);
   }
 };
+
+export const selectUserData = async (uuid: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("users_tb")
+      .select(`
+        id,
+        uuid, 
+        name,
+        email
+      `)
+      .eq("uuid", uuid);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (!data[0]) {
+      throw new Error("User not found");
+    }
+  
+    let user: UserData = {
+      id: data[0].id,
+      uuid: data[0].uuid,
+      name: data[0].name,
+      email: data[0].email
+    };
+
+    return user;
+    
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};

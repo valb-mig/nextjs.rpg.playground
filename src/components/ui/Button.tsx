@@ -10,7 +10,7 @@ interface ButtonProps {
   children: React.ReactNode;
   loading?: boolean;
   style?: "action" | "button";
-  role?: "success" | "danger" | "warning" | "info" | "default";
+  role?: "success" | "danger" | "warning" | "info" | "inherit" | "default";
 }
 
 const Button = ({
@@ -26,7 +26,7 @@ const Button = ({
   const variants = tv({
     variants: {
       style: {
-        action: "w-14 h-12",
+        action: "size-10",
         button: "p-1 px-2"
       },
       role: {
@@ -34,7 +34,8 @@ const Button = ({
         danger:  "bg-danger text-foreground-1 border-danger hover:bg-transparent hover:text-danger",
         warning: "bg-warning text-foreground-1 border-warning hover:bg-transparent hover:text-warning",
         info:    "bg-info text-foreground-1 border-info hover:bg-transparent hover:text-info",
-        default:  "bg-shade-3 text-foreground-1 border-shade-2 hover:bg-transparent hover:text-shade-2",
+        default: "bg-shade-3 text-foreground-1 border-shade-2 hover:bg-transparent hover:text-shade-2",
+        inherit: "bg-transparent text-shade-1 border-transparent hover:bg-shade-4 hover:text-foreground-3",
       },
     },
     defaultVariants: {

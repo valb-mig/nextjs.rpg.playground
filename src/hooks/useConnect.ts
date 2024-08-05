@@ -31,7 +31,7 @@ const useConnect = () => {
       name: user.name
     });
 
-    router.push(`/dashboard`);
+    router.push(`/home`);
 
     return {
       status: "success",

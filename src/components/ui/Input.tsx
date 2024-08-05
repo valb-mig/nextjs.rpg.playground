@@ -39,7 +39,7 @@ const Input = ({ label, name, placeholder, onChange, type, errors, style, childr
         </div>
       )}
 
-      <div className={`flex items-center ${variants({style: style})}`}>
+      <div className={`flex items-center h-10 ${variants({style: style})}`}>
         <span className="text-shade-2 pl-1">
           { children }
         </span>

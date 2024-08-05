@@ -26,9 +26,9 @@ import Button from "@ui/Button";
 import Modal from "@layout/Modal";
 import LoadingScreen from "@layout/LoadingScreen";
 
-import useDashboard from "@hooks/useDashboard";
+import useHome from "@hooks/useHome";
 
-const Dashboard = () => {
+const Home = () => {
   
   const router = useRouter();
 
@@ -36,7 +36,7 @@ const Dashboard = () => {
   const [ rooms, setRooms ] = useState<UserRoomsData[]>([]);
   const [ roomModal, setRoomModal ] = useState(false);
   const [ search, setSearch ] = useState("");
-  const { getUserRooms, checkRoom } = useDashboard();
+  const { getUserRooms, checkRoom } = useHome();
 
   const ZodSchema = z.object({
     room: z.string().min(1, "Room code is required")
@@ -118,12 +118,12 @@ const Dashboard = () => {
       <div className="flex flex-col w-full p-8">
 
         <div className="flex justify-between items-center w-full mb-5">
-          <h1 className="flex gap-2 text-foreground-1 text-4xl items-center font-medium">
+          <h1 className="flex gap-2 text-foreground-1 text-lg md:text-3xl sm:text-2xl items-center font-medium">
             <PartyPopper className="text-primary size-10" />
             Your party&apos;s
           </h1>
 
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center w-1/2">
             <Input 
               name="filter" 
               placeholder="Filter rooms"
@@ -197,4 +197,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Home;

@@ -27,9 +27,9 @@ const Home = () => {
             <div className="flex justify-center items-center">
               <Link
                 href="/connect"
-                className="font-bold flex border-2 border-primary bg-primary p-2 rounded-full hover:bg-transparent hover:text-primary transition-all"
+                className="font-bold flex border-2 border-primary bg-primary p-2 px-4 rounded-full hover:bg-transparent hover:text-primary transition-all"
               >
-                Connect
+                Start
               </Link>
             </div>
           </div>
