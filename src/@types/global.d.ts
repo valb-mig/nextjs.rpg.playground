@@ -7,6 +7,15 @@ interface UserRoomsData {
   created_at: string;
 }
 
+/* User */
+
+interface UserData {
+  id: string;
+  uuid: string;
+  name: string;
+  email: string;
+}
+
 /* User Rooms */
 
 interface RoomInfo {
