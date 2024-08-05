@@ -34,20 +34,20 @@ export async function middleware(request: NextRequest) {
 
       if(!checkRoom) {
         toast.error("Room not found");
-        return NextResponse.redirect(new URL("/dashboard", request.url));
+        return NextResponse.redirect(new URL("/home", request.url));
       }
       
     } catch (error: any) {
       toast.error(error.message);
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      return NextResponse.redirect(new URL("/home", request.url));
     }
   } 
   
   /*
-   * Route: '/dashboard'
+   * Route: '/home'
    */
 
-  if(nextPathname.startsWith("/dashboard")) {
+  if(nextPathname.startsWith("/home")) {
 
     if (!session) {
       return NextResponse.redirect(new URL("/connect", request.url));
@@ -61,7 +61,7 @@ export async function middleware(request: NextRequest) {
   if(nextPathname.startsWith("/connect")) {
 
     if (session) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      return NextResponse.redirect(new URL("/home", request.url));
     }
   }
 }
@@ -69,7 +69,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/room/:path*", 
-    "/dashboard", 
+    "/home", 
     "/connect"
   ],
 };
