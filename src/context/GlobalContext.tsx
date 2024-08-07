@@ -1,7 +1,6 @@
 import { selectUserData } from "@/services/userService";
 import { getUserCookies } from "@/utils/cookies";
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
-import { toast } from "sonner";
 
 export interface GlobalContextProps {
   userData: UserData | undefined;
@@ -16,19 +15,20 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
 
+    console.log("Context Provider");
+    
+
     const getUserData = async () => {
 
       const cookies = await getUserCookies();
 
       if(!cookies) {
-        toast.error("GlobalContext: No cookies found");
         return;
       }
 
       const response = await selectUserData(cookies.uuid);
 
       if(!response) {
-        toast.error("GlobalContext: User not found");
         return;
       }
 
@@ -50,6 +50,9 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useGlobalContext = () => {
+    
+    console.log("Use Context");
+
     const context = useContext(GlobalContext);
 
     if (!context) {

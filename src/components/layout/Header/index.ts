@@ -1,11 +1,9 @@
-import HomeHeader from "./config/Home";
+import GuestHeader from "./config/Guest";
 import AppHeader from "./config/App";
-import RoomHeader from "./config/Room";
 
 const Header = {
-  Home: HomeHeader,
+  Guest: GuestHeader,
   App: AppHeader,
-  Room: RoomHeader,
 };
 
 export default Header;

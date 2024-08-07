@@ -80,11 +80,7 @@ const useHome = () => {
             let response = await checkRoomExists(room);
     
             if (!response) {
-
-                return { 
-                    status: "error", 
-                    message: "Room does not exist"
-                };
+                throw new Error("Room does not exist");
             }
 
             return { 

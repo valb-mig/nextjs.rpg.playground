@@ -11,13 +11,12 @@ import {
   DoorOpen,
   Copy,
   PartyPopper,
-  Plus,
-  Newspaper,
   LogIn,
   Calendar,
   Search,
   X,
-  Filter
+  Filter,
+  Cloud
 } from "lucide-react";
 
 import Form from "@ui/Form";
@@ -46,10 +45,12 @@ const Home = () => {
 
     let response = await checkRoom(data.room);
     
-    toast[response.status](response.message);
+    if(response.message) {
+      toast[response.status](response.message);
+    }
 
     if (response.status === "success") {
-      router.push(`/room/${data.room}/details`);
+      router.push(`/room/${data.room}`);
       setRoomModal(false);
     }
   };
@@ -86,12 +87,14 @@ const Home = () => {
     <>
       <LoadingScreen loading={loading} />
 
+
+      {/* Find room modal */}
       { roomModal && (
         <Modal.Root>
 
           <Modal.Header>
             <h1 className="text-foreground-1 text-3xl font-medium">
-              Enter a room
+              Find a room
             </h1>
             <button onClick={() => setRoomModal(false)} className="text-foreground-1 text-2xl font-medium">
               <X />
@@ -115,82 +118,111 @@ const Home = () => {
         </Modal.Root>
       )}
 
-      <div className="flex flex-col w-full p-8">
+      <div className="flex flex-col w-full p-8 gap-16">
 
-        <div className="flex justify-between items-center w-full mb-5">
-          <h1 className="flex gap-2 text-foreground-1 text-lg md:text-3xl sm:text-2xl items-center font-medium">
-            <PartyPopper className="text-primary size-10" />
-            Your party&apos;s
-          </h1>
+        <section id="find-room" className="relative flex flex-col gap-2 items-center justify-center h-1/3">
 
-          <div className="flex gap-2 items-center w-1/2">
-            <Input 
-              name="filter" 
-              placeholder="Filter rooms"
-              onChange={(e) => setSearch(e.target.value)}
-              style="secondary"
-            >
-              <Filter className="text-shade-4" />
-            </Input>
+          <div className="relative">
 
-            <Button role="success" style="action" onClick={() => setRoomModal(!roomModal)}>
-              <Plus />
-            </Button>
+            <div className="flex flex-col gap-4 justify-center items-center relative z-10">
+              <div className="text-center">
+                <h1 className="text-4xl font-medium">Find a Room</h1>
+                <p className="text-sm">Join a party and connect with others in a room</p>
+              </div>
+
+              <Form.Body onSubmit={onFormSubmit} schema={ZodSchema}>
+                <Form.Input 
+                  name="room" 
+                  type="text" 
+                  style="primary"
+                  placeholder="Room code"
+                  autofocus
+                >
+                  <Search className="text-shade-3" />
+                </Form.Input>
+                <button type="submit" className="hidden"></button>
+              </Form.Body>
+            </div>
+
+            <Cloud className="text-primary size-32 absolute -top-10 right-0 z-0 opacity-20" />
           </div>
-        </div>
+          {/* <Button role="success" style="action" onClick={() => setRoomModal(!roomModal)}>
+            <Plus />
+          </Button> */}          
+          <div className="block bg-primary blur-[100px] size-[700px] rounded-full absolute top-0 opacity-5 transition-all z-0"></div>
+        </section>
 
-        <div className="flex flex-col bg-background-default text-foreground-1">
+        <section id="party-rooms" className="relative z-10 h-2/3">
+          <div className="flex justify-between items-center w-full mb-5">
+            <h2 className="flex gap-2 text-foreground-1 text-lg md:text-3xl sm:text-2xl items-center font-medium">
+              <PartyPopper className="text-primary size-10" />
+              Your party&apos;s
+            </h2>
 
-          { rooms.length > 0 ? (
+            <div className="flex gap-2 items-center w-1/4">
+              <Input 
+                name="filter" 
+                placeholder="Filter rooms"
+                onChange={(e) => setSearch(e.target.value)}
+                style="secondary"
+              >
+                <Filter className="text-shade-3" />
+              </Input>
+            </div>
+          </div>
+          <div className="text-foreground-1">
 
-            <section className="flex flex-col gap-2 w-full">
-              { filteredRooms.map((room, index) => (
-                  <div id={room.id} key={index} className="w-full bg-shade-4 rounded-lg hover:scale-[1.02] transition-all duration-300 border-2 border-shade-4  hover:border-primary">
+            { rooms.length > 0 ? (
 
-                    <div className="flex justify-between items-center w-full p-2">
+              <section className="flex flex-col gap-2 w-full">
+                { filteredRooms.map((room, index) => (
+                    <div id={room.id} key={index} className="w-full bg-shade-4 rounded-lg hover:scale-[1.02] transition-all duration-300 border-2 border-shade-4  hover:border-primary">
 
-                      <span className="flex justify-center text-2xl font-medium text-primary">
-                        {room.name}
-                      </span>
+                      <div className="flex justify-between items-center w-full p-2">
 
-                      <div className="flex gap-2 items-center">
-                        <Swords className="text-primary size-7" />
-                        <div className="text-sm font-medium">{room.character}</div>
-                        <span role="tag" className="text-xs bg-shade-2 text-foreground-1 font-bold rounded-full p-1 px-2">{room.role}</span>
+                        <span className="flex justify-center text-2xl font-medium text-primary">
+                          {room.name}
+                        </span>
+
+                        <div className="flex gap-2 items-center">
+                          <Swords className="text-primary size-7" />
+                          <div className="text-sm font-medium">{room.character}</div>
+                          <span role="tag" className="text-xs bg-shade-2 text-foreground-1 font-bold rounded-full p-1 px-2">{room.role}</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <hr className="border-shade-3 w-full" />
+                      <hr className="border-shade-3 w-full" />
 
-                    <div className="flex w-full justify-between">
-                      <div className="flex flex-col gap-2 items-start w-full p-2">
-                        <div className="flex gap-2 items-center font-medium">
-                          <DoorOpen className="text-primary size-7" />
-                          Room
-                          <div className="relative flex gap-2 items-center text-xs font-medium bg-shade-3 p-1 px-2 rounded-full">
-                            {room.room}
-                            <Copy className="text-shade-2 size-4 hover:text-primary cursor-pointer" onClick={() => { navigator.clipboard.writeText(room.room); toast.success("Copied to clipboard") }} />
+                      <div className="flex w-full justify-between">
+                        <div className="flex flex-col gap-2 items-start w-full p-2">
+                          <div className="flex gap-2 items-center font-medium">
+                            <DoorOpen className="text-primary size-7" />
+                            Room
+                            <div className="relative flex gap-2 items-center text-xs font-medium bg-shade-3 p-1 px-2 rounded-full">
+                              {room.room}
+                              <Copy className="text-shade-2 size-4 hover:text-primary cursor-pointer" onClick={() => { navigator.clipboard.writeText(room.room); toast.success("Copied to clipboard") }} />
+                            </div>
+                          </div>
+
+                          <div className="flex w-full justify-start items-center text-xs text-shade-1">
+                            <Calendar className="size-4"/>&nbsp;<span className="italic">{ new Date(room.created_at).toLocaleString( "pt-BR", { dateStyle: "short", timeStyle: "short" } ) }</span>                       
                           </div>
                         </div>
-
-                        <div className="flex w-full justify-start items-center text-xs text-shade-1">
-                          <Calendar className="size-4"/>&nbsp;<span className="italic">{ new Date(room.created_at).toLocaleString( "pt-BR", { dateStyle: "short", timeStyle: "short" } ) }</span>                       
+                        <div className="flex gap-2 items-center p-2">
+                          <Button role="success" style="button" onClick={ () => router.push(`/room/${room.room}`) }>
+                            <LogIn className="size-4" /> Join
+                          </Button>
                         </div>
                       </div>
-                      <div className="flex gap-2 items-center p-2">
-                        <Button role="success" style="button" onClick={ () => router.push(`/room/${room.room}`) }>
-                          <LogIn className="size-4" /> Join
-                        </Button>
-                      </div>
                     </div>
-                  </div>
-              ))}
-            </section>
+                ))}
+              </section>
 
-          ):(
-            <p>No rooms found</p>
-          )}
-        </div>
+            ):(
+              <p>No rooms found</p>
+            )}
+          </div>
+        </section>
       </div>
     </>
     

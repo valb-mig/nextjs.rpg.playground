@@ -136,12 +136,8 @@ export const checkUserRoomExists = async (uuid: string, room: string) => {
     .eq("users_characters_tb.rooms_tb.room", room)
     .single();
 
-  if (error) {
-    console.log("[Database]: ", error);
-    return false;
-  }
-
-  if (!data) {
+  if (error || !data) {
+    console.log(error);
     return false;
   }
 

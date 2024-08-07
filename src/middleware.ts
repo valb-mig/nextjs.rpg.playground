@@ -30,15 +30,33 @@ export async function middleware(request: NextRequest) {
     };
 
     try {
+    
       let checkRoom = await selectUserRoom(cookieData.uuid, roomParams.room);
 
-      if(!checkRoom) {
-        toast.error("Room not found");
+      if(!checkRoom || (checkRoom.code && checkRoom.code === 1)) {
+        
+        // FIX: Toast doesn't work
+        // toast.error(checkRoom.message);
+
         return NextResponse.redirect(new URL("/home", request.url));
       }
-      
+
+      if(roomParams.action !== "join") {
+
+        if(checkRoom.code && checkRoom.code === 2) { // Character is not in room
+          return NextResponse.redirect(new URL("/room/"+roomParams.room+"/join", request.url));
+        }
+  
+      }
+     
+      {/* TODO: Check if character is in room and the room is public */}
+
     } catch (error: any) {
-      toast.error(error.message);
+      
+      // FIX: Toast doesn't work
+      // toast.error(error.message);
+
+      console.log(error);
       return NextResponse.redirect(new URL("/home", request.url));
     }
   } 

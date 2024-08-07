@@ -8,7 +8,7 @@ import Link from "next/link";
 const Home = () => {
   return (
     <>
-      <Header.Home />
+      <Header.Guest />
 
       <main className="flex flex-col w-screen h-screen bg-background-default overflow-y-scroll text-neutral-100">
         <section className="relative flex flex-col justify-center items-center mt-32">
@@ -16,7 +16,7 @@ const Home = () => {
             <Image
               src="/img/rpg-logo.svg"
               alt="logo"
-              className="size-32 pointer-events-none animate-bounce"
+              className="size-32 pointer-events-none"
               width={32}
               height={32}
             />

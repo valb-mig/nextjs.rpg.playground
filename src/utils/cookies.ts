@@ -31,3 +31,11 @@ export async function getUserCookies() {
 
   return null;
 }
+
+export async function deleteUserCookies() {
+  try {
+    cookies().delete("session_rpg_playground");
+  } catch (error) {
+    console.error("[Cookie]", error);
+  }
+}

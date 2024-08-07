@@ -15,13 +15,13 @@ const Input = ({ label, name, placeholder, onChange, type, errors, style, childr
 
   const variants = tv({
     variants: {
-      style: {
-        primary: "bg-shade-4 border border-shade-3 text-white rounded-full outline-1 outline-primary p-2",
-        secondary: "bg-transparent border border-shade-4 text-white rounded-full outline-1 outline-primary p-2"
+      containerStyle: {
+        primary: "bg-shade-4 border border-shade-3 text-white rounded-full p-2 *:placeholder-shade-3",
+        secondary: "bg-transparent backdrop-blur-lg border border-shade-3 text-white rounded-full p-2 *:placeholder-shade-3"
       },
     },
     defaultVariants: {
-      style: "primary",
+      containerStyle: "primary"
     },
   });
 
@@ -39,7 +39,7 @@ const Input = ({ label, name, placeholder, onChange, type, errors, style, childr
         </div>
       )}
 
-      <div className={`flex items-center h-10 ${variants({style: style})}`}>
+      <div className={`flex items-center h-10 focus-within:ring-2 focus-within:ring-primary ${variants({containerStyle: style})}`}>
         <span className="text-shade-2 pl-1">
           { children }
         </span>

@@ -91,8 +91,8 @@ export const selectCharactersInfo = async (uuid: string) => {
 };
 
 export const selectUserRoom = async (uuid: string, room: string) => {
-  try {
 
+  try {
     const { data: roomsData, error: roomsError } = await supabase
       .from("rooms_tb")
       .select("id")
@@ -100,7 +100,12 @@ export const selectUserRoom = async (uuid: string, room: string) => {
       .single();
     
     if (roomsError) {
-      throw new Error("Room don't exist");
+
+      return {
+        code: 1,
+        status: "error",
+        message: "Room don't exist"
+      }
     }
 
     const { data, error } = await supabase
@@ -116,14 +121,28 @@ export const selectUserRoom = async (uuid: string, room: string) => {
       .eq("uuid", uuid)
       .eq("users_characters_tb.room_id", roomsData.id);
 
-    if (error) {
-      throw new Error("Room is not avaliable");
+    if (!data || !data[0].users_characters_tb || data[0].users_characters_tb.length < 1 || error) {
+
+      return {
+        code: 2,
+        status: "error",
+        message: "Character is not in room"
+      }
     }
 
-    return data;
+    return {
+      code: 0,
+      status: "success",
+      data: data
+    };
 
   } catch (error: any) {
-    throw new Error(error.message);
+
+    return {
+      code: 3,
+      status: "error",
+      message: error.message
+    }
   }
 };
 

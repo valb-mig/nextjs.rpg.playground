@@ -37,38 +37,36 @@ const AppSidebar = () => {
         <>
             {showFeedback && (
                 <Modal.Root>
-
-                <Modal.Header>
-                  <h1 className="text-foreground-1 text-3xl font-medium">
-                    Senda a feedback
-                  </h1>
-                  <button onClick={() => setShowFeedback(false)} className="text-foreground-1 text-2xl font-medium">
-                    <X />
-                  </button>
-                </Modal.Header>
-      
-                <Modal.Body>
-                  <Form.Body onSubmit={onFeedbackFormSubmit} schema={FeedbackZodSchema}>
-                    ...
-                  </Form.Body>
-                </Modal.Body>
-      
-              </Modal.Root>
+                    <Modal.Header>
+                    <h1 className="text-foreground-1 text-3xl font-medium">
+                        Send a feedback
+                    </h1>
+                    <button onClick={() => setShowFeedback(false)} className="text-foreground-1 text-2xl font-medium">
+                        <X />
+                    </button>
+                    </Modal.Header>
+        
+                    <Modal.Body>
+                    <Form.Body onSubmit={onFeedbackFormSubmit} schema={FeedbackZodSchema}>
+                        ...
+                    </Form.Body>
+                    </Modal.Body>
+                </Modal.Root>
             )}
-            <div className="flex flex-col p-2 group">
+            <div className="relative flex flex-col p-2 group z-10">
                 <aside className={`relative flex flex-col gap-4 bg-shade-4 justify-between rounded-lg h-full p-2 `+(showSidebar ? "w-52":"w-12")}>
                     {
                         showSidebar ? (
                             <section>
                                 <ul className="flex flex-col gap-2">
-                                    <li className="flex gap-2 items-center text-foreground-1 w-full rounded-lg hover:bg-shade-3 p-1 px-2">
-                                        <Link href="/home" className="flex gap-2 items-center text-foreground-1 text-xl font-medium">
+                                    <li>
+                                        <Link href="/home" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
                                             <Home className="text-primary size-6" />
                                             Home
                                         </Link>
                                     </li>
-                                    <li className="flex gap-2 items-center text-foreground-1 w-full rounded-lg hover:bg-shade-3 p-1 px-2">
-                                        <Link href="/friends" className="flex gap-2 items-center text-foreground-1 text-xl font-medium">
+                                    <li>
+                                        <Link href="/friends" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
                                             <Users className="text-primary size-6" />
                                             Friends
                                         </Link>
@@ -106,7 +104,7 @@ const AppSidebar = () => {
                     <div className="flex flex-col gap-2 w-full">
                         {
                             showSidebar ? (
-                                <section className="border border-shade-2 rounded-lg p-2">
+                                <section className="border border-shade-2 rounded-lg p-2 mb-4">
                                     <div className="flex flex-col gap-2 items-center justify-center text-foreground-1 text-lg font-medium">
                                         <h2 className="flex gap-2 items-center text-2xl">
                                             <ScrollText className="text-primary size-6" />
@@ -137,21 +135,18 @@ const AppSidebar = () => {
                                 </div>
                             )
                         }
-                        
-                        <hr className="border-shade-2 w-full" />
-
                         {
                             showSidebar ? (
                                 <section>
                                     <ul className="flex flex-col gap-2">
-                                        <li className="flex gap-2 items-center text-foreground-1 w-full rounded-lg hover:bg-shade-3 p-1 px-2">
-                                            <button onClick={() => setShowFeedback(!showFeedback)} className="flex gap-2 items-center text-foreground-1 text-xl font-medium">
+                                        <li>
+                                            <button onClick={() => setShowFeedback(!showFeedback)} className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
                                                 <MessageSquareText className="text-primary size-6" />
                                                 Feedback
                                             </button>
                                         </li>
-                                        <li className="flex gap-2 items-center text-foreground-1 w-full rounded-lg hover:bg-shade-3 p-1 px-2">
-                                            <Link href="/settings" className="flex gap-2 items-center text-foreground-1 text-xl font-medium">
+                                        <li>
+                                            <Link href="/settings" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
                                                 <Cog className="text-primary size-6" />
                                                 Settings
                                             </Link>

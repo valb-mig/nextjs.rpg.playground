@@ -7,10 +7,10 @@ import Header from "@layout/Header";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <RoomProvider>
-      <main className="flex flex-col w-fit h-screen bg-background-default text-foreground-1">
-        <Header.Room />
+      <main className="flex flex-col h-full text-neutral-100 overflow-y-scroll">
+        <Header.App />
 
-        <section role="content" className="flex w-screen h-full">
+        <section role="content" className="flex h-full">
           {children}
         </section>
       </main>

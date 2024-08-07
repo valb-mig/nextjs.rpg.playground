@@ -5,6 +5,13 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import useConnect from "@hooks/useConnect";
+
+import { getUserCookies } from "@/utils/cookies";
+import { selectUserData } from "@/services/userService";
+
+import { useGlobalContext } from "@/context/GlobalContext";
+
 import Form from "@ui/Form";
 import Button from "@ui/Button";
 
@@ -16,8 +23,6 @@ import {
   EyeIcon
 } from "lucide-react";
 
-import useConnect from "@hooks/useConnect";
-
 const ZodSchema = z.object({
   name: z.string().min(1, "Name is required"),
   token: z.string().min(1, "Token is required")
@@ -26,6 +31,8 @@ const ZodSchema = z.object({
 const Connect = () => {
   
   const router = useRouter();
+
+  const { setUserData } = useGlobalContext();
 
   const [ loading, setLoading ] = useState(false);
   const [ showPassword, setShowPassword ] = useState(false);
@@ -41,6 +48,21 @@ const Connect = () => {
       toast[response.status](response.message);
 
       if(response.status === "success") {
+
+        const cookies = await getUserCookies();
+  
+        if(!cookies) {
+          return;
+        }
+  
+        const response = await selectUserData(cookies.uuid);
+  
+        if(!response) {
+          return;
+        }
+  
+        setUserData(response);
+
         router.push(`/home`);
       }
     } catch(e) {
