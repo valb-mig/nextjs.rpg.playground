@@ -10,9 +10,10 @@ interface UserRoomsData {
 /* User */
 
 interface UserData {
-  id: string;
-  uuid: string;
-  name: string;
+  id:    string;
+  uuid:  string;
+  xp:    number;
+  name:  string;
   email: string;
 }
 
@@ -32,6 +33,14 @@ interface RoomSocketInfo extends RoomInfo {
 }
 
 /* Characters */
+
+interface CharacterData {
+  name: string;
+  notes: string;
+  race: string;
+  role: string;
+  age: number;
+}
 
 interface CharacterInfo {
   name: string;
