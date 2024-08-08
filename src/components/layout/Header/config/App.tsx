@@ -57,8 +57,8 @@ const AppHeader = () => {
                                 { userData?.name }
                             </div>
                             <div className="flex gap-2 items-center">
-                                <p className="bg-shade-3 px-2 rounded-full">xp</p>
-                                <span className="text-primary">100</span>
+                                <p className="bg-shade-3 px-2 rounded-full font-medium">xp</p>
+                                <span className="text-primary">{userData?.xp}</span>
                             </div>
                         </div>
 
@@ -82,6 +82,7 @@ const AppHeader = () => {
                         </ul>
                     </div>
                 )}
+
             </div>
         </header>
     );

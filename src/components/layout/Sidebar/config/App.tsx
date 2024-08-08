@@ -16,7 +16,8 @@ import {
     X,
     PanelRightOpen,
     PanelRightClose,
-    ScrollText
+    ScrollText,
+    DoorOpen
 } from "lucide-react";
 
 const AppSidebar = () => {
@@ -71,6 +72,12 @@ const AppSidebar = () => {
                                             Friends
                                         </Link>
                                     </li>
+                                    <li>
+                                        <Link href="/rooms" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
+                                            <DoorOpen className="text-primary size-6" />
+                                            Public Rooms
+                                        </Link>
+                                    </li>
                                 </ul>
                             </section>
                         ) : (
@@ -83,6 +90,11 @@ const AppSidebar = () => {
                                 <span className="flex gap-2 items-center text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
                                     <Link href="/friends" className="w-full text-foreground-1 font-medium">
                                         <Users className="text-primary size-6" />
+                                    </Link>
+                                </span>
+                                <span className="flex gap-2 items-center text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
+                                    <Link href="/rooms" className="w-full text-foreground-1 font-medium">
+                                        <DoorOpen className="text-primary size-6" />
                                     </Link>
                                 </span>
                             </div>
