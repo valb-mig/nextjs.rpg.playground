@@ -31,7 +31,7 @@ const Body = ({ children, onSubmit, schema, style }: FormProps) => {
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className={`flex flex-col gap-2 w-full ${style ? style : ""}`}
+      className={`flex flex-col gap-2 w-full h-full ${style ? style : ""}`}
     >
       <FormProvider register={register} errors={errors}>
         {children}

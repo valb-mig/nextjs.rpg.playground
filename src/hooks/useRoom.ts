@@ -1,6 +1,7 @@
 "use client";
 
 import { selectCharacterData, selectRoomData } from "@services/roomService";
+import { insertCharacter } from "@services/characterService";
 
 import { getUserCookies } from "@utils/cookies";
 
@@ -108,7 +109,7 @@ const useRoom = (roomId: string) => {
         }
     };
 
-    const joinRoom = async (): Promise<ResponseObject<RoomInfo>> => {
+    const joinRoom = async (characterData: CharacterData): Promise<ResponseObject<boolean>> => {
 
         let cookies = await getUserCookies();
 
@@ -122,29 +123,15 @@ const useRoom = (roomId: string) => {
 
         try {
 
-            const roomData = await selectRoomData(cookies.uuid, roomId);
+            const response = await insertCharacter(cookies.uuid, roomId, characterData);
         
-            let roomInfo: RoomInfo;
-
-            if(roomData) {
-
-                roomInfo = {
-                    id: roomData.id,
-                    room: roomData.room,
-                    name: roomData.name,
-                    created_at: roomData.created_at
-                };
+            if(response) {
 
                 return { 
                     status: "success", 
-                    data: roomInfo 
+                    data: true
                 };
             }
-
-            return {
-                status: "error",
-                message: "Room not found"
-            };
 
         } catch (error: any) {
 
@@ -153,6 +140,11 @@ const useRoom = (roomId: string) => {
                 message: error.message
             };
         }
+
+        return {
+            status: "error",
+            message: "Character not found"
+        };
     };
 
     return { getCharacterInfo, joinRoom, getRoomData };

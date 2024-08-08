@@ -154,6 +154,7 @@ export const selectUserData = async (uuid: string) => {
         id,
         uuid, 
         name,
+        xp,
         email
       `)
       .eq("uuid", uuid);
@@ -167,9 +168,10 @@ export const selectUserData = async (uuid: string) => {
     }
   
     let user: UserData = {
-      id: data[0].id,
-      uuid: data[0].uuid,
-      name: data[0].name,
+      id:    data[0].id,
+      uuid:  data[0].uuid,
+      xp:    data[0].xp,
+      name:  data[0].name,
       email: data[0].email
     };
 

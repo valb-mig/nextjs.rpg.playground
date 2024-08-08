@@ -6,7 +6,6 @@ import { tv } from "tailwind-variants";
 interface InputProps {
   label?: string;
   name: string;
-  type?: "text" | "password" | "email" | "number" | "file";
   style?: "primary" | "secondary";
   placeholder?: string;
   value?: any;
@@ -16,8 +15,7 @@ interface InputProps {
   children?: React.ReactNode;
 }
 
-const Input = ({
-  type,
+const Textarea = ({
   label,
   name,
   value,
@@ -31,8 +29,8 @@ const Input = ({
   const variants = tv({
     variants: {
       containerStyle: {
-        primary: "bg-shade-4 border border-shade-3 text-white rounded-full p-2 *:placeholder-shade-3",
-        secondary: "bg-transparent border border-shade-3 text-white rounded-full p-2 *:placeholder-shade-3"
+        primary: "bg-shade-4 border border-shade-3 text-white rounded-xl p-2 *:placeholder-shade-3",
+        secondary: "bg-transparent border border-shade-3 text-white rounded-xl p-2 *:placeholder-shade-3"
       },
     },
     defaultVariants: {
@@ -56,22 +54,14 @@ const Input = ({
         </div>
       )}
 
-      <div className={`flex items-center h-10 focus-within:ring-2 focus-within:ring-primary ${variants({containerStyle: style})}`}>
-
-        <span className="text-shade-2 pl-1">
-          { children }
-        </span>
-
-        <input
-          {...register(name)}
-          className="bg-transparent w-full h-8 p-2 outline-none"
-          name={name}
-          type={type}
-          value={value}
-          placeholder={placeholder}
-          autoFocus={autofocus}
-        />
-      </div>
+      <textarea
+        {...register(name)}
+        className={`flex items-center h-10 outline-none focus-within:ring-2 focus-within:ring-primary ${variants({containerStyle: style})}`}
+        name={name}
+        value={value}
+        placeholder={placeholder}
+        autoFocus={autofocus}
+      />
 
       {errors && (errors[name] as FieldError)?.message && (
         <span className="text-red-500 text-sm text-center">
@@ -82,4 +72,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default Textarea;
