@@ -54,8 +54,8 @@ const AppSidebar = () => {
                     </Modal.Body>
                 </Modal.Root>
             )}
-            <div className="relative flex flex-col p-2 group z-10">
-                <aside className={`relative flex flex-col gap-4 bg-shade-4 justify-between rounded-lg h-full p-2 `+(showSidebar ? "w-52":"w-12")}>
+            <div className="relative flex flex-col p-2 group z-10 h-full">
+                <aside className={`relative flex flex-col gap-4 bg-shade-4 h-full justify-between rounded-lg p-2 `+(showSidebar ? "w-52":"w-12")}>
                     {
                         showSidebar ? (
                             <section>
@@ -100,29 +100,17 @@ const AppSidebar = () => {
                             </div>
                         )
                     }
-                    <button 
-                        onClick={() => setShowSidebar(!showSidebar)} 
-                        className="absolute top-2/4 -right-5 items-center text-primary bg-shade-3 border border-shade-2 p-1 rounded-lg size-9 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                    >
-                        {
-                            showSidebar ? (
-                                <PanelRightOpen/>
-                            ):(
-                                <PanelRightClose/>
-                            )
-                        }
-                    </button>
 
                     <div className="flex flex-col gap-2 w-full">
                         {
                             showSidebar ? (
-                                <section className="border border-shade-2 rounded-lg p-2 mb-4">
+                                <section className="rounded-lg p-2 mb-4">
                                     <div className="flex flex-col gap-2 items-center justify-center text-foreground-1 text-lg font-medium">
                                         <h2 className="flex gap-2 items-center text-2xl">
                                             <ScrollText className="text-primary size-6" />
                                             Logs
                                         </h2>
-                                        <div className="bg-shade-3 border border-shade-2 w-full rounded-lg p-2 h-44 max-h-44 overflow-y-scroll">
+                                        <div className="bg-shade-4 border border-shade-2 w-full rounded-lg p-2 h-44 max-h-44 overflow-y-scroll">
                                             <p className="text-lg font-medium text-primary">Update v1.0</p>
                                             <hr className="border-shade-2 w-full" />
                                             <p className="text-sm text-foreground-3">
@@ -181,6 +169,19 @@ const AppSidebar = () => {
                             )
                         }
                     </div>
+
+                    <button 
+                        onClick={() => setShowSidebar(!showSidebar)} 
+                        className="absolute top-2/4 -right-5 items-center text-primary bg-shade-3 border border-shade-2 p-1 rounded-lg size-9 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    >
+                        {
+                            showSidebar ? (
+                                <PanelRightOpen/>
+                            ):(
+                                <PanelRightClose/>
+                            )
+                        }
+                    </button>
                 </aside>
             </div>
         </>

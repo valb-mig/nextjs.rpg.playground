@@ -28,12 +28,12 @@ const AppHeader = () => {
     return (
         <header className="flex relative flex-row justify-between items-center w-full h-16 bg-background-default px-4 border-b border-shade-4 z-20">
             
-            <div className="flex gap-2 items-center">
+            <a className="flex gap-2 items-center" href="/home">
                 <Image src="/img/rpg-logo.svg" alt="logo" className="size-7 pointer-events-none" width={7} height={7}/>
                 <h1 className="flex gap-1 text-lg font-bold text-foreground-1">
                     RPG <span className="text-primary">Playground</span>
                 </h1>
-            </div>
+            </a>
 
             <div className="relative">
                 <Button
@@ -41,11 +41,7 @@ const AppHeader = () => {
                     style="action"
                     onClick={() => setShowProfile(!showProfile)}
                 >
-                    {showProfile ? (
-                        <X />
-                    ) : (
-                        <Menu />
-                    )}
+                    { showProfile ? <X /> : <Menu /> }
                 </Button>
                 
                 {/* TODO: Make a component for this */}

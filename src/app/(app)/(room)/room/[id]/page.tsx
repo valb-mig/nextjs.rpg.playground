@@ -59,11 +59,11 @@ const Room = ({ params }: { params: { id: string} }) => {
 
         characterInfo ? 
         (
-          <div className="flex w-full justify-center">
-            <div className="flex flex-col w-3/4 justify-between">
+          <div className="flex w-full">
+
+            <div role="content" className="w-full">
 
               <div className="flex gap-2 w-full p-2 overflow-x-scroll">
-
                 { roomCharacters && roomCharacters.map((character: CharacterSocketInfo, index: number) => (
                   <div key={index} className="flex w-fit items-center min-w-fit bg-shade-4 pr-2 gap-2 rounded-full h-7">
                     <User className="w-7 h-7 border border-shade-3 p-1 rounded-full" />
@@ -76,12 +76,13 @@ const Room = ({ params }: { params: { id: string} }) => {
                     )}
                   </div>
                 ))}
-
               </div>
 
               <div className="flex h-full">
               </div>
+
             </div>
+
             <ToolBar.Room info={characterInfo} />
           </div>
         ):(
