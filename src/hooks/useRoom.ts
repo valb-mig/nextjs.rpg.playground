@@ -129,6 +129,7 @@ const useRoom = (roomId: string) => {
 
                 return { 
                     status: "success", 
+                    message: `Wellcome ${characterData.name} to the party`,
                     data: true
                 };
             }

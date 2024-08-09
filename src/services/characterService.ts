@@ -81,7 +81,7 @@ export const insertCharacter = async (uuid: string, room: string, characterData:
 
 const insertCharacterInfoData = async (characterId: number, characterData: CharacterData) => {
   
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("characters_info_tb")
     .insert([
       {
@@ -98,8 +98,8 @@ const insertCharacterInfoData = async (characterId: number, characterData: Chara
       },
     ]);
 
-  if (error || !data) {
-    throw new Error("Character not inserted");
+  if (error) {
+    throw new Error("Character info not inserted");
   }
 };
 
@@ -113,7 +113,7 @@ const insertCharacterStatsData = async (characterId: number, characterData: Char
     ]);
 
   if (error || !data) {
-    throw new Error("Character not inserted");
+    throw new Error("Character stats not inserted");
   }
 };
 
@@ -132,7 +132,7 @@ const insertCharacterData = async (userId: number, roomId: number, characterData
     .select('id');
 
   if (error || !data) {
-    throw new Error("Character not inserted");
+    throw new Error("Character data not inserted");
   }
 
   return data[0].id;
