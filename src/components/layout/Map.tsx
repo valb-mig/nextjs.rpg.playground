@@ -3,12 +3,8 @@
 import { socket } from "@/socket";
 import { User } from "lucide-react";
 
-interface MapaProps {
-  roomUsers: UserInfo[];
-  userData?: UserInfo;
-}
+const Map = () => {
 
-const Mapa = ({ roomUsers, userData = getUserData() }: MapaProps) => {
   const handleClick = (row: number, col: number) => {
     let clientUserData = getUserData();
 
@@ -31,9 +27,9 @@ const Mapa = ({ roomUsers, userData = getUserData() }: MapaProps) => {
 
   return (
     <div className="grid grid-cols-10 w-full bg-neutral-900 h-full p-1 rounded">
-      {Array.from({ length: 10 }).map((_, rowIndex) => (
+      { Array.from({ length: 10 }).map((_, rowIndex) => (
         <div key={rowIndex} className="flex flex-col">
-          {Array.from({ length: 5 }).map((_, colIndex) => (
+          { Array.from({ length: 5 }).map((_, colIndex) => (
             <div
               key={colIndex}
               className="relative flex items-center justify-center bg-neutral-800 hover:bg-neutral-700 border-2 border-neutral-900 p-2 cursor-pointer rounded-lg size-full"
@@ -46,7 +42,7 @@ const Mapa = ({ roomUsers, userData = getUserData() }: MapaProps) => {
                 {rowIndex} x {colIndex}
               </span>
 
-              {roomUsers.map(
+              {/* {roomUsers.map(
                 (user) =>
                   user.position &&
                   user.position.row == rowIndex &&
@@ -67,7 +63,7 @@ const Mapa = ({ roomUsers, userData = getUserData() }: MapaProps) => {
                       </p>
                     </span>
                   ),
-              )}
+              )} */}
             </div>
           ))}
         </div>
@@ -76,4 +72,4 @@ const Mapa = ({ roomUsers, userData = getUserData() }: MapaProps) => {
   );
 };
 
-export default Mapa;
+export default Map;

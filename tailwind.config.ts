@@ -9,6 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        success: '#00FF00',
         primary: '#007AFF',
         danger: '#FF0000',
         warning: '#FFA500',

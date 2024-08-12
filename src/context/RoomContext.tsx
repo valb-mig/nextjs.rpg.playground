@@ -45,9 +45,10 @@ export const RoomProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useRoomContext = () => {
-    const context = useContext(RoomContext);
-    if (!context) {
-      throw new Error("useRoomContext must be used within a RoomProvider");
-    }
-    return context;
+  
+  const context = useContext(RoomContext);
+  if (!context) {
+    throw new Error("useRoomContext must be used within a RoomProvider");
+  }
+  return context;
 };
