@@ -3,7 +3,11 @@
 import { useState, useEffect } from "react";
 import { socket } from "@/socket";
 
-import { DoorOpen, User } from "lucide-react";
+import { 
+  DoorOpen, 
+  User,
+  MapIcon
+} from "lucide-react";
 import { useRoomContext } from "@/context/RoomContext";
 
 import { toast } from "sonner";
@@ -47,7 +51,7 @@ const Room = ({ params }: { params: { id: string} }) => {
       } catch (error) {
         console.error(error);
       }
-    };
+    }
 
     const loadCharacterInfo = async () => {
       
@@ -71,7 +75,7 @@ const Room = ({ params }: { params: { id: string} }) => {
     loadRoomData();
 
     /* Sockets */
-    handleSocket(params.id, roomContext);
+    handleSocket(roomContext);
 
   }, []);
 
@@ -121,9 +125,15 @@ const Room = ({ params }: { params: { id: string} }) => {
               ))}
             </div>
 
-            <div role="map" className="border border-shade-4 rounded-lg p-2">
-              <Map/>
+            <h2 className="flex gap-2 text-foreground-1 text-lg md:text-3xl sm:text-2xl items-center font-medium">
+              <MapIcon className="text-primary size-10" />
+              Map
+            </h2>
+
+            <div role="map" className="bg-shade-4 rounded-lg p-2">
+              <Map />
             </div>
+
           </div>
 
           <ToolBar.Room info={characterInfo} />

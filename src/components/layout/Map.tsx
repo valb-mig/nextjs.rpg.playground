@@ -26,13 +26,15 @@ const Map = () => {
   };
 
   return (
-    <div className="grid grid-cols-10 w-full bg-neutral-900 h-full p-1 rounded">
+    <div className="grid grid-cols-10 rounded-lg">
       { Array.from({ length: 10 }).map((_, rowIndex) => (
+
         <div key={rowIndex} className="flex flex-col">
           { Array.from({ length: 5 }).map((_, colIndex) => (
+
             <div
               key={colIndex}
-              className="relative flex items-center justify-center bg-neutral-800 hover:bg-neutral-700 border-2 border-neutral-900 p-2 cursor-pointer rounded-lg size-full"
+              className="relative flex items-center justify-center bg-shade-3 hover:bg-shade-2 p-2 cursor-pointer rounded-lg size-14"
               onClick={() => handleClick(rowIndex, colIndex)}
             >
               <span
@@ -65,8 +67,10 @@ const Map = () => {
                   ),
               )} */}
             </div>
+
           ))}
         </div>
+
       ))}
     </div>
   );

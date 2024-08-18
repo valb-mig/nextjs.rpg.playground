@@ -1,17 +1,13 @@
 "use client";
 
 import { socket } from "@/socket";
-import { RoomContextProps } from "@/context/RoomContext";
+import { useRoomContext, RoomContextProps } from "@/context/RoomContext";
 
-import useSocket from "@hooks/useSocket";
+// import useSocket from "@hooks/useSocket";
 
-const handleSocket = ( roomId: string, roomContext: RoomContextProps ) => {
+const handleSocket = ( roomContext: RoomContextProps ) => {
 
-  const { 
-    setRoomCharacters,
-    roomData,
-    setRoomData
-  } = roomContext;
+  const { setRoomCharacters, setRoomData } = roomContext;
 
   socket.on( "res_hello", ( characterSocketObject: RoomCharacterSocketInfo ) => {
 
@@ -34,7 +30,11 @@ const handleSocket = ( roomId: string, roomContext: RoomContextProps ) => {
 
   socket.on("res_roll_dice", ( dice: number ) => {
 
-    setRoomData({...roomData, dice: dice});
+    setRoomData((prevRoomData: RoomSocketInfo | any) => ({
+      ...prevRoomData, 
+      dice: dice
+    }));
+
     // setRoomCharacters(roomCharacters); // Atualizar o responsavel pelo dado
   });
 

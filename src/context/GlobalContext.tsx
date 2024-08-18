@@ -51,7 +51,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
 export const useGlobalContext = () => {
     
-    console.log("Use Context");
+    console.log("Use context");
 
     const context = useContext(GlobalContext);
 
