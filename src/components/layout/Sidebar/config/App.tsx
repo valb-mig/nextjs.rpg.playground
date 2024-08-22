@@ -75,7 +75,7 @@ const AppSidebar = () => {
                                     <li>
                                         <Link href="/rooms" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
                                             <DoorOpen className="text-primary size-6" />
-                                            Public Rooms
+                                            Rooms
                                         </Link>
                                     </li>
                                 </ul>

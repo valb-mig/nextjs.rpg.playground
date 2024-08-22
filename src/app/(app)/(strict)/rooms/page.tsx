@@ -9,9 +9,9 @@ const Rooms = ({ params }: { params: { id: string} }) => {
       <LoadingScreen loading={false} />
 
       <div className="flex flex-col w-full p-8 gap-16">
+        
       </div>
     </>
-    
   );
 };
 
