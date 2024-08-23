@@ -162,3 +162,29 @@ export const checkRoomExists = async (room: string) => {
 
 export const enterRoom = async (uuid: string, room: string) => {
 };
+
+export const insertRoom = async (uuid: string, data: { 
+  name: string 
+}): Promise<boolean> => {
+
+  const { data: room, error } = await supabase
+    .from("rooms_tb")
+    .insert([
+      {
+        room: data.name,
+        created_at: new Date().toISOString()
+      }
+    ])
+    .single();
+
+  if (error) {
+    console.log("[Database]: ", error);
+    return false;
+  }
+
+  if (!room) {
+    return false;
+  }
+
+  return true;
+};

@@ -5,11 +5,21 @@ import { useState } from "react";
 import LoadingScreen from "@/components/layout/LoadingScreen";
 import Form from "@/components/ui/Form";
 import { z } from "zod";
-import { Cloud, LoaderIcon, Plus, Search, X } from "lucide-react";
+
+import { 
+  Cloud, 
+  LoaderIcon, 
+  X
+} from "lucide-react";
+
 import Button from "@/components/ui/Button";
 import Modal from "@/components/layout/Modal";
+import useRooms from "@/hooks/useRooms";
+import { toast } from "sonner";
 
 const Rooms = ({ params }: { params: { id: string} }) => {
+
+  const { createRoom } = useRooms();
 
   const [ modalForm, showModalForm ] = useState(false);
   const [ loading, setLoading ] = useState({
@@ -17,12 +27,29 @@ const Rooms = ({ params }: { params: { id: string} }) => {
     form: false
   });
 
-  const onFormSubmit = ( data: any ) => {
-    console.log(data);
+  const onFormSubmit = async ( data: any ) => {
+
+    setLoading({...loading, form: true});
+
+    try {
+      let response = await createRoom(data);
+
+      toast[response.status](response.message);
+
+      if(response.status === "success") {
+        showModalForm(false);
+      }
+      
+    } catch(e) {
+      console.error(e);
+    } finally {
+      setLoading({...loading, form: false});
+    }
   };
 
   const ZodSchema = z.object({
-    room: z.string().min(1, "Room code is required")
+    name: z.string().min(1, "Room name is required")
+    // max: z.string().min(1, "Max users is required")
   });
 
   return (
@@ -42,7 +69,19 @@ const Rooms = ({ params }: { params: { id: string} }) => {
 
           <Modal.Body>
             <Form.Body onSubmit={onFormSubmit} schema={ZodSchema}>
-              ...
+              
+              <Form.Input type="text" name="name" label="Room name" placeholder="" style="secondary" />
+              <Form.Input type="number" name="max" label="Max users" placeholder="" style="secondary" />
+              
+              <div className="flex w-full justify-end">
+                <Button role="success" type="submit">
+                  {loading.form && (
+                    <LoaderIcon className="animate-spin h-5 w-5 text-primary" />
+                  )}
+                  Create
+                </Button>
+              </div>
+
             </Form.Body>
           </Modal.Body>
         </Modal.Root>
@@ -50,21 +89,29 @@ const Rooms = ({ params }: { params: { id: string} }) => {
 
       <div className="flex flex-col w-full p-8 gap-16">
 
-        <div className="relative">
-          <div className="flex flex-col gap-4 justify-center items-center relative z-10">
+        <section className="flex gap-2">
 
-            <div className="text-center">
-              <h1 className="text-4xl font-medium">Create your room</h1>
-              <p className="text-sm">Create a room and invite your friends to a cool RPG party</p>
+
+          <div className="relative rounded-lg  p-4 w-1/2">
+            <div className="flex flex-col gap-4 justify-center items-center relative z-10">
+
+              <div className="text-center">
+                <h1 className="text-4xl font-medium">Create your room</h1>
+                <p className="text-sm">Create a room and invite your friends to a cool RPG party</p>
+              </div>
+
+              <Button role="success" onClick={() => showModalForm(!modalForm)}>
+                Create
+              </Button>
             </div>
 
-            <Button role="success" onClick={() => showModalForm(!modalForm)}>
-              Create
-            </Button>
+            <Cloud className="text-primary size-32 absolute -top-10 right-0 z-0 opacity-20" />
           </div>
 
-          <Cloud className="text-primary size-32 absolute -top-10 right-0 z-0 opacity-20" />
-        </div>
+          <div>
+            Be a GM
+          </div>
+        </section>
 
       </div>
     </>
