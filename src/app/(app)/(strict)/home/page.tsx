@@ -172,7 +172,7 @@ const Home = () => {
                       <div className="flex gap-2 items-center">
                         <Swords className="text-primary size-7" />
                         <div className="text-sm font-medium">{room.character}</div>
-                        <span role="tag" className="text-xs bg-shade-2 text-foreground-1 font-bold rounded-full p-1 px-2">{room.role}</span>
+                        <span role="tag" className={`text-xs ${room.role == 'gm' ? 'bg-yellow-600 text-yellow-100' : 'bg-shade-2 text-foreground-1'} font-bold rounded-full p-1 px-2`}>{room.role}</span>
                       </div>
                     </div>
 

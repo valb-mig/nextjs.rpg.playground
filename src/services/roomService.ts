@@ -1,6 +1,7 @@
 "use client";
 
 import supabase from "@lib/supabaseClient";
+import randomUrl from "@/utils/randomUrl";
 
 export const selectCharacterData = async (uuid: string, room: string) => {
 
@@ -19,6 +20,10 @@ export const selectCharacterData = async (uuid: string, room: string) => {
       id,
       name,
       room_id,
+      role_id,
+      role:roles_tb (
+        name
+      ),
       info:characters_info_tb (
         character_id,
         life,
@@ -160,31 +165,81 @@ export const checkRoomExists = async (room: string) => {
   return true;
 };
 
-export const enterRoom = async (uuid: string, room: string) => {
-};
+export const enterRoom = async (uuid: string, room: string) => {};
 
-export const insertRoom = async (uuid: string, data: { 
-  name: string 
-}): Promise<boolean> => {
+export const insertRoom = async (
+  uuid: string, 
+  name: string,
+  form: { 
+    name: string, 
+    max: string 
+  }): Promise<boolean> => {
 
-  const { data: room, error } = await supabase
+  const userId = await checkUser(uuid);
+
+  if (!userId) {
+    throw new Error("User not found");
+  }
+
+  const { data, error } = await supabase
     .from("rooms_tb")
     .insert([
       {
-        room: data.name,
+        name: form.name,
+        room: randomUrl(),
         created_at: new Date().toISOString()
       }
     ])
-    .single();
+    .select('id');
 
-  if (error) {
-    console.log("[Database]: ", error);
+  if (error || !data) {
     return false;
   }
+  
+  // [TODO] Insert room stats
 
-  if (!room) {
-    return false;
-  }
+  const characterId = await insertCharacterData(userId, data[0].id, name);
 
   return true;
+};
+
+const checkUser = async (uuid: string): Promise<number | undefined> => {
+
+  const { data, error } = await supabase
+    .from("users_tb")
+    .select(
+      `
+      id,
+      uuid
+    `,
+    )
+    .eq("uuid", uuid)
+    .single();
+
+  if (error || !data) {
+    return;
+  }
+
+  return data.id;
+};
+
+const insertCharacterData = async (userId: number, roomId: number, userName: string) => {
+  
+  const { data, error } = await supabase
+    .from("users_characters_tb")
+    .insert([
+      {
+        user_id: userId,
+        room_id: roomId,
+        role_id: 2, // GM
+        name: userName,
+      },
+    ])
+    .select('id');
+
+  if (error || !data) {
+    throw new Error("Character data not inserted");
+  }
+
+  return data[0].id;
 };

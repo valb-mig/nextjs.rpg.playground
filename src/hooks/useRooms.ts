@@ -5,7 +5,7 @@ import { getUserCookies } from "@/utils/cookies";
 
 const useRooms = () => {
 
-    const createRoom = async (data: { name: string }): Promise<ResponseObject<boolean>> => {
+    const createRoom = async (data: { name: string, max: string }): Promise<ResponseObject<boolean>> => {
         
         let cookies = await getUserCookies();
 
@@ -19,13 +19,13 @@ const useRooms = () => {
         
         try {
 
-            const response = await insertRoom(cookies.uuid, data);
+            const response = await insertRoom(cookies.uuid, cookies.name, data);
         
             if(response) {
 
                 return { 
                     status: "success", 
-                    message: `Wellcome to the party`,
+                    message: "Wellcome to the party",
                     data: true
                 };
             }
@@ -40,7 +40,7 @@ const useRooms = () => {
 
         return {
             status: "error",
-            message: "Character not found"
+            message: "Something went wrong"
         };
     };
 

@@ -29,24 +29,29 @@ const useRoom = (roomId: string) => {
                 throw new Error(response.message);
             }
             
+            console.log(character);
+            
+
             let characterInfo: CharacterInfo;
 
             if(character) {
 
                 characterInfo = {
                     name: character.name,
+                    role: character.role.name,
                     room: roomId,
-                    life: character.info[0].life,
-                    notes: character.info[0].notes,
-                    age: character.info[0].age,
-                    gold: character.info[0].gold,
-                    character_id: character.info[0].character_id,
-                    inventory: character.inventory,
-                    stats: character.stats
+                    life: character.info[0]?.life,
+                    notes: character.info[0]?.notes,
+                    age: character.info[0]?.age,
+                    gold: character.info[0]?.gold,
+                    character_id: character.info[0]?.character_id,
+                    inventory: character?.inventory,
+                    stats: character?.stats
                 };
 
                 return { 
                     status: "success", 
+                    message: `Wellcome to the party ${character.name}`,
                     data: characterInfo 
                 };
             }

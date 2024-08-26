@@ -58,12 +58,13 @@ const Room = ({ params }: { params: { id: string} }) => {
       try {
         const response = await getCharacterInfo();
   
-        if (response.status === "error" || !response.data) {
-          toast.error(response.message);
-        } else {
+        toast[response.status](response.message);
+
+        if (response.status === "success" && response.data) {
           socket.emit("req_enter_room", params.id, response.data);
           setCharacterInfo(response.data);
         }
+        
       } catch (error) {
         console.error(error);
       } finally {
@@ -82,6 +83,7 @@ const Room = ({ params }: { params: { id: string} }) => {
   return (
     <>
       <LoadingScreen loading={loading} />
+
       { !loading && characterInfo && roomData &&  (
         <div className="flex w-full">
 
@@ -94,23 +96,35 @@ const Room = ({ params }: { params: { id: string} }) => {
 
             <div className="flex gap-2 w-full">
               { roomCharacters && roomCharacters.map((character: CharacterSocketInfo, index: number) => (
-                <span key={index} className="relative flex gap-2 flex-col w-fit items-center min-w-fit bg-shade-4 p-2 rounded-lg">
+                <span key={index} className="relative flex gap-2 flex-col w-fit items-center min-w-fit p-2 rounded-lg bg-shade-4">
                   
                   <div className="flex items-center gap-2">
-                    <User className="size-7 border border-shade-3 p-1 rounded-full" />
-                    <p className="text-center text-xs sm:text-sm font-bold">{character.name}</p>
+
+                    <div className="flex items-center gap-2">
+                      <User className="size-7 border border-shade-3 p-1 rounded-full" />
+                      <p className="text-center text-xs sm:text-sm font-bold">{character.name}</p>
+                    </div>
+
+                    <span className={`font-bold px-2 rounded-full ${character.role === 'gm' ? 'bg-yellow-500 text-yellow-100' : 'bg-shade-3'} `}>
+                      {character.role}
+                    </span>
+
                   </div>
 
                   <div className="flex flex-col w-full gap-2">
 
                     <div className="flex w-full gap-2 font-medium">
                       <span className="bg-shade-3 px-2 rounded-full">hp</span>
-                      <p className="text-success">100</p>
+                      <p className="text-success">
+                        100<span className="text-shade-3 text-xs">/100</span>
+                      </p>
                     </div>
 
                     <div className="flex w-full gap-2 font-medium">
                       <span className="bg-shade-3 px-2 rounded-full">xp</span> 
-                      <p className="text-primary">1</p>
+                      <p className="text-primary">
+                        1<span className="text-shade-3 text-xs">/100</span>
+                      </p>
                     </div>
 
                     { character.dice && (
@@ -139,6 +153,7 @@ const Room = ({ params }: { params: { id: string} }) => {
           <ToolBar.Room info={characterInfo} />
         </div>
       )}
+
     </>
   );
 };

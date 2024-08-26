@@ -44,6 +44,7 @@ interface CharacterData {
 
 interface CharacterInfo {
   name: string;
+  role: string;
   room: string;
   life: number;
   notes: string;

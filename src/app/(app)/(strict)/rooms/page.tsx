@@ -27,7 +27,7 @@ const Rooms = ({ params }: { params: { id: string} }) => {
     form: false
   });
 
-  const onFormSubmit = async ( data: any ) => {
+  const onFormSubmit = async ( data: { name: string, max: string } ) => {
 
     setLoading({...loading, form: true});
 
@@ -48,8 +48,8 @@ const Rooms = ({ params }: { params: { id: string} }) => {
   };
 
   const ZodSchema = z.object({
-    name: z.string().min(1, "Room name is required")
-    // max: z.string().min(1, "Max users is required")
+    name: z.string().min(1, "Room name is required"),
+    max: z.string().min(1, "Max users is required")
   });
 
   return (
@@ -74,7 +74,11 @@ const Rooms = ({ params }: { params: { id: string} }) => {
               <Form.Input type="number" name="max" label="Max users" placeholder="" style="secondary" />
               
               <div className="flex w-full justify-end">
-                <Button role="success" type="submit">
+                <Button 
+                  role="success" 
+                  type="submit"
+                  loading={loading.form}
+                >
                   {loading.form && (
                     <LoaderIcon className="animate-spin h-5 w-5 text-primary" />
                   )}
@@ -91,13 +95,12 @@ const Rooms = ({ params }: { params: { id: string} }) => {
 
         <section className="flex gap-2">
 
+          <div className="relative rounded-lg  p-4 w-full">
 
-          <div className="relative rounded-lg  p-4 w-1/2">
             <div className="flex flex-col gap-4 justify-center items-center relative z-10">
-
               <div className="text-center">
                 <h1 className="text-4xl font-medium">Create your room</h1>
-                <p className="text-sm">Create a room and invite your friends to a cool RPG party</p>
+                <p className="text-sm">Be a <span className="px-1 rounded-full bg-yellow-600 font-bold">GM</span> and create a room and invite your friends to a cool RPG party</p>
               </div>
 
               <Button role="success" onClick={() => showModalForm(!modalForm)}>
@@ -105,11 +108,6 @@ const Rooms = ({ params }: { params: { id: string} }) => {
               </Button>
             </div>
 
-            <Cloud className="text-primary size-32 absolute -top-10 right-0 z-0 opacity-20" />
-          </div>
-
-          <div>
-            Be a GM
           </div>
         </section>
 

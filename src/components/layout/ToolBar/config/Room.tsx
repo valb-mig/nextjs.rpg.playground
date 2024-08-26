@@ -185,7 +185,7 @@ const ToolBarRoom = ({ info }: { info: CharacterInfo }) => {
                     onClick={() => setShowToolBar(!showToolBar)} 
                     className="absolute top-2/4 -left-5 items-center text-primary bg-shade-3 border border-shade-2 p-1 rounded-lg size-9 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                 >
-                    { showToolBar ? <PanelRightOpen/> : <PanelRightClose/> }
+                    { showToolBar ?  <PanelRightClose/> : <PanelRightOpen/> }
                 </button>
             </aside>
         </div>
