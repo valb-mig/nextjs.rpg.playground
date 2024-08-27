@@ -113,6 +113,8 @@ const Room = ({ params }: { params: { id: string} }) => {
 
                   <div className="flex flex-col w-full gap-2">
 
+                    {/* [TODO] Load database info */}
+
                     <div className="flex w-full gap-2 font-medium">
                       <span className="bg-shade-3 px-2 rounded-full">hp</span>
                       <p className="text-success">
@@ -127,7 +129,7 @@ const Room = ({ params }: { params: { id: string} }) => {
                       </p>
                     </div>
 
-                    { character.dice && (
+                    { character.dice && character.role !== "gm" && (
                       <div className="absolute -bottom-2 -right-2 size-6 flex justify-center items-center bg-white text-black rounded-lg text-xs font-bold">
                         { character.dice }
                       </div>
@@ -150,7 +152,7 @@ const Room = ({ params }: { params: { id: string} }) => {
 
           </div>
 
-          <ToolBar.Room info={characterInfo} />
+          <ToolBar.Room />
         </div>
       )}
 

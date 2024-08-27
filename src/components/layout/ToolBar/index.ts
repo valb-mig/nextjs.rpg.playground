@@ -1,4 +1,4 @@
-import ToolBarRoom from "./config/Room";
+import ToolBarRoom from "./config/ToolbarRoom";
 
 const ToolBar = {
     Room: ToolBarRoom
