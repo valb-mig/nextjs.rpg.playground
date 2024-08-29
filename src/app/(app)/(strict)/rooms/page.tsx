@@ -1,14 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import LoadingScreen from "@/components/layout/LoadingScreen";
 import Form from "@/components/ui/Form";
 import { z } from "zod";
 
 import { 
-  Cloud, 
+  Boxes,
+  Calendar,
+  Copy,
+  DoorOpen,
+  Filter,
   LoaderIcon, 
+  LogIn, 
+  PackageOpen, 
   X
 } from "lucide-react";
 
@@ -16,12 +22,18 @@ import Button from "@/components/ui/Button";
 import Modal from "@/components/layout/Modal";
 import useRooms from "@/hooks/useRooms";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import Input from "@/components/ui/Input";
 
 const Rooms = ({ params }: { params: { id: string} }) => {
 
-  const { createRoom } = useRooms();
+  const router = useRouter();
+
+  const { createRoom, getPublicRooms } = useRooms();
 
   const [ modalForm, showModalForm ] = useState(false);
+  const [ publicRooms, setPublicRooms ] = useState<RoomInfo[]>([]);
+  const [ search, setSearch ] = useState("");
   const [ loading, setLoading ] = useState({
     page: false,
     form: false
@@ -51,6 +63,27 @@ const Rooms = ({ params }: { params: { id: string} }) => {
     name: z.string().min(1, "Room name is required"),
     max: z.string().min(1, "Max users is required")
   });
+
+  useEffect(() => {
+
+    const loadPublicRooms = async () => {
+
+      const response = await getPublicRooms();
+
+      if(response.message) {
+        toast[response.status](response.message);
+      }
+
+      if(response.data) {
+        setPublicRooms(response.data);
+      }
+
+    }
+
+    loadPublicRooms();
+  }, []);
+
+  const filteredRooms = publicRooms.filter((room) => room.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <>
@@ -108,6 +141,75 @@ const Rooms = ({ params }: { params: { id: string} }) => {
               </Button>
             </div>
 
+          </div>
+        </section>
+
+        <section className="flex flex-col gap-4">
+
+          <div className="flex gap-2 w-full justify-between">
+            <h2 className="flex gap-2 text-foreground-1 text-lg md:text-3xl sm:text-2xl items-center font-medium">
+              <Boxes className="size-10 text-primary"/>
+              Public rooms
+            </h2>
+            <div className="flex gap-2 items-center w-1/4">
+              <Input 
+                name="filter" 
+                placeholder="Filter rooms"
+                onChange={(e) => setSearch(e.target.value)}
+                style="secondary"
+              >
+                <Filter className="text-shade-3" />
+              </Input>
+            </div>
+          </div>
+
+          <div className="">
+            
+            { publicRooms.length > 0 ? (
+              <div className="flex flex-col gap-2 w-full">
+                { filteredRooms.map((room, index) => (
+                  <div id={room.id} key={index} className="w-full bg-shade-4 rounded-lg hover:scale-[1.02] transition-all duration-75 border-2 border-shade-4  hover:border-primary">
+
+                    <div className="flex justify-between items-center w-full p-2">
+                      <span className="flex justify-center text-2xl font-medium text-primary">
+                        {room.name}
+                      </span>
+                    </div>
+
+                    <hr className="border-shade-3 w-full" />
+
+                    <div className="flex w-full justify-between">
+                      <div className="flex flex-col gap-2 items-start w-full p-2">
+                        <div className="flex gap-2 items-center font-medium">
+                          <DoorOpen className="text-primary size-7" />
+                          Room
+                          <div className="relative flex gap-2 items-center text-xs font-medium bg-shade-3 p-1 px-2 rounded-full">
+                            {room.room}
+                            <Copy className="text-shade-2 size-4 hover:text-primary cursor-pointer" onClick={() => { navigator.clipboard.writeText(room.room); toast.success("Copied to clipboard") }} />
+                          </div>
+                        </div>
+
+                        <div className="flex w-full justify-start items-center text-xs text-shade-1">
+                          <Calendar className="size-4"/>&nbsp;<span className="italic">{ new Date(room.created_at).toLocaleString( "pt-BR", { dateStyle: "short", timeStyle: "short" } ) }</span>                       
+                        </div>
+                      </div>
+                      <div className="flex gap-2 items-center p-2">
+                        <Button role="success" style="button" onClick={ () => router.push(`/room/${room.room}`) }>
+                          <LogIn className="size-4" /> Join
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ):(
+              <div className="flex w-full justify-center items-center mt-16">
+                <span className="flex flex-col justify-center items-center text-shade-3">
+                  <PackageOpen className="size-16"/>
+                  <p className="text-lg font-bold">No public rooms found</p>
+                </span>
+              </div>
+            )}
           </div>
         </section>
 

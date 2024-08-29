@@ -93,10 +93,56 @@ const selectCharacterId = async (uuid: string, room: string): Promise<number | n
   return data.users_characters_tb[0].id;
 };
 
+export const selectPublicRooms = async (): Promise<RoomData[] | null> => {
+  const { data, error } = await supabase
+    .from("rooms_tb")
+    .select(`
+      id,
+      room,
+      name,
+      created_at,
+      config:room_config_tb!inner(
+        room_id,
+        privacy,
+        status,
+        max
+      )
+    `)
+    .eq("config.privacy", "PUB")
+    .eq("config.status", true);
+  
+  if (error || !data) {
+    return null;
+  }
+
+  const rooms: RoomData[] = [];
+
+  data.map((ln) => {
+
+    let config = null;
+
+    if(ln.config) {
+      config = ln.config[0];
+    }
+
+    rooms.push({
+      id: ln.id,
+      room: ln.room,
+      name: ln.name,
+      max: config?.max ?? 0,
+      privacy: config?.privacy ?? "PUB",
+      status: config?.status ?? true,
+      created_at: ln.created_at
+    });
+  })
+
+  return rooms;
+}
+
 export const selectRoomData = async (uuid: string, room: string) => {
 
   if(!checkUserRoomExists(uuid, room)) {
-    return null;
+    return;
   }
   
   const { data, error } = await supabase
@@ -105,18 +151,24 @@ export const selectRoomData = async (uuid: string, room: string) => {
         id,
         room,
         name,
-        created_at
+        created_at,
+        config:room_config_tb!inner(
+          max,
+          privacy,
+          status
+        ),
+        stats:room_stats_tb!inner(
+          room_id,
+          stat,
+          value,
+          updated_at
+        )
     `)
     .eq("room", room)
     .single();
 
-  if (error) {
-    console.log("[Database]: ", error);
-    return null;
-  }
-
-  if (!data) {
-    return null;
+  if (error || !data) {
+    return;
   }
 
   return data;

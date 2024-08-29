@@ -19,11 +19,31 @@ interface UserData {
 
 /* User Rooms */
 
+// [ TODO ] Ajust type logic
+
+type RoomStats = {
+  stat: string;
+  value: string;
+  updated_at: string;
+}
+
 interface RoomInfo {
   id: string;
   room: string;
   name: string;
   created_at: string;
+  config?: {
+    max:     any;
+    privacy: any;
+    status:  any;
+  };
+  stats?: RoomStats[];
+}
+
+interface RoomData extends RoomInfo {
+  max: number;
+  privacy: "PRV" | "PUB";
+  status: true | false;
 }
 
 interface RoomSocketInfo extends RoomInfo {

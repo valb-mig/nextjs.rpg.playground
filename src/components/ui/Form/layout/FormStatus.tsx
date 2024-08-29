@@ -43,7 +43,8 @@ const Status = ({
     <div className="flex flex-col w-full relative gap-2">
 
       <div className={`flex justify-center items-center relative w-fit rounded-full bg-shade-4 ${variants({containerStyle: style})} focus-within:ring-2 focus-within:ring-primary`}>
-        <input 
+
+        <input
           {...register(name)}
           className="p-2 size-24 rounded-lg text-center text-3xl bg-transparent outline-none"
           name={name}
@@ -52,9 +53,13 @@ const Status = ({
           placeholder={placeholder}
           autoFocus={autofocus}
         />
-        <span className="absolute -bottom-4 text-xl p-1 px-2 bg-shade-3 border border-shade-2 rounded-full pointer-events-none">
-          { bonus }
-        </span>
+
+        { bonus && (
+          <span className="absolute -bottom-4 text-xl p-1 px-2 bg-shade-3 border border-shade-2 rounded-full pointer-events-none">
+            { bonus }
+          </span>
+        )}
+        
       </div>  
 
       {errors && (errors[name] as FieldError)?.message && (

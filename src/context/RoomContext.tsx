@@ -7,7 +7,7 @@ export interface RoomContextProps {
   roomCharacters: CharacterSocketInfo[] | undefined;
   setRoomCharacters: (roomCharacters: CharacterSocketInfo[]) => void;
 
-  roomData: RoomSocketInfo | any;
+  roomData: RoomSocketInfo;
   setRoomData: (roomData: RoomSocketInfo | any) => void;
 }
 

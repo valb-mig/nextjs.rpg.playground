@@ -130,9 +130,7 @@ const Home = () => {
 
             <Cloud className="text-primary size-32 absolute -top-10 right-0 z-0 opacity-20" />
           </div>
-          {/* <Button role="success" style="action" onClick={() => setRoomModal(!roomModal)}>
-            <Plus />
-          </Button> */}          
+
           <div className="block bg-primary blur-[100px] size-[700px] rounded-full absolute top-0 opacity-5 transition-all z-0"></div>
         </section>
 

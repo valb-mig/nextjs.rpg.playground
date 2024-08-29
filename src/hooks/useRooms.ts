@@ -1,23 +1,13 @@
 "use client";
 
-import { insertRoom } from "@services/roomService";
-import { getUserCookies } from "@/utils/cookies";
+import { insertRoom, selectPublicRooms } from "@services/roomService";
+import validateCookies from "@/utils/validateCookies";
 
 const useRooms = () => {
 
     const createRoom = async (data: { name: string, max: string }): Promise<ResponseObject<boolean>> => {
         
-        let cookies = await getUserCookies();
-
-        if(!cookies) {
-
-            return { 
-                status: "error", 
-                message: "Invalid cookies"
-            };
-        }
-        
-        try {
+        return validateCookies<boolean>(async (cookies) => {
 
             const response = await insertRoom(cookies.uuid, cookies.name, data);
         
@@ -30,21 +20,29 @@ const useRooms = () => {
                 };
             }
 
-        } catch (error: any) {
-
-            return {
-                status: "error",
-                message: error.message
-            };
-        }
-
-        return {
-            status: "error",
-            message: "Something went wrong"
-        };
+            throw new Error("Something went wrong");
+        })
     };
 
-    return { createRoom };
+    const getPublicRooms = async (): Promise<ResponseObject<RoomData[]>> => {
+
+        return validateCookies<RoomData[]>(async () => {
+
+            const response = await selectPublicRooms();
+
+            if(response) {
+                return {
+                    status: "success",
+                    data: response
+                }
+            }
+
+            throw new Error();
+        });
+
+    }
+
+    return { createRoom, getPublicRooms };
 }
 
 export default useRooms;

@@ -84,7 +84,7 @@ const Room = ({ params }: { params: { id: string} }) => {
     <>
       <LoadingScreen loading={loading} />
 
-      { !loading && characterInfo && roomData &&  (
+      { !loading && characterInfo && roomData && (
         <div className="flex w-full">
 
           <div role="content" className="flex flex-col gap-4 w-full p-2">

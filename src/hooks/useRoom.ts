@@ -87,11 +87,14 @@ const useRoom = (roomId: string) => {
 
             if(roomData) {
 
+                console.log(roomData);
+                
                 roomInfo = {
                     id: roomData.id,
                     room: roomData.room,
                     name: roomData.name,
-                    created_at: roomData.created_at
+                    created_at: roomData.created_at,
+                    stats: roomData?.stats
                 };
 
                 return { 
