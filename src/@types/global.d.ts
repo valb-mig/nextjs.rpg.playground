@@ -66,6 +66,7 @@ interface CharacterInfo {
   name: string;
   role: string;
   room: string;
+  xp:   number;
   life: number;
   notes: string;
   age: number;
@@ -87,6 +88,7 @@ interface CharacterInventory {
 }
 
 interface CharacterSocketInfo extends CharacterInfo {
+  uuid: string;
   dice?: number;
   position?: {
     row: number;
