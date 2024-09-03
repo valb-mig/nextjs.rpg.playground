@@ -46,7 +46,7 @@ const Status = ({
 
         <input
           {...register(name)}
-          className="p-2 size-24 rounded-lg text-center text-3xl bg-transparent outline-none"
+          className="p-2 size-20 rounded-lg text-center text-3xl bg-transparent outline-none"
           name={name}
           type={type}
           value={value}

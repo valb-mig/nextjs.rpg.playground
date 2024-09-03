@@ -29,8 +29,8 @@ const Textarea = ({
   const variants = tv({
     variants: {
       containerStyle: {
-        primary: "bg-shade-4 border border-shade-3 text-white rounded-xl p-2 *:placeholder-shade-3",
-        secondary: "bg-transparent border border-shade-3 text-white rounded-xl p-2 *:placeholder-shade-3"
+        primary: "bg-shade-4 border border-shade-3 text-white rounded-[25px] p-2 *:placeholder-shade-3",
+        secondary: "bg-transparent border border-shade-3 text-white rounded-[25px] p-2 *:placeholder-shade-3"
       },
     },
     defaultVariants: {
@@ -56,7 +56,7 @@ const Textarea = ({
 
       <textarea
         {...register(name)}
-        className={`flex items-center h-10 outline-none focus-within:ring-2 focus-within:ring-primary ${variants({containerStyle: style})}`}
+        className={`flex items-center h-25 outline-none focus-within:ring-2 focus-within:ring-primary ${variants({containerStyle: style})}`}
         name={name}
         value={value}
         placeholder={placeholder}
