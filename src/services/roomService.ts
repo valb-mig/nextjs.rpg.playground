@@ -21,12 +21,14 @@ export const selectCharacterData = async (uuid: string, room: string) => {
       name,
       room_id,
       role_id,
-      role:roles_tb (
+       role:roles_tb!inner (
+        id,
         name
       ),
-      info:characters_info_tb (
+      info:characters_info_tb!left (
         character_id,
         life,
+        xp,
         notes,
         age,
         gold
@@ -47,7 +49,7 @@ export const selectCharacterData = async (uuid: string, room: string) => {
       rooms_tb (
         id,
         room
-      )
+      )     
     `)
     .eq("id", characterId)
     .single();

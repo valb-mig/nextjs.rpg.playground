@@ -9,7 +9,6 @@ const Dice = ({ max }: { max: number }) => {
 
   const { 
     characterInfo,
-    roomCharacters, 
     roomData
   } = useRoomContext();
 
