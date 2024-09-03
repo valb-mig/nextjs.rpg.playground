@@ -36,48 +36,47 @@ const Room = ({ params }: { params: { id: string} }) => {
 
   useEffect(() => {
 
-    const loadRoomData = async () => {
+    setLoading(true);
 
-      setLoading(true);
+    const loadPageData = async () => {
 
-      try {
+      const loadRoomData = async () => {
+
         const response = await getRoomData();
-
-        if (response.status === "error" || !response.data) {
-          toast.error(response.message);
-        } else {
+  
+        if(response.message) {
+          toast[response.status](response.message);
+        }
+  
+        if(response.data) {
           setRoomData(response.data);
         }
-      } catch (error) {
-        console.error(error);
       }
-    }
-
-    const loadCharacterInfo = async () => {
-      
-      try {
+  
+      const loadCharacterInfo = async () => {
+        
         const response = await getCharacterInfo();
   
-        toast[response.status](response.message);
-
-        if (response.status === "success" && response.data) {
+        if(response.message) {
+          toast[response.status](response.message);
+        }
+  
+        if (response.data) {
           socket.emit("req_enter_room", params.id, response.data);
           setCharacterInfo(response.data);
         }
-        
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
   
-    loadCharacterInfo();
-    loadRoomData();
+        setLoading(false);
+      };
+    
+      await loadCharacterInfo();
+      await loadRoomData();
+    }
+    
+    loadPageData();
 
     /* Sockets */
     handleSocket(roomContext);
-
   }, []);
 
   return (
@@ -118,14 +117,14 @@ const Room = ({ params }: { params: { id: string} }) => {
                     <div className="flex w-full gap-2 font-medium">
                       <span className="bg-shade-3 px-2 rounded-full">hp</span>
                       <p className="text-success">
-                        100<span className="text-shade-3 text-xs">/100</span>
+                        {character.life}<span className="text-shade-3 text-xs">/100</span>
                       </p>
                     </div>
 
                     <div className="flex w-full gap-2 font-medium">
                       <span className="bg-shade-3 px-2 rounded-full">xp</span> 
                       <p className="text-primary">
-                        1<span className="text-shade-3 text-xs">/100</span>
+                        {character.xp}<span className="text-shade-3 text-xs">/100</span>
                       </p>
                     </div>
 

@@ -66,6 +66,8 @@ const Rooms = ({ params }: { params: { id: string} }) => {
 
   useEffect(() => {
 
+    setLoading({ ...loading, page: true });
+
     const loadPublicRooms = async () => {
 
       const response = await getPublicRooms();
@@ -78,6 +80,7 @@ const Rooms = ({ params }: { params: { id: string} }) => {
         setPublicRooms(response.data);
       }
 
+      setLoading({ ...loading, page: false });
     }
 
     loadPublicRooms();
@@ -87,7 +90,7 @@ const Rooms = ({ params }: { params: { id: string} }) => {
 
   return (
     <>
-      <LoadingScreen loading={false} />
+      <LoadingScreen loading={loading.page} />
 
       {modalForm && (
         <Modal.Root>

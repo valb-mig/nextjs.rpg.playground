@@ -42,47 +42,36 @@ const JoinRoom = ({ params }: { params: { id: string} }) => {
 
     setLoading(true);
 
-    try {
+    let response = await joinRoom(data)
 
-      let response = await joinRoom(data)
-
+    if(response.message) {
       toast[response.status](response.message);
+    }
 
-      if(response.status === "success") {
-        router.push(`/room/${params.id}`);
-      }
-    } catch(e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    };
+    if(response.status === "success") {
+      router.push(`/room/${params.id}`);
+    }
+
+    setLoading(false);
   };
 
   useEffect(() => {
 
+    setLoading(true);
+
     const loadRoomData = async () => {
 
-      setLoading(true);
+      const response = await getRoomData();
 
-      try {
-
-        const response = await getRoomData();
-
-        if(response.message) {
-          toast[response.status](response.message);
-        }
-
-        if(response.data){
-          setRoomData(response.data);
-        }
-
-      } catch (error) {
-
-        console.error(error);
-      } finally {
-
-        setLoading(false);
+      if(response.message) {
+        toast[response.status](response.message);
       }
+
+      if(response.data){
+        setRoomData(response.data);
+      }
+
+      setLoading(false);
     }
 
     loadRoomData();
@@ -94,8 +83,8 @@ const JoinRoom = ({ params }: { params: { id: string} }) => {
 
       { roomData && (
         <div className="flex justify-center w-full p-8 gap-48">
-          <div className="w-[950px] h-full">
-            <Form.Body onSubmit={onFormSubmit} schema={ZodSchema} style="border-2 border-shade-4 rounded-lg p-8 gap-8">
+          <div className="w-[950px] h-full border-2 border-shade-4 rounded-lg p-8 gap-8">
+            <Form.Body onSubmit={onFormSubmit} schema={ZodSchema}>
               
               <section className="flex flex-col gap-8">
                 
@@ -106,10 +95,7 @@ const JoinRoom = ({ params }: { params: { id: string} }) => {
 
                 <div className="flex gap-8">
                   <div className="flex w-fit bg-shade-4 rounded-full">
-                    <img 
-                      src="/img/rpg-logo.png" 
-                      className="size-32 min-w-32 rounded-full hover:opacity-20 transition-all duration-300 cursor-pointer" 
-                    />
+                    <img src="/img/rpg-logo.png" className="size-32 min-w-32 rounded-full hover:opacity-20 transition-all duration-300 cursor-pointer" />
                   </div>
 
                   <div className="flex flex-col gap-8 w-full">
@@ -136,6 +122,7 @@ const JoinRoom = ({ params }: { params: { id: string} }) => {
                   <div className="flex gap-8">
                     {roomData.stats?.map((item, index) => (
                       <Form.Status 
+                        key={item.stat}
                         name={'status:'+item.stat} 
                         type="text" 
                         placeholder={item.stat}

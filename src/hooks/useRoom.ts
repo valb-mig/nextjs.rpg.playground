@@ -1,25 +1,14 @@
 "use client";
 
 import { selectCharacterData, selectRoomData } from "@services/roomService";
+import validateCookies from "@/utils/validateCookies";
 import { insertCharacter } from "@services/characterService";
-
-import { getUserCookies } from "@utils/cookies";
 
 const useRoom = (roomId: string) => {
 
-    const getCharacterInfo = async (): Promise<ResponseObject<CharacterInfo>> => {
+    const getCharacterInfo = async (): Promise<ResponseObject<CharacterSocketInfo>> => {
 
-        let cookies = await getUserCookies();
-
-        if(!cookies) {
-
-            return { 
-                status: "error", 
-                message: "Invalid cookies"
-            };
-        }
-
-        try {
+        return validateCookies<CharacterSocketInfo>(async (cookies) => {
 
             const response = await selectCharacterData(cookies.uuid, roomId);
 
@@ -29,107 +18,62 @@ const useRoom = (roomId: string) => {
                 throw new Error(response.message);
             }
             
-            console.log(character);
-            
-
-            let characterInfo: CharacterInfo;
-
             if(character) {
 
-                characterInfo = {
-                    name: character.name,
-                    role: character.role.name,
-                    room: roomId,
-                    life: character.info[0]?.life,
-                    notes: character.info[0]?.notes,
-                    age: character.info[0]?.age,
-                    gold: character.info[0]?.gold,
-                    character_id: character.info[0]?.character_id,
-                    inventory: character?.inventory,
-                    stats: character?.stats
-                };
+                console.log(character);
 
                 return { 
                     status: "success", 
                     message: `Wellcome to the party ${character.name}`,
-                    data: characterInfo 
+                    data: <CharacterSocketInfo>{
+                        uuid: cookies.uuid,
+                        name: character.name,
+                        role: character.role.name,
+                        room: roomId,
+                        life: character.info[0]?.life,
+                        xp: character.info[0]?.xp,
+                        notes: character.info[0]?.notes,
+                        age: character.info[0]?.age,
+                        gold: character.info[0]?.gold,
+                        character_id: character.info[0]?.character_id,
+                        inventory: character?.inventory,
+                        stats: character?.stats
+                    } 
                 };
             }
 
-            throw new Error("Character not found");
-            
-        } catch (error: any) {
+            throw new Error();
+        });
 
-            return {
-                status: "error",
-                message: error.message
-            };
-        }
     };
 
     const getRoomData = async (): Promise<ResponseObject<RoomInfo>> => {
 
-        let cookies = await getUserCookies();
-
-        if(!cookies) {
-
-            return { 
-                status: "error", 
-                message: "Invalid cookies"
-            };
-        }
-
-        try {
+        return validateCookies<RoomInfo>(async (cookies) => {
 
             const roomData = await selectRoomData(cookies.uuid, roomId);
         
-            let roomInfo: RoomInfo;
-
             if(roomData) {
-
-                console.log(roomData);
-                
-                roomInfo = {
-                    id: roomData.id,
-                    room: roomData.room,
-                    name: roomData.name,
-                    created_at: roomData.created_at,
-                    stats: roomData?.stats
-                };
 
                 return { 
                     status: "success",
-                    data: roomInfo 
+                    data: <RoomInfo>{
+                        id: roomData.id,
+                        room: roomData.room,
+                        name: roomData.name,
+                        created_at: roomData.created_at,
+                        stats: roomData?.stats
+                    } 
                 };
             }
 
-            return {
-                status: "error",
-                message: "Room not found"
-            };
-            
-        } catch (error: any) {
-
-            return {
-                status: "error",
-                message: error.message
-            };
-        }
+            throw new Error();
+        })
     };
 
     const joinRoom = async (characterData: CharacterData): Promise<ResponseObject<boolean>> => {
 
-        let cookies = await getUserCookies();
-
-        if(!cookies) {
-
-            return { 
-                status: "error", 
-                message: "Invalid cookies"
-            };
-        }
-
-        try {
+        return validateCookies<boolean>(async (cookies) => {
 
             const response = await insertCharacter(cookies.uuid, roomId, characterData);
         
@@ -142,18 +86,8 @@ const useRoom = (roomId: string) => {
                 };
             }
 
-        } catch (error: any) {
-
-            return {
-                status: "error",
-                message: error.message
-            };
-        }
-
-        return {
-            status: "error",
-            message: "Character not found"
-        };
+            throw new Error();
+        })
     };
 
     return { getCharacterInfo, joinRoom, getRoomData };
