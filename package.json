@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
-    "@supabase/supabase-js": "^2.45.2",
+    "@supabase/supabase-js": "^2.45.3",
     "eslint-plugin-jsdoc": "^48.11.0",
     "lucide": "^0.378.0",
     "lucide-react": "^0.378.0",
@@ -29,15 +29,15 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^20.16.2",
-    "@types/react": "^18.3.4",
+    "@types/node": "^20.16.5",
+    "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^9.0.8",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "postcss": "^8.4.41",
+    "postcss": "^8.4.45",
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4"
