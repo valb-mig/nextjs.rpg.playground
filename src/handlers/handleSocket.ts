@@ -3,8 +3,6 @@
 import { socket } from "@/socket";
 import { RoomContextProps } from "@/context/RoomContext";
 
-// import useSocket from "@hooks/useSocket";
-
 const handleSocket = ( 
   roomContext: RoomContextProps, 
 ) => {
@@ -23,12 +21,22 @@ const handleSocket = (
     setRoomCharacters(roomCharacters);
   });
 
-  // socket.on(
-  //   "res_map_movement",
-  //   (moveUser: UserInfo, usersObject: RoomUsersObject) => {
-  //     setRoomUsers(resMapMovement(moveUser, usersObject));
-  //   },
-  // );
+  socket.on( "res_map_movement", (charachterSocektInfo: CharacterSocketInfo, otehrCharacters: RoomCharacterSocketInfo) => {
+
+    let charactersRoom: CharacterSocketInfo[] = [];
+
+    Object.keys(otehrCharacters).map((key) => {
+      let user: CharacterSocketInfo = otehrCharacters[key];
+
+      if (user.uuid === charachterSocektInfo.uuid) {
+        user = charachterSocektInfo;
+      }
+
+      charactersRoom.push(user);
+    });
+
+    setRoomCharacters(charactersRoom);
+  });
 
   socket.on("res_roll_dice", ( characterSocketInfo: CharacterSocketInfo, dice: number ) => {
 

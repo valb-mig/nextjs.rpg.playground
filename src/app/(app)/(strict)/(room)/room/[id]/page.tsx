@@ -8,6 +8,7 @@ import {
   User,
   MapIcon
 } from "lucide-react";
+
 import { useRoomContext } from "@/context/RoomContext";
 
 import { toast } from "sonner";
@@ -112,8 +113,6 @@ const Room = ({ params }: { params: { id: string} }) => {
 
                   <div className="flex flex-col w-full gap-2">
 
-                    {/* [TODO] Load database info */}
-
                     <div className="flex w-full gap-2 font-medium">
                       <span className="bg-shade-3 px-2 rounded-full">hp</span>
                       <p className="text-success">
@@ -127,6 +126,8 @@ const Room = ({ params }: { params: { id: string} }) => {
                         {character.xp}<span className="text-shade-3 text-xs">/100</span>
                       </p>
                     </div>
+
+                    {/* [INFO] Don't show gm's dice  */}
 
                     { character.dice && character.role !== "gm" && (
                       <div className="absolute -bottom-2 -right-2 size-6 flex justify-center items-center bg-white text-black rounded-lg text-xs font-bold">
