@@ -7,11 +7,7 @@ import { socket } from "@/socket";
 
 const Dice = ({ max }: { max: number }) => {
 
-  const { 
-    characterInfo,
-    roomData
-  } = useRoomContext();
-
+  const { characterInfo, roomData } = useRoomContext();
   const [ diceNumber, setDiceNumber ] = useState(0);
   const [ diceRolling, setDiceRolling ] = useState(false);
 

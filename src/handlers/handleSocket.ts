@@ -7,7 +7,7 @@ const handleSocket = (
   roomContext: RoomContextProps, 
 ) => {
 
-  const { setRoomCharacters, setRoomData } = roomContext;
+  const { setRoomCharacters, setRoomData, setCharacterInfo } = roomContext;
 
   socket.on( "res_hello", ( characterSocketObject: RoomCharacterSocketInfo ) => {
 
@@ -17,23 +17,29 @@ const handleSocket = (
       let user: CharacterSocketInfo = characterSocketObject[key];
       roomCharacters.push(user);
     });
-
+    
     setRoomCharacters(roomCharacters);
   });
 
   socket.on( "res_map_movement", (charachterSocektInfo: CharacterSocketInfo, otehrCharacters: RoomCharacterSocketInfo) => {
 
     let charactersRoom: CharacterSocketInfo[] = [];
+    let updatedCharacterData;
 
     Object.keys(otehrCharacters).map((key) => {
       let user: CharacterSocketInfo = otehrCharacters[key];
 
       if (user.uuid === charachterSocektInfo.uuid) {
         user = charachterSocektInfo;
+        updatedCharacterData = charachterSocektInfo
       }
 
       charactersRoom.push(user);
     });
+
+    if(updatedCharacterData) {
+      setCharacterInfo(updatedCharacterData);
+    }
 
     setRoomCharacters(charactersRoom);
   });
@@ -46,21 +52,12 @@ const handleSocket = (
         dice: dice
       }));
     }
-    // setRoomCharacters(roomCharacters); // Atualizar o responsavel pelo dado
   });
-
-  // socket.on("res_gm_room_data", (data: { key: any; value: any }) => {
-  //   setRoomData((prevRoomData) => ({
-  //     ...prevRoomData,
-  //     [data.key]: data.value,
-  //   }));
-  // });
 
   return () => {
     socket.off("res_hello");
-    // socket.off("res_map_movement");
-    // socket.off("res_roll_dice");
-    // socket.off("res_gm_room_data");
+    socket.off("res_map_movement");
+    socket.off("res_roll_dice");
   };
 };
 
