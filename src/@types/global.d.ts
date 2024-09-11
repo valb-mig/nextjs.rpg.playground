@@ -14,6 +14,7 @@ interface UserData {
   uuid:  string;
   xp:    number;
   name:  string;
+  username: string;
   email: string;
 }
 

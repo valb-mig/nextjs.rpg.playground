@@ -6,7 +6,7 @@ const ToolbarPlayer = ({ info }: { info: CharacterSocketInfo }) => {
 
     return (
         <>
-            <section role="stats">
+            <section role="stats" className="flex justify-center items-center h-full">
                 {info.stats.length > 0 ? (
                     <details className="flex gap-4 flex-col group [&_summary::-webkit-details-marker]:hidden">
 
@@ -54,7 +54,7 @@ const ToolbarPlayer = ({ info }: { info: CharacterSocketInfo }) => {
                 )}
             </section>
 
-            <section role="inventory">
+            <section role="inventory" className="flex justify-center items-center h-full">
                 {info.inventory && info.inventory.length > 0 ? (
                     <details className="flex flex-col gap-2 group [&_summary::-webkit-details-marker]:hidden">
                         <summary className="flex justify-between items-center hover:bg-shade-3 p-2 rounded-lg transition">

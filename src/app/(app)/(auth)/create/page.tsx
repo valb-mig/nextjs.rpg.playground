@@ -22,6 +22,7 @@ import Form from "@ui/Form";
 import Button from "@ui/Button";
 
 const ZodSchema = z.object({
+  username: z.string().min(1, "Username is required"),
   name: z.string().min(1, "Name is required"),
   email: z.string().min(1, "Email is required"),
   token: z.string().min(1, "Token is required")
@@ -67,7 +68,11 @@ const Create = () => {
             schema={ZodSchema}
             style="w-full md:w-[500px] bg-shade-4 p-4 rounded-lg"
           >
-            <Form.Input label="Username" name="name" type="text" autofocus>
+            <Form.Input label="Username" name="username" type="text" autofocus>
+              <User />
+            </Form.Input>
+
+            <Form.Input label="Name" name="name" type="text" autofocus>
               <User />
             </Form.Input>
 

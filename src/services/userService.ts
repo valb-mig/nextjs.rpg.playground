@@ -6,6 +6,7 @@ import { hashPassword } from "@utils/hashPassword";
 
 type FormData = {
   name: string;
+  username: string;
   email: string;
   token: string;
 };
@@ -15,9 +16,10 @@ export const insertUser = async (formData: FormData) => {
   const { hash, salt } = hashPassword(formData.token);
 
   let user: User = {
+    name: formData.name,
+    username: formData.username,
     uuid: uuidv4(),
     email: formData.email,
-    name: formData.name,
     token: hash,
     salt: salt
   };
@@ -44,6 +46,39 @@ export const insertUser = async (formData: FormData) => {
 
   return user;
 };
+
+type FormUser = {
+  username?: string;
+  email?: string;
+};
+
+export const updateUserData = async(uuid: string, formUser: FormUser) => {
+
+  try {
+
+    if (!selectUserData(uuid)) {
+      throw new Error("User not found");
+    }
+
+    const { data, error } = await supabase
+      .from("users_tb")
+      .update(formUser)
+      .eq('uuid', uuid)
+      .select();
+
+    if(error || !data) {
+      throw new Error("Error trying to update user");  
+    }
+
+    return {
+      username: data[0].username,
+      email: data[0].email
+    };
+
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
 
 export const selectCharactersInfo = async (uuid: string) => {
 
@@ -154,6 +189,7 @@ export const selectUserData = async (uuid: string) => {
         id,
         uuid, 
         name,
+        username,
         xp,
         email
       `)
@@ -172,6 +208,7 @@ export const selectUserData = async (uuid: string) => {
       uuid:  data[0].uuid,
       xp:    data[0].xp,
       name:  data[0].name,
+      username:  data[0].username,
       email: data[0].email
     };
 

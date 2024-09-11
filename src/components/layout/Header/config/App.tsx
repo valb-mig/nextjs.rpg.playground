@@ -50,7 +50,10 @@ const AppHeader = () => {
                         <div className="flex gap-2 flex-col">
                             <div className="flex gap-2 items-center truncate">
                                 <Image src="/img/rpg-logo.svg" alt="logo" className="size-7 pointer-events-none" width={7} height={7}/>
-                                { userData?.name }
+                                <div className="flex flex-col justify-start">
+                                    <p className="text-sm font-medium">{userData?.username}</p>
+                                    <span className="text-xs italic text-shade-2">@{ userData?.name }</span>
+                                </div>
                             </div>
                             <div className="flex gap-2 items-center">
                                 <p className="bg-shade-3 px-2 rounded-full font-medium">xp</p>

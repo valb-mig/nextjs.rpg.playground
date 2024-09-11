@@ -129,8 +129,7 @@ const Rooms = ({ params }: { params: { id: string} }) => {
 
       <div className="flex flex-col w-full p-8 gap-16">
 
-        <section className="flex gap-2">
-
+        <section className="flex gap-2 border border-dashed border-shade-3 rounded-lg">
           <div className="relative rounded-lg  p-4 w-full">
 
             <div className="flex flex-col gap-4 justify-center items-center relative z-10">

@@ -53,11 +53,11 @@ const ToolBarRoom = () => {
                             {[
                                 {
                                     number: 4,
-                                    icon: <Dice4 className="text-primary size-6 rotate-6" />
+                                    icon: <Dice4 className="text-primary size-3 rotate-6 sm:size-6" />
                                 },
                                 {
                                     number: 6,
-                                    icon: <Dice6 className="text-primary size-6 -rotate-6" />
+                                    icon: <Dice6 className="text-primary size-3 rotate-6 sm:size-6" />
                                 },
                                 {
                                     number: 8,
@@ -89,14 +89,14 @@ const ToolBarRoom = () => {
                                     number: 20,
                                     icon: (
                                         <>
-                                            <Dices className="text-primary size-6" />
+                                            <Dices className="text-primary size-4 sm:size-6" />
                                         </>
                                     )
                                 }
                             ].map((value) => (
                                 <button 
                                     key={value.number} 
-                                    className={`flex items-center justify-center text-foreground-1 text-lg font-medium bg-shade-3 p-2 rounded-lg ${ diceMax === value.number ? "bg-shade-2 ring-2 ring-primary" : ""} hover:bg-shade-2 transition-all size-10`}
+                                    className={`flex items-center justify-center text-foreground-1 text-lg font-medium bg-shade-3 p-2 rounded-lg ${ diceMax === value.number ? "bg-shade-2 ring-2 ring-primary" : ""} hover:bg-shade-2 transition-all size-5 sm:size-10`}
                                     onClick={() => setDiceMax(value.number)}
                                 >
                                     <div className="relative flex justify-center items-center">

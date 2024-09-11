@@ -4,6 +4,7 @@ import type { User } from "@db/users_tb";
 import { insertUser } from "@services/userService";
 
 type FormData = {
+  username: string;
   name: string;
   token: string;
   email: string;
