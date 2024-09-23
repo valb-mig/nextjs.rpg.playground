@@ -16,21 +16,14 @@ const Map = () => {
     <div className="grid grid-cols-10 rounded-lg">
       { Array.from({ length: 10 }).map((_, rowIndex) => (
 
-        <div key={rowIndex} className="flex flex-col">
+        <div key={rowIndex} className="flex flex-col border-r border-r-shade-3 border-b border-b-shade-3">
 
           { Array.from({ length: 5 }).map((_, colIndex) => (
             <div
               key={colIndex}
-              className="relative flex items-center justify-center bg-shade-3 hover:bg-shade-2 p-2 cursor-pointer rounded-lg size-14"
+              className="relative flex items-center justify-center hover:bg-shade-3 p-2 cursor-pointer h-14 border-l border-l-shade-3 border-t border-t-shade-3"
               onClick={() => handleClick(rowIndex, colIndex)}
             >
-              <span
-                key={rowIndex + colIndex}
-                className="absolute text-neutral-900 text-sm font-bold"
-              >
-                {rowIndex} x {colIndex}
-              </span>
-
               {roomCharacters && roomCharacters.map(
                 (character) =>
                   character.position &&
