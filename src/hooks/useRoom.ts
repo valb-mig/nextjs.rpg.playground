@@ -20,8 +20,6 @@ const useRoom = (roomId: string) => {
             
             if(character) {
 
-                console.log(character);
-
                 return { 
                     status: "success", 
                     message: `Wellcome to the party ${character.name}`,
@@ -52,7 +50,7 @@ const useRoom = (roomId: string) => {
         return validateCookies<RoomInfo>(async (cookies) => {
 
             const roomData = await selectRoomData(cookies.uuid, roomId);
-        
+            
             if(roomData) {
 
                 return { 

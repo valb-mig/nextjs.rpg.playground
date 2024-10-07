@@ -25,7 +25,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Input from "@/components/ui/Input";
 
-const Rooms = ({ params }: { params: { id: string} }) => {
+const Rooms = () => {
 
   const router = useRouter();
 
@@ -39,17 +39,24 @@ const Rooms = ({ params }: { params: { id: string} }) => {
     form: false
   });
 
-  const onFormSubmit = async ( data: { name: string, max: string } ) => {
+  const onFormSubmit = async ( data: { 
+    privacy: 'PUB' | 'PRIV',
+    name: string, 
+    max: number 
+  } ) => {
 
     setLoading({...loading, form: true});
 
     try {
+
       let response = await createRoom(data);
 
-      toast[response.status](response.message);
+      if(response.message) {
+        toast[response.status](response.message);
+      }
 
-      if(response.status === "success") {
-        showModalForm(false);
+      if(response.status === "success" && response.data) {
+        router.push(`/room/${response.data}`);
       }
       
     } catch(e) {
@@ -60,6 +67,7 @@ const Rooms = ({ params }: { params: { id: string} }) => {
   };
 
   const ZodSchema = z.object({
+    privacy: z.string().min(1, "Privacy name is required"),
     name: z.string().min(1, "Room name is required"),
     max: z.string().min(1, "Max users is required")
   });
@@ -71,19 +79,20 @@ const Rooms = ({ params }: { params: { id: string} }) => {
     const loadPublicRooms = async () => {
 
       const response = await getPublicRooms();
-
+  
       if(response.message) {
         toast[response.status](response.message);
       }
-
+  
       if(response.data) {
         setPublicRooms(response.data);
       }
-
+  
       setLoading({ ...loading, page: false });
     }
 
     loadPublicRooms();
+
   }, []);
 
   const filteredRooms = publicRooms.filter((room) => room.name.toLowerCase().includes(search.toLowerCase()));
@@ -92,11 +101,11 @@ const Rooms = ({ params }: { params: { id: string} }) => {
     <>
       <LoadingScreen loading={loading.page} />
 
-      {modalForm && (
+      { modalForm && (
         <Modal.Root>
           <Modal.Header>
             <h1 className="text-foreground-1 text-3xl font-medium">
-              Create a room
+              Create
             </h1>
             <button onClick={() => showModalForm(false)} className="text-foreground-1 text-2xl font-medium">
               <X />
@@ -106,8 +115,18 @@ const Rooms = ({ params }: { params: { id: string} }) => {
           <Modal.Body>
             <Form.Body onSubmit={onFormSubmit} schema={ZodSchema}>
               
-              <Form.Input type="text" name="name" label="Room name" placeholder="" style="secondary" />
-              <Form.Input type="number" name="max" label="Max users" placeholder="" style="secondary" />
+              <Form.Input type="text"   name="name"    label="Room name"  placeholder="" style="secondary" />
+              <Form.Input type="number" name="max"     label="Max users"  placeholder="" style="secondary" />
+              
+              <div>
+                <label className="text-white font-medium">
+                  Room status
+                </label>
+                <div className="flex w-full justify-start">
+                  <Form.Input type="radio" name="privacy" label="Public"  placeholder="" style="default" value={"PUB"}  />
+                  <Form.Input type="radio" name="privacy" label="Private" placeholder="" style="default" value={"PRIV"} />
+                </div>
+              </div>
               
               <div className="flex w-full justify-end">
                 <Button 

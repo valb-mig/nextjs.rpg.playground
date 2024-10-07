@@ -113,19 +113,23 @@ const Room = ({ params }: { params: { id: string} }) => {
 
                   <div className="flex flex-col w-full gap-2">
 
-                    <div className="flex w-full gap-2 font-medium">
-                      <span className="bg-shade-3 px-2 rounded-full">hp</span>
-                      <p className="text-success">
-                        {character.life}<span className="text-shade-3 text-xs">/100</span>
-                      </p>
-                    </div>
+                    { character.role !== "gm" && (
+                      <>
+                        <div className="flex w-full gap-2 font-medium">
+                          <span className="bg-shade-3 px-2 rounded-full">hp</span>
+                          <p className="text-success">
+                            {character.life}<span className="text-shade-3 text-xs">/100</span>
+                          </p>
+                        </div>
 
-                    <div className="flex w-full gap-2 font-medium">
-                      <span className="bg-shade-3 px-2 rounded-full">xp</span> 
-                      <p className="text-primary">
-                        {character.xp}<span className="text-shade-3 text-xs">/100</span>
-                      </p>
-                    </div>
+                        <div className="flex w-full gap-2 font-medium">
+                          <span className="bg-shade-3 px-2 rounded-full">xp</span> 
+                          <p className="text-primary">
+                            {character.xp}<span className="text-shade-3 text-xs">/100</span>
+                          </p>
+                        </div>
+                      </>
+                    )}
 
                     {/* [INFO] Don't show gm's dice  */}
 

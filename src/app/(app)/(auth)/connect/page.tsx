@@ -45,7 +45,9 @@ const Connect = () => {
     try {
       let response = await connectUser(data)
       
-      toast[response.status](response.message);
+      if(response.message) {
+        toast[response.status](response.message);
+      }
 
       if(response.status === "success") {
 

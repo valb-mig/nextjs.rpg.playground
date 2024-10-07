@@ -42,10 +42,11 @@ const Create = () => {
 
     let response = await createUser(data);
 
-    if (response.status === "error") {
+    if(response.message) {
       toast.error(response.message);
-    } else {
-      toast.success(response.message);
+    }
+
+    if(response.status === "success") {
       router.push(`/connect`);
     }
 

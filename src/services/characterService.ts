@@ -67,9 +67,7 @@ export const insertCharacter = async (uuid: string, room: string, characterData:
 
     let characterId = await insertCharacterData(userId, roomId, characterData);
 
-    // TODO: Insert character stats
-    // await insertCharacterStatsData(characterId, characterData);
-
+    await insertCharacterStatsData(characterId, characterData);
     await insertCharacterInfoData(characterId, characterData);
 
     return true;

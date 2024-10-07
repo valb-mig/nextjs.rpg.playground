@@ -37,7 +37,6 @@ const Home = () => {
   });
 
   const [ rooms, setRooms ] = useState<UserRoomsData[]>([]);
-  const [ roomModal, setRoomModal ] = useState(false);
   const [ search, setSearch ] = useState("");
   const { getUserRooms, checkRoom } = useHome();
 
@@ -58,7 +57,6 @@ const Home = () => {
   
       if (response.status === "success") {
         router.push(`/room/${data.room}`);
-        setRoomModal(false);
       }
     } catch (error) {
       console.error(error);

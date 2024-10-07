@@ -6,8 +6,8 @@ import { tv } from "tailwind-variants";
 interface InputProps {
   label?: string;
   name: string;
-  type?: "text" | "password" | "email" | "number" | "file";
-  style?: "primary" | "secondary";
+  type?: "text" | "password" | "email" | "number" | "file" | "radio";
+  style?: "primary" | "secondary" | "default";
   placeholder?: string;
   value?: any;
   disabled?: boolean;
@@ -32,7 +32,8 @@ const Input = ({
     variants: {
       containerStyle: {
         primary: "bg-shade-4 border border-shade-3 text-white rounded-full p-2 *:placeholder-shade-3",
-        secondary: "bg-transparent border border-shade-3 text-white rounded-full p-2 *:placeholder-shade-3"
+        secondary: "bg-transparent border border-shade-3 text-white rounded-full p-2 *:placeholder-shade-3",
+        default: ""
       },
     },
     defaultVariants: {
@@ -45,7 +46,7 @@ const Input = ({
   return (
     <div className="flex flex-col w-full relative gap-2">
 
-      { label && (
+      { label && style != "default" && (
         <div className="absolute -top-4 left-7">
           <label
             htmlFor={name}

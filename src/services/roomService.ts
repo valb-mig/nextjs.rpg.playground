@@ -159,7 +159,7 @@ export const selectRoomData = async (uuid: string, room: string) => {
           privacy,
           status
         ),
-        stats:room_stats_tb!inner(
+        stats:room_stats_tb!left(
           room_id,
           stat,
           value,
@@ -225,9 +225,10 @@ export const insertRoom = async (
   uuid: string, 
   name: string,
   form: { 
+    privacy: 'PUB' | 'PRIV',
     name: string, 
-    max: string 
-  }): Promise<boolean> => {
+    max: number
+  }): Promise<string | undefined> => {
 
   const userId = await checkUser(uuid);
 
@@ -235,27 +236,65 @@ export const insertRoom = async (
     throw new Error("User not found");
   }
 
+  const roomHash = randomUrl();
+
   const { data, error } = await supabase
     .from("rooms_tb")
     .insert([
       {
         name: form.name,
-        room: randomUrl(),
+        room: roomHash,
         created_at: new Date().toISOString()
       }
     ])
     .select('id');
 
   if (error || !data) {
-    return false;
+    return;
   }
-  
-  // [TODO] Insert room stats
 
-  const characterId = await insertCharacterData(userId, data[0].id, name);
+  await insertRoomConfig(data[0].id, form.max, form.privacy);
+  await insertRoomStats(data[0].id);
 
-  return true;
+  // [INFO] Create GM character
+  await insertCharacterData(userId, data[0].id, name);
+
+  return roomHash;
 };
+
+export const insertRoomStats = async(roomId: number) => {
+  
+  const { data, error } = await supabase
+  .from("room_stats_tb")
+  .insert([
+    {
+      room_id: roomId,
+      stat: 'atk',
+      value: '0',
+    }
+  ]);
+
+  if (error || !data) {
+    return;
+  }
+}
+
+export const insertRoomConfig = async (roomId: number, max: number, privacy: "PUB" | "PRIV") => {
+
+  const { data, error } = await supabase
+    .from("room_config_tb")
+    .insert([
+      {
+        room_id: roomId,
+        privacy: privacy,
+        max: max
+      }
+    ]);
+
+  if (error || !data) {
+    return;
+  }
+}
 
 const checkUser = async (uuid: string): Promise<number | undefined> => {
 

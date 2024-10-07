@@ -5,9 +5,13 @@ import validateCookies from "@/utils/validateCookies";
 
 const useRooms = () => {
 
-    const createRoom = async (data: { name: string, max: string }): Promise<ResponseObject<boolean>> => {
+    const createRoom = async (data: { 
+        privacy: 'PUB' | 'PRIV',
+        name: string, 
+        max: number 
+    }): Promise<ResponseObject<string>> => {
         
-        return validateCookies<boolean>(async (cookies) => {
+        return validateCookies<string>(async (cookies) => {
 
             const response = await insertRoom(cookies.uuid, cookies.name, data);
         
@@ -16,7 +20,7 @@ const useRooms = () => {
                 return { 
                     status: "success", 
                     message: "Wellcome to the party",
-                    data: true
+                    data: response
                 };
             }
 
