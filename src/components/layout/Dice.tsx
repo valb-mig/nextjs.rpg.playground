@@ -7,8 +7,7 @@ import { socket } from "@/socket";
 
 const Dice = ({ max }: { max: number }) => {
 
-  const { characterInfo, roomData } = useRoomContext();
-  const [ diceNumber, setDiceNumber ] = useState(0);
+  const { characterInfo } = useRoomContext();
   const [ diceRolling, setDiceRolling ] = useState(false);
 
   const rollDice = () => {
@@ -26,14 +25,13 @@ const Dice = ({ max }: { max: number }) => {
 
   useEffect(() => {
 
-    if(!roomData?.dice) {
+    if(!characterInfo?.dice) {
       return;
     }
 
-    setDiceNumber(roomData.dice);
     setDiceRolling(false);
 
-  }, [roomData]);
+  }, [characterInfo]);
 
   return (
     <>
@@ -42,7 +40,7 @@ const Dice = ({ max }: { max: number }) => {
           onClick={() => rollDice()}
           className="flex justify-center items-center bg-neutral-50 w-40 h-40 rounded-lg text-6xl cursor-pointer select-none active:scale-110 text-black"
         >
-          { diceNumber }
+          { characterInfo?.dice }
         </div>
       ) : (
         <div className="flex justify-center items-center bg-neutral-50 w-40 h-40 rounded-lg animate-spin" />

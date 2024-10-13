@@ -7,7 +7,7 @@ const handleSocket = (
   roomContext: RoomContextProps, 
 ) => {
 
-  const { setRoomCharacters, setRoomData, setCharacterInfo } = roomContext;
+  const { setRoomCharacters, setCharacterInfo } = roomContext;
 
   socket.on( "res_hello", ( characterSocketObject: RoomCharacterSocketInfo ) => {
 
@@ -22,6 +22,14 @@ const handleSocket = (
   });
 
   socket.on( "res_map_movement", async (characterSocektInfo: CharacterSocketInfo, otherCharacters: RoomCharacterSocketInfo) => {
+    updateCharactersRoomData(characterSocektInfo, otherCharacters);
+  });
+
+  socket.on("res_roll_dice", async (characterSocektInfo: CharacterSocketInfo, otherCharacters: RoomCharacterSocketInfo) => {
+    updateCharactersRoomData(characterSocektInfo, otherCharacters);
+  });
+
+  const updateCharactersRoomData = async (characterSocektInfo: CharacterSocketInfo, otherCharacters: RoomCharacterSocketInfo) => {
 
     const cookieData = await getUserCookies();
 
@@ -47,17 +55,7 @@ const handleSocket = (
     }
 
     setRoomCharacters(updatedCharactersRoom);
-  });
-
-  socket.on("res_roll_dice", ( characterSocketInfo: CharacterSocketInfo, dice: number ) => {
-
-    if(characterSocketInfo.uuid) {
-      setRoomData((prevRoomData: RoomSocketInfo | any) => ({
-        ...prevRoomData, 
-        dice: dice
-      }));
-    }
-  });
+  }
 
   return () => {
     socket.off("res_hello");
