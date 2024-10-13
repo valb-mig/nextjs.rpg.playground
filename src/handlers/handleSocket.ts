@@ -1,6 +1,7 @@
 import { socket } from "@/socket";
 import { RoomContextProps } from "@/context/RoomContext";
-import { getUserCookies } from "@/utils/cookies";
+
+import { getUserCookies } from "@utils/cookies";
 
 const handleSocket = ( 
   roomContext: RoomContextProps, 
@@ -20,29 +21,32 @@ const handleSocket = (
     setRoomCharacters(roomCharacters);
   });
 
-  socket.on( "res_map_movement", (charachterSocektInfo: CharacterSocketInfo, otherCharacters: RoomCharacterSocketInfo) => {
+  socket.on( "res_map_movement", async (characterSocektInfo: CharacterSocketInfo, otherCharacters: RoomCharacterSocketInfo) => {
 
-    let charactersRoom: CharacterSocketInfo[] = [];
+    const cookieData = await getUserCookies();
 
+    let updatedCharactersRoom: CharacterSocketInfo[] = [];
+
+    // [INFO] Updating all characters array
     Object.keys(otherCharacters).map((key) => {
       let currentUser: CharacterSocketInfo = otherCharacters[key];
 
       // [INFO] Veryfies if the user from socket is the same on the client
 
-      if (currentUser.uuid === charachterSocektInfo.uuid) {
-        currentUser = charachterSocektInfo;
+      if (currentUser.uuid === characterSocektInfo.uuid) {
+        currentUser = characterSocektInfo;
       }
-
-      charactersRoom.push(currentUser);
+      
+      updatedCharactersRoom.push(currentUser);
     });
 
     // [TODO] Update position on context
 
-    // if(charachterSocektInfo.uuid) {
-    //   setCharacterInfo(); // Update de context of the client
-    // }
+    if(characterSocektInfo.uuid === cookieData?.uuid) {
+      setCharacterInfo(characterSocektInfo);
+    }
 
-    setRoomCharacters(charactersRoom);
+    setRoomCharacters(updatedCharactersRoom);
   });
 
   socket.on("res_roll_dice", ( characterSocketInfo: CharacterSocketInfo, dice: number ) => {
