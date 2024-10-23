@@ -6,7 +6,8 @@ import { socket } from "@/socket";
 import { 
   DoorOpen, 
   User,
-  MapIcon
+  MapIcon,
+  NotepadText
 } from "lucide-react";
 
 import { useRoomContext } from "@/context/RoomContext";
@@ -19,6 +20,7 @@ import handleSocket from "@/handlers/handleSocket";
 import LoadingScreen from "@layout/LoadingScreen";
 import ToolBar from "@layout/ToolBar";
 import Map from "@/components/layout/Map";
+import Button from "@/components/ui/Button";
 
 const Room = ({ params }: { params: { id: string} }) => {
 
@@ -96,7 +98,7 @@ const Room = ({ params }: { params: { id: string} }) => {
 
             <div className="flex gap-2 w-full">
               { roomCharacters && roomCharacters.map((character: CharacterSocketInfo, index: number) => (
-                <span key={index} className="relative flex gap-2 flex-col w-fit items-center min-w-fit p-2 rounded-lg bg-shade-4">
+                <span key={index} className="relative flex gap-2 flex-col w-fit items-center min-w-fit p-2 rounded-lg bg-shade-4 group">
                   
                   <div className="flex items-center gap-2">
 
@@ -141,6 +143,15 @@ const Room = ({ params }: { params: { id: string} }) => {
 
                   </div>
                   
+                  <Button 
+                    style="action" 
+                    role="info" 
+                    className="absolute -bottom-2 -right-2 size-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" 
+                    onClick={() => console.log('Details')}
+                  >
+                    <NotepadText />
+                  </Button>
+
                 </span>
               ))}
             </div>

@@ -29,6 +29,7 @@ const ToolBarRoom = () => {
 
             {characterInfo && (
                 <aside className={`relative flex flex-col gap-4 bg-shade-4 h-full justify-between rounded-lg p-2 `+(showToolBar ? "w-52":"w-12")}>
+                    
                     { characterInfo.role === "gm" ? <ToolbarGm info={characterInfo} /> : <ToolbarPlayer info={characterInfo} /> }
 
                     <section role="dice" className=" flex flex-col gap-2 bg-shade-3 rounded-lg">

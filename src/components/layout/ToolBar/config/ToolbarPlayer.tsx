@@ -1,16 +1,17 @@
-import { Backpack, ChevronUp, ScrollText } from "lucide-react";
+import { Backpack, ChevronUp, Plus, ScrollText } from "lucide-react";
 
 import itemIcons from "@utils/itemIcons";
+import Button from "@/components/ui/Button";
 
 const ToolbarPlayer = ({ info }: { info: CharacterSocketInfo }) => {
 
     return (
         <>
-            <section role="stats" className="flex justify-center items-center h-full">
+            <section role="stats" className="flex justify-start items-center bg-shade-5 rounded-lg p-2">
                 {info.stats.length > 0 ? (
-                    <details className="flex gap-4 flex-col group [&_summary::-webkit-details-marker]:hidden">
+                    <details className="flex gap-4 flex-col w-full group [&_summary::-webkit-details-marker]:hidden">
 
-                        <summary className="flex justify-between items-center hover:bg-shade-3 p-2 rounded-lg transition">
+                        <summary className="flex justify-between items-center hover:bg-shade-3 p-2 rounded-lg transition cursor-pointer">
                             <span className="flex items-center font-medium">
                                 <ScrollText className="size-7 text-primary rotate-12"/>&nbsp;
                                 Status
@@ -24,10 +25,10 @@ const ToolbarPlayer = ({ info }: { info: CharacterSocketInfo }) => {
                             <table className="flex flex-col table-auto gap-2 w-full">
                                 <thead className="text-foreground-1 border-b border-shade-3">
                                     <tr className="flex items-center p-1">
-                                        <th className="text-foreground-1 font-medium bg-shade-3 px-2 rounded-full text-lg w-1/4">
+                                        <th className="text-foreground-1 font-medium px-2 rounded-full text-lg w-full">
                                             Status
                                         </th>
-                                        <th className="text-foreground-2 font-medium px-2 rounded-full text-lg w-3/4">
+                                        <th className="text-foreground-2 font-medium px-2 rounded-full text-lg w-full">
                                             Value
                                         </th>
                                     </tr>
@@ -35,10 +36,10 @@ const ToolbarPlayer = ({ info }: { info: CharacterSocketInfo }) => {
                                 <tbody>
                                     { info.stats.map((status, index) => (
                                         <tr key={index} className="flex items-center p-1">
-                                            <td className="text-center text-foreground-1 font-medium bg-shade-3 px-2 rounded-full text-sm w-1/4">
+                                            <td className="text-center text-foreground-1 font-medium bg-shade-3 rounded-full text-sm w-full">
                                                 {status.stat}
                                             </td>
-                                            <td className="text-foreground-2 font-medium px-2 rounded-full text-sm w-3/4 text-center">
+                                            <td className="text-foreground-2 font-medium px-2 rounded-full text-sm w-full text-center">
                                                 {status.value}
                                             </td>
                                         </tr>
@@ -76,8 +77,13 @@ const ToolbarPlayer = ({ info }: { info: CharacterSocketInfo }) => {
                         </div>
                     </details>
                 ):(
-                    <div className="text-shade-1 text-center">
-                        No items
+                    <div className="flex w-full items-center justify-between text-shade-1 text-center">
+                        <span className="w-full">
+                            No items
+                        </span>
+                        <Button role="default" style="action" className="w-12" onClick={() => console.log("Add Item")}>
+                            <Plus className="size-7 text-primary" />
+                        </Button>
                     </div>
                 )}
             </section>
