@@ -20,7 +20,6 @@ import {
 
 const ToolBarRoom = () => {
 
-    const [ showToolBar, setShowToolBar ] = useState(true);
     const [ diceMax, setDiceMax ] = useState(4);
     const { characterInfo } = useRoomContext();
 
@@ -28,7 +27,7 @@ const ToolBarRoom = () => {
         <div className="relative flex flex-col p-2 group z-10 h-full">
 
             {characterInfo && (
-                <aside className={`relative flex flex-col gap-4 bg-shade-4 h-full justify-between rounded-lg p-2 `+(showToolBar ? "w-52":"w-12")}>
+                <aside className={`relative flex flex-col gap-4 bg-shade-4 h-full justify-between rounded-lg p-2 w-52`}>
                     
                     { characterInfo.role === "gm" ? <ToolbarGm info={characterInfo} /> : <ToolbarPlayer info={characterInfo} /> }
 
@@ -110,13 +109,6 @@ const ToolBarRoom = () => {
                             ))}
                         </div>
                     </section>
-
-                    <button 
-                        onClick={() => setShowToolBar(!showToolBar)} 
-                        className="absolute top-2/4 -left-5 items-center text-primary bg-shade-3 border border-shade-2 p-1 rounded-lg size-9 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                    >
-                        { showToolBar ?  <PanelRightClose/> : <PanelRightOpen/> }
-                    </button>
                 </aside>
             )}
            

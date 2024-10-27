@@ -65,10 +65,10 @@ const AppHeader = () => {
 
                         <ul>
                             <li className="p-1">
-                                <Link href="/settings" className="flex gap-2 items-center p-1 px-2 text-foreground-1 rounded-full hover:bg-primary/10 text-lg font-medium">
+                                <a href="/settings" className="flex gap-2 items-center p-1 px-2 text-foreground-1 rounded-full hover:bg-primary/10 text-lg font-medium">
                                     <UserCircle className="text-primary size-6" />
                                     Profile
-                                </Link>
+                                </a>
                             </li>
                             <li className="p-1">
                                 <button 

@@ -7,7 +7,8 @@ import {
   DoorOpen, 
   User,
   MapIcon,
-  NotepadText
+  NotepadText,
+  Trash
 } from "lucide-react";
 
 import { useRoomContext } from "@/context/RoomContext";
@@ -156,10 +157,19 @@ const Room = ({ params }: { params: { id: string} }) => {
               ))}
             </div>
 
-            <h2 className="flex gap-2 text-foreground-1 text-lg md:text-3xl sm:text-2xl items-center font-medium">
-              <MapIcon className="text-primary size-10" />
-              Map
-            </h2>
+            <div className="flex gap-2 text-foreground-1 text-lg md:text-3xl sm:text-2xl items-center font-medium">
+              <h2 className="flex gap-2 items-center">
+                <MapIcon className="text-primary size-10" />
+                Map
+              </h2>
+              <Button 
+                style="button" 
+                role="default" 
+                onClick={() => socket.emit("req_map_clear", characterInfo)}
+              >
+                <Trash /> <span className="text-lg">Clear</span>
+              </Button>
+            </div>
 
             <div role="map" className="bg-shade-4 rounded-lg p-2">
               <Map />

@@ -34,8 +34,7 @@ const useConnect = () => {
     router.push(`/home`);
 
     return {
-      status: "success",
-      message: "Logged"
+      status: "success"
     }
   };
 

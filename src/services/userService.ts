@@ -31,12 +31,7 @@ export const insertUser = async (formData: FormData) => {
       .insert([user])
       .select();
 
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    if (!data) {
+    if (!data || error) {
       throw new Error("Error creating user");
     }
 

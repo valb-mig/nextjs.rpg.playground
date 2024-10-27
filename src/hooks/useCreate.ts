@@ -29,8 +29,7 @@ const useCreate = () => {
       }
 
       return {
-        status: "success",
-        data: createdUser
+        status: "success"
       };
 
     } catch (error: any) {

@@ -12,7 +12,8 @@ import {
   User,
   Mail,
   EyeOffIcon,
-  EyeIcon
+  EyeIcon,
+  AtSign
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -43,7 +44,7 @@ const Create = () => {
     let response = await createUser(data);
 
     if(response.message) {
-      toast.error(response.message);
+      toast[response.status](response.message);
     }
 
     if(response.status === "success") {
@@ -74,7 +75,7 @@ const Create = () => {
             </Form.Input>
 
             <Form.Input label="Name" name="name" type="text" autofocus>
-              <User />
+              <AtSign />
             </Form.Input>
 
             <Form.Input label="Email" name="email" type="email">

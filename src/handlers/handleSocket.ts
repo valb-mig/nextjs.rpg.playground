@@ -25,6 +25,10 @@ const handleSocket = (
     updateCharactersRoomData(characterSocektInfo, otherCharacters);
   });
 
+  socket.on( "res_map_clear", async (characterSocektInfo: CharacterSocketInfo, otherCharacters: RoomCharacterSocketInfo) => {
+    updateCharactersRoomData(characterSocektInfo, otherCharacters);
+  });
+
   socket.on("res_roll_dice", async (characterSocektInfo: CharacterSocketInfo, otherCharacters: RoomCharacterSocketInfo) => {
     updateCharactersRoomData(characterSocektInfo, otherCharacters);
   });
@@ -60,6 +64,7 @@ const handleSocket = (
   return () => {
     socket.off("res_hello");
     socket.off("res_map_movement");
+    socket.off("res_map_clear");
     socket.off("res_roll_dice");
   };
 };

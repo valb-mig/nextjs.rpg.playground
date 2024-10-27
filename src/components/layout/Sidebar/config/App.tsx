@@ -33,7 +33,6 @@ const AppSidebar = () => {
         console.log(feedback);
     };
 
-
     return (
         <>
             {showFeedback && (
@@ -54,6 +53,7 @@ const AppSidebar = () => {
                     </Modal.Body>
                 </Modal.Root>
             )}
+
             <div className="relative flex flex-col p-2 group z-10 h-full">
                 <aside className={`relative flex flex-col gap-4 bg-shade-4 h-full justify-between rounded-lg p-2 `+(showSidebar ? "w-52":"w-12")}>
                     {
@@ -61,41 +61,41 @@ const AppSidebar = () => {
                             <section>
                                 <ul className="flex flex-col gap-2">
                                     <li>
-                                        <Link href="/home" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
+                                        <a href="/home" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
                                             <Home className="text-primary size-6" />
                                             Home
-                                        </Link>
+                                        </a>
                                     </li>
                                     <li>
-                                        <Link href="/friends" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
+                                        <a href="/friends" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
                                             <Users className="text-primary size-6" />
                                             Friends
-                                        </Link>
+                                        </a>
                                     </li>
                                     <li>
-                                        <Link href="/rooms" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
+                                        <a href="/rooms" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
                                             <DoorOpen className="text-primary size-6" />
                                             Rooms
-                                        </Link>
+                                        </a>
                                     </li>
                                 </ul>
                             </section>
                         ) : (
                             <div className="flex flex-col gap-1 justify-center items-center">
-                                <span className="flex gap-2 items-center text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
-                                    <Link href="/home" className="w-full text-foreground-1 font-medium">
+                                <span className="flex gap-2 items-center">
+                                    <a href="/home" className="w-full font-medium text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
                                         <Home className="text-primary size-6" />
-                                    </Link>
+                                    </a>
                                 </span>
-                                <span className="flex gap-2 items-center text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
-                                    <Link href="/friends" className="w-full text-foreground-1 font-medium">
+                                <span className="flex gap-2 items-center">
+                                    <a href="/friends" className="w-full font-medium text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
                                         <Users className="text-primary size-6" />
-                                    </Link>
+                                    </a>
                                 </span>
-                                <span className="flex gap-2 items-center text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
-                                    <Link href="/rooms" className="w-full text-foreground-1 font-medium">
+                                <span className="flex gap-2 items-center">
+                                    <a href="/rooms" className="w-full font-medium text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
                                         <DoorOpen className="text-primary size-6" />
-                                    </Link>
+                                    </a>
                                 </span>
                             </div>
                         )
@@ -127,8 +127,8 @@ const AppSidebar = () => {
                                 </section>
                             ):(
                                 <div className="flex flex-col gap-1 justify-center items-center">
-                                    <span className="flex gap-2 items-center text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
-                                        <button onClick={() => console.log("Logs")} className="w-full text-foreground-1 font-medium">
+                                    <span className="flex gap-2 items-center">
+                                        <button onClick={() => console.log("Logs")} className="w-full text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
                                             <ScrollText className="text-primary size-6" />
                                         </button>
                                     </span>
@@ -146,24 +146,24 @@ const AppSidebar = () => {
                                             </button>
                                         </li>
                                         <li>
-                                            <Link href="/settings" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
+                                            <a href="/settings" className="flex gap-2 items-center text-foreground-1 text-xl font-medium hover:bg-shade-3 w-full rounded-lg p-1 px-2">
                                                 <Cog className="text-primary size-6" />
                                                 Settings
-                                            </Link>
+                                            </a>
                                         </li>
                                     </ul>
                                 </section>
                             ) : (
                                 <div className="flex flex-col gap-1 justify-center items-center">
-                                    <span className="flex gap-2 items-center text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
-                                        <button onClick={() => setShowFeedback(!showFeedback)} className="w-full text-foreground-1 font-medium">
+                                    <span className="flex gap-2 items-center">
+                                        <button onClick={() => setShowFeedback(!showFeedback)} className="w-full p-2 text-foreground-1 font-medium hover:bg-shade-3 rounded-lg">
                                             <MessageSquareText className="text-primary size-6" />
                                         </button>
                                     </span>
-                                    <span className="flex gap-2 items-center text-foreground-1 p-2 rounded-lg hover:bg-shade-3">
-                                        <Link href="/settings" className="w-full text-foreground-1 font-medium">
+                                    <span className="flex gap-2 items-center">
+                                        <a href="/settings" className="w-full text-foreground-1 p-2 font-medium hover:bg-shade-3 rounded-lg">
                                             <Cog className="text-primary size-6" />
-                                        </Link>
+                                        </a>
                                     </span>
                                 </div>
                             )
@@ -182,6 +182,7 @@ const AppSidebar = () => {
                             )
                         }
                     </button>
+                    
                 </aside>
             </div>
         </>

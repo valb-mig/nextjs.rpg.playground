@@ -1,4 +1,4 @@
-import { Backpack, ChevronUp, Plus, ScrollText } from "lucide-react";
+import { Backpack, ChevronDown, ChevronUp, Plus, ScrollText } from "lucide-react";
 
 import itemIcons from "@utils/itemIcons";
 import Button from "@/components/ui/Button";
@@ -17,7 +17,7 @@ const ToolbarPlayer = ({ info }: { info: CharacterSocketInfo }) => {
                                 Status
                             </span>
                             <span className="text-foreground-1 text-sm group-open:-rotate-180">
-                                <ChevronUp className="size-4 text-primary" />
+                                <ChevronDown className="size-4 text-primary" />
                             </span>
                         </summary>
 

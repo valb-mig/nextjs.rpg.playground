@@ -40,7 +40,7 @@ const Dice = ({ max }: { max: number }) => {
           onClick={() => rollDice()}
           className="flex justify-center items-center bg-neutral-50 w-40 h-40 rounded-lg text-6xl cursor-pointer select-none active:scale-110 text-black"
         >
-          { characterInfo?.dice }
+          { characterInfo?.dice ?? (<span className="text-sm font-bold">click to roll</span>) }
         </div>
       ) : (
         <div className="flex justify-center items-center bg-neutral-50 w-40 h-40 rounded-lg animate-spin" />
