@@ -5,7 +5,7 @@ import { tv } from "tailwind-variants";
 
 interface InputProps {
   name: string;
-  type?: "text" | "password" | "email" | "number" | "file";
+  type?: "text" | "password" | "email" | "number" | "file" | "checkbox";
   style?: "primary" | "secondary";
   placeholder?: string;
   bonus?: string;

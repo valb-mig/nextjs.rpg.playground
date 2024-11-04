@@ -82,7 +82,7 @@ const Create = () => {
               <Mail />
             </Form.Input>
 
-            <Form.Input label="Token" name="token" type="password">
+            <Form.Input label="Token" name="token" type={showPassword ? "text" : "password"}>
               <span onClick={() => setShowPassword(!showPassword)} className="text-sm cursor-pointer hover:text-primary transition">
                 {showPassword ? <EyeIcon /> : <EyeOffIcon />}
               </span>

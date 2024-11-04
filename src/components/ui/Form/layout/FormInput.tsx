@@ -6,7 +6,7 @@ import { tv } from "tailwind-variants";
 interface InputProps {
   label?: string;
   name: string;
-  type?: "text" | "password" | "email" | "number" | "file" | "radio";
+  type?: "text" | "password" | "email" | "number" | "file" | "radio" | "options";
   style?: "primary" | "secondary" | "default";
   placeholder?: string;
   value?: any;
@@ -14,6 +14,7 @@ interface InputProps {
   autofocus?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   children?: React.ReactNode;
+  options?: { key: string, label: string }[];
 }
 
 const Input = ({
@@ -25,7 +26,8 @@ const Input = ({
   children,
   placeholder,
   autofocus,
-  style
+  style,
+  options
 }: InputProps) => {
   
   const variants = tv({
@@ -44,7 +46,7 @@ const Input = ({
   const { register, errors } = useFormContext();
 
   return (
-    <div className="flex flex-col w-full relative gap-2">
+    <div className="flex w-full relative gap-2">
 
       { label && style != "default" && (
         <div className="absolute -top-4 left-7">
@@ -57,22 +59,47 @@ const Input = ({
         </div>
       )}
 
-      <div className={`flex items-center h-10 focus-within:ring-2 focus-within:ring-primary ${variants({containerStyle: style})}`}>
+      { type != "options" ? (
 
-        <span className="text-shade-2 pl-1">
-          { children }
-        </span>
+        <div className={`flex items-center h-10 focus-within:ring-2 focus-within:ring-primary w-full ${variants({containerStyle: style})}`}>
 
-        <input
-          {...register(name)}
-          className="bg-transparent w-full h-8 p-2 outline-none"
-          name={name}
-          type={type}
-          value={value}
-          placeholder={placeholder}
-          autoFocus={autofocus}
-        />
-      </div>
+          <span className="text-shade-2 pl-1">
+            { children }
+          </span>
+
+          <input
+            {...register(name)}
+            className="bg-transparent w-full h-8 p-2 outline-none"
+            name={name}
+            type={type}
+            value={value}
+            placeholder={placeholder}
+            autoFocus={autofocus}
+          />
+        </div>
+
+      ): options && 
+        Object.values(options).map((value, index) => (
+          <div key={index} className="flex w-full">
+            <label
+              htmlFor={value.key}
+              className="text-center block w-full cursor-pointer rounded-full text-shade-3 p-2 border border-shade-3 hover:border-primary  has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-white"              
+              tabIndex={0}
+            >
+              <input 
+                {...register(name)}
+                className="sr-only" 
+                id={value.key} 
+                type="radio" 
+                tabIndex={-1} 
+                name={name} 
+                value={value.key}
+              />
+              <span className="text-lg font-medium">{value.label}</span>
+            </label>
+          </div>
+        ))
+      }
 
       {errors && (errors[name] as FieldError)?.message && (
         <span className="text-red-500 text-sm text-center">

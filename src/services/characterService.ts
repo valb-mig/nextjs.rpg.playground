@@ -45,7 +45,7 @@ export const selectCharacterData = async (uuid: string, room: string) => {
   }
 };
 
-export const insertCharacter = async (uuid: string, room: string, characterData: CharacterData): Promise<boolean> => {
+export const insertCharacter = async (uuid: string, room: string, characterData: any): Promise<any> => {
 
   try {
 
@@ -66,7 +66,7 @@ export const insertCharacter = async (uuid: string, room: string, characterData:
     }
 
     let characterId = await insertCharacterData(userId, roomId, characterData);
-
+    
     await insertCharacterStatsData(characterId, characterData);
     await insertCharacterInfoData(characterId, characterData);
 
@@ -101,16 +101,23 @@ const insertCharacterInfoData = async (characterId: number, characterData: Chara
   }
 };
 
-const insertCharacterStatsData = async (characterId: number, characterData: CharacterData) => {
+const insertCharacterStatsData = async (characterId: number, characterData: any) => {
   
+  let characterStats: any[] = [];
+
+  Object.keys(characterData.status).map((key) => {
+    characterStats.push({
+      character_id: characterId,
+      stat: key,
+      value: characterData.status[key].value
+    });
+  });
+
   const { data, error } = await supabase
     .from("characters_stats_tb")
-    .insert([
-      {
-      },
-    ]);
+    .insert(characterStats);
 
-  if (error || !data) {
+  if (error) {
     throw new Error("Character stats not inserted");
   }
 };

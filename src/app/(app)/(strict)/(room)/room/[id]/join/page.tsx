@@ -21,13 +21,20 @@ import Button from "@ui/Button";
 import LoadingScreen from "@/components/layout/LoadingScreen";
 
 import useRoom from "@/hooks/useRoom";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const StatusSchema = z.object({
+  name: z.string(),
+  value: z.string()
+});
 
 const ZodSchema = z.object({
   name: z.string().min(1, "Character name is required"),
   notes: z.string().min(1, "Tell us about your character"),
   race: z.string().min(1, "Race is required"),
   role: z.string().min(1, "Role is required"),
-  age: z.string().min(1, "Age is required")
+  age: z.string().min(1, "Age is required"),
+  status: z.any()
 });
 
 const JoinRoom = ({ params }: { params: { id: string} }) => {
@@ -68,6 +75,8 @@ const JoinRoom = ({ params }: { params: { id: string} }) => {
       }
 
       if(response.data){
+        console.log(response.data);
+        
         setRoomData(response.data);
       }
 
@@ -120,10 +129,10 @@ const JoinRoom = ({ params }: { params: { id: string} }) => {
                 <div className="flex justify-center w-full items-center">
               
                   <div className="flex gap-8">
-                    {roomData.stats?.map((item, index) => (
+                    { roomData.stats?.map((item, index) => (
                       <Form.Status 
                         key={item.stat}
-                        name={'status:'+item.stat} 
+                        name={`status.${item.stat}.value`}
                         type="text" 
                         placeholder={item.stat}
                       />

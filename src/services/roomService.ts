@@ -219,20 +219,17 @@ export const checkRoomExists = async (room: string) => {
   return true;
 };
 
-export const enterRoom = async (uuid: string, room: string) => {};
-
 export const insertRoom = async (
   uuid: string, 
-  name: string,
   form: { 
     privacy: 'PUB' | 'PRIV',
     name: string, 
     max: number
   }): Promise<string | undefined> => {
 
-  const userId = await checkUser(uuid);
+  const userData = await selectUserData(uuid);
 
-  if (!userId) {
+  if (!userData) {
     throw new Error("User not found");
   }
 
@@ -257,7 +254,7 @@ export const insertRoom = async (
   await insertRoomStats(data[0].id);
 
   // [INFO] Create GM character
-  await insertCharacterData(userId, data[0].id, name);
+  await insertCharacterData(userData.id, data[0].id, userData.username);
 
   return roomHash;
 };
@@ -296,14 +293,21 @@ export const insertRoomConfig = async (roomId: number, max: number, privacy: "PU
   }
 }
 
-const checkUser = async (uuid: string): Promise<number | undefined> => {
+const selectUserData = async (uuid: string): Promise<{
+  id: number,
+  uuid: string,
+  username: string,
+  name: string
+} | undefined> => {
 
   const { data, error } = await supabase
     .from("users_tb")
     .select(
       `
       id,
-      uuid
+      uuid,
+      username,
+      name
     `,
     )
     .eq("uuid", uuid)
@@ -313,7 +317,7 @@ const checkUser = async (uuid: string): Promise<number | undefined> => {
     return;
   }
 
-  return data.id;
+  return data;
 };
 
 const insertCharacterData = async (userId: number, roomId: number, userName: string) => {

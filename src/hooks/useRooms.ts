@@ -13,7 +13,7 @@ const useRooms = () => {
         
         return validateCookies<string>(async (cookies) => {
 
-            const response = await insertRoom(cookies.uuid, cookies.name, data);
+            const response = await insertRoom(cookies.uuid, data);
         
             if(response) {
 

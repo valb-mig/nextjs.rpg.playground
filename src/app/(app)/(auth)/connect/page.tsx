@@ -20,7 +20,8 @@ import {
   RadioTower, 
   User,
   EyeOffIcon,
-  EyeIcon
+  EyeIcon,
+  AtSign
 } from "lucide-react";
 
 const ZodSchema = z.object({
@@ -91,8 +92,8 @@ const Connect = () => {
               schema={ZodSchema}
               style="w-full md:w-[500px] bg-shade-4 p-4 rounded-lg"
             >
-              <Form.Input label="Username" name="name" type="text" autofocus>
-                <User />
+              <Form.Input label="Name" name="name" type="text" autofocus>
+                <AtSign />
               </Form.Input>
 
               <Form.Input label="Token" name="token" type={showPassword ? "text" : "password"}>

@@ -67,7 +67,7 @@ const Rooms = () => {
   };
 
   const ZodSchema = z.object({
-    privacy: z.string().min(1, "Privacy name is required"),
+    privacy: z.any(),
     name: z.string().min(1, "Room name is required"),
     max: z.string().min(1, "Max users is required")
   });
@@ -103,30 +103,27 @@ const Rooms = () => {
 
       { modalForm && (
         <Modal.Root>
-          <Modal.Header>
-            <h1 className="text-foreground-1 text-3xl font-medium">
-              Create
-            </h1>
-            <button onClick={() => showModalForm(false)} className="text-foreground-1 text-2xl font-medium">
-              <X />
-            </button>
-          </Modal.Header>
-
+          <Modal.Header title="Create room" modal={modalForm} setModal={showModalForm} />
           <Modal.Body>
             <Form.Body onSubmit={onFormSubmit} schema={ZodSchema}>
               
-              <Form.Input type="text"   name="name"    label="Room name"  placeholder="" style="secondary" />
-              <Form.Input type="number" name="max"     label="Max users"  placeholder="" style="secondary" />
+              <Form.Input type="text"   name="name" label="Room name"  placeholder="" style="secondary" />
+              <Form.Input type="number" name="max"  label="Max users"  placeholder="" style="secondary" />
               
-              <div>
-                <label className="text-white font-medium">
-                  Room status
-                </label>
-                <div className="flex w-full justify-start">
-                  <Form.Input type="radio" name="privacy" label="Public"  placeholder="" style="default" value={"PUB"}  />
-                  <Form.Input type="radio" name="privacy" label="Private" placeholder="" style="default" value={"PRIV"} />
-                </div>
-              </div>
+              <label className="text-white font-medium">
+                Room status
+              </label>
+
+              <Form.Input type="options" name="privacy" label="Public"  style="default" options={[
+                {
+                  key: "PUB",
+                  label: "Public"
+                },
+                {
+                  key: "PRIV",
+                  label: "Private"
+                }
+              ]}/>
               
               <div className="flex w-full justify-end">
                 <Button 

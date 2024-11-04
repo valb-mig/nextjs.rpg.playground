@@ -17,7 +17,10 @@ import {
   Filter,
   Cloud,
   LoaderIcon,
-  PackageOpen
+  PackageOpen,
+  Paperclip,
+  X,
+  Notebook
 } from "lucide-react";
 
 import Form from "@ui/Form";
@@ -26,6 +29,7 @@ import Button from "@ui/Button";
 import LoadingScreen from "@layout/LoadingScreen";
 
 import useHome from "@hooks/useHome";
+import Modal from "@layout/Modal";
 
 const Home = () => {
   
@@ -37,12 +41,20 @@ const Home = () => {
   });
 
   const [ rooms, setRooms ] = useState<UserRoomsData[]>([]);
+  const [ roomDetails, setRoomDetails ] = useState<UserRoomsData>();
   const [ search, setSearch ] = useState("");
   const { getUserRooms, checkRoom } = useHome();
+
+  const [ showDetailsModal, setShowDetailsModal ] = useState(false);
 
   const ZodSchema = z.object({
     room: z.string().min(1, "Room code is required")
   });
+
+  const getRoomDetails = (room: UserRoomsData) => {
+    setShowDetailsModal(!showDetailsModal);
+    setRoomDetails(room);
+  }
 
   const onFormSubmit = async (data: { room: string }) => {
 
@@ -95,9 +107,19 @@ const Home = () => {
 
   return (
     <>
+      {showDetailsModal && (
+        <Modal.Root>
+          <Modal.Header title="Room details" modal={showDetailsModal} setModal={setShowDetailsModal} />
+          <Modal.Body>
+            { roomDetails?.name }
+          </Modal.Body>
+        </Modal.Root>
+      )}
+
       <LoadingScreen loading={loading.page} />
 
       <div className="flex flex-col w-full p-8 gap-16">
+
         <section id="find-room" className="relative flex flex-col gap-2 items-center justify-center h-1/3">
 
           <div className="relative">
@@ -190,6 +212,9 @@ const Home = () => {
                         </div>
                       </div>
                       <div className="flex gap-2 items-center p-2">
+                        <Button role="inherit" style="button" onClick={ () => getRoomDetails(room) }>
+                          <Paperclip className="size-4" /> Details
+                        </Button>
                         <Button role="success" style="button" onClick={ () => router.push(`/room/${room.room}`) }>
                           <LogIn className="size-4" /> Join
                         </Button>
@@ -210,6 +235,7 @@ const Home = () => {
             )}
           </div>
         </section>
+        
       </div>
     </>
     
