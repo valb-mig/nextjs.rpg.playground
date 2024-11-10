@@ -18,8 +18,7 @@ const useRooms = () => {
             if(response) {
 
                 return { 
-                    status: "success", 
-                    message: "Wellcome to the party",
+                    status: "success",
                     data: response
                 };
             }

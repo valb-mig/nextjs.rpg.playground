@@ -103,15 +103,15 @@ export const selectPublicRooms = async (): Promise<RoomData[] | null> => {
       room,
       name,
       created_at,
+      open,
       config:room_config_tb!inner(
         room_id,
         privacy,
-        status,
         max
       )
     `)
     .eq("config.privacy", "PUB")
-    .eq("config.status", true);
+    .eq("open", true);
   
   if (error || !data) {
     return null;
@@ -156,8 +156,7 @@ export const selectRoomData = async (uuid: string, room: string) => {
         created_at,
         config:room_config_tb!inner(
           max,
-          privacy,
-          status
+          privacy
         ),
         stats:room_stats_tb!left(
           room_id,
@@ -196,7 +195,6 @@ export const checkUserRoomExists = async (uuid: string, room: string) => {
     .single();
 
   if (error || !data) {
-    console.log(error);
     return false;
   }
 
@@ -212,11 +210,10 @@ export const checkRoomExists = async (room: string) => {
     .single();
 
   if (error || !data) {
-    console.log(error);
     return false;
   }
-  
-  return true;
+
+  return data.id;
 };
 
 export const insertRoom = async (
@@ -241,7 +238,8 @@ export const insertRoom = async (
       {
         name: form.name,
         room: roomHash,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        open: false
       }
     ])
     .select('id');
@@ -251,7 +249,6 @@ export const insertRoom = async (
   }
 
   await insertRoomConfig(data[0].id, form.max, form.privacy);
-  await insertRoomStats(data[0].id);
 
   // [INFO] Create GM character
   await insertCharacterData(userData.id, data[0].id, userData.username);
@@ -259,17 +256,31 @@ export const insertRoom = async (
   return roomHash;
 };
 
-export const insertRoomStats = async(roomId: number) => {
+export const updateRoomSettings = async(roomId: number, stats: string[]) => {
+  try {
+    await insertRoomStats(roomId, stats);
+  } catch(e) {
+    return false;
+  }
+
+  return true;
+};
+
+export const insertRoomStats = async(roomId: number, stats: string[]) => {
   
+  let updateStats: { room_id: number; stat: string; value: string; }[] = [];
+
+  stats.map((stat) => {
+    updateStats.push({
+      room_id: roomId,
+      stat: stat,
+      value: '0'
+    });
+  })
+
   const { data, error } = await supabase
   .from("room_stats_tb")
-  .insert([
-    {
-      room_id: roomId,
-      stat: 'atk',
-      value: '0',
-    }
-  ]);
+  .insert(updateStats);
 
   if (error || !data) {
     return;

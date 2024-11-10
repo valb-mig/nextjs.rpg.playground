@@ -3,6 +3,7 @@
 import { selectCharactersInfo } from "@services/userService";
 import { checkRoomExists } from "@services/roomService";
 import { getUserCookies } from "@utils/cookies";
+import validateCookies from "@/utils/validateCookies";
 
 const useHome = () => {
 
@@ -15,32 +16,23 @@ const useHome = () => {
 
     const getUserRooms = async (): Promise<ResponseObject<UserRoomsData[]>> => {
 
-        let cookies = await getUserCookies();
+        return validateCookies<UserRoomsData[]>(async (cookies) => {
 
-        if(!cookies) {
-
-            return {
-                status: "error",
-                message: "Invalid cookies"
-            }
-        }
-
-        try {
             let userCharactersInfo = await selectCharactersInfo(cookies.uuid);
         
             if(userCharactersInfo) {
                 
                 let userRooms: UserRoomsData[] = [];
     
-                userCharactersInfo.users_characters_tb.forEach((value: any) => {
+                userCharactersInfo.characters.forEach((value: any) => {
 
                     userRooms.push({
-                        id: value.rooms_tb.id,
-                        room: value.rooms_tb.room,
-                        name: value.rooms_tb.name,
+                        id: value.room.id,
+                        room: value.room.room,
+                        name: value.room.name,
                         character: value.name,
-                        role: value.roles_tb.name,
-                        created_at: value.rooms_tb.created_at
+                        role: value.role.name,
+                        created_at: value.room.created_at
                     });
                 });
     
@@ -50,17 +42,8 @@ const useHome = () => {
                 };
             }
 
-            return {
-                status: "error",
-                message: "User not found"
-            }
-            
-        } catch (error: any) {
-            return {
-                status: "error",
-                message: error.message
-            };
-        }
+            throw new Error("Something went wrong");
+        })
     };
 
     const checkRoom = async (room: string): Promise<ResponseObject<boolean>> => {

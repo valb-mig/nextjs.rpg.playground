@@ -1,6 +1,6 @@
 "use client";
 
-import { selectCharacterData, selectRoomData } from "@services/roomService";
+import { selectCharacterData, selectRoomData, updateRoomSettings } from "@services/roomService";
 import validateCookies from "@/utils/validateCookies";
 import { insertCharacter } from "@services/characterService";
 
@@ -22,7 +22,6 @@ const useRoom = (roomId: string) => {
 
                 return { 
                     status: "success", 
-                    message: `Wellcome to the party ${character.name}`,
                     data: <CharacterSocketInfo>{
                         uuid: cookies.uuid,
                         name: character.name,
@@ -88,7 +87,39 @@ const useRoom = (roomId: string) => {
         })
     };
 
-    return { getCharacterInfo, joinRoom, getRoomData };
+    const updateRoomConfig = async (data: { status: string }): Promise<ResponseObject<boolean>> => {
+        return validateCookies<boolean>(async (cookies) => {
+
+            const roomData = await selectRoomData(cookies.uuid, roomId);
+
+            if(!roomData) {
+                return {
+                    status: "error",
+                    message: "Room don't exists"
+                }
+            }
+
+            let updatedStats: string[] = [];
+
+            Object.values(data.status).map((stat) => {
+                updatedStats.push(stat);
+            });
+
+            const roomConfig = await updateRoomSettings(roomData.id, updatedStats);
+
+            if(roomConfig) {
+                
+                return {
+                    status: "success",
+                    data: true
+                }
+            }
+
+            throw new Error();
+        })
+    }
+
+    return { getCharacterInfo, joinRoom, getRoomData, updateRoomConfig };
 };
 
 export default useRoom;

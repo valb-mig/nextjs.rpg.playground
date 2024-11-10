@@ -9,6 +9,7 @@ interface InputProps {
   type?: "text" | "password" | "email" | "number" | "file" | "radio" | "options";
   style?: "primary" | "secondary" | "default";
   placeholder?: string;
+  className?: string;
   value?: any;
   disabled?: boolean;
   autofocus?: boolean;
@@ -25,6 +26,7 @@ const Input = ({
   disabled,
   children,
   placeholder,
+  className,
   autofocus,
   style,
   options
@@ -61,7 +63,7 @@ const Input = ({
 
       { type != "options" ? (
 
-        <div className={`flex items-center h-10 focus-within:ring-2 focus-within:ring-primary w-full ${variants({containerStyle: style})}`}>
+        <div className={`flex items-center h-10 w-full`}>
 
           <span className="text-shade-2 pl-1">
             { children }
@@ -69,7 +71,7 @@ const Input = ({
 
           <input
             {...register(name)}
-            className="bg-transparent w-full h-8 p-2 outline-none"
+            className={`bg-transparent w-full h-8 p-2 outline-none focus-within:ring-2 focus-within:ring-primary ${className} ${variants({containerStyle: style})}`}
             name={name}
             type={type}
             value={value}

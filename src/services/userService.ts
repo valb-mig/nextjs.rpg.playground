@@ -4,6 +4,8 @@ import type { User } from "@db/users_tb";
 import { v4 as uuidv4 } from "uuid";
 import { hashPassword } from "@utils/hashPassword";
 
+import { checkRoomExists } from '@services/roomService';
+
 type FormData = {
   name: string;
   username: string;
@@ -83,97 +85,87 @@ export const selectCharactersInfo = async (uuid: string) => {
       .select(`
         id,
         uuid, 
-        users_characters_tb (
+        characters:users_characters_tb (
           id,
           name,
           room_id,
           user_id,
           role_id,
 
-          rooms_tb!inner (
+          room:rooms_tb!inner (
             id,
             name,
             room,
-            created_at
+            created_at,
+            open
           ),
 
-          roles_tb!inner (
+          role:roles_tb!inner (
             id,
             name
           )
         )
       `)
-      .eq("uuid", uuid);
+      .eq("uuid", uuid)
+      .eq("characters.room.open", true);
 
-    if (error) {
+    if (!data || error) {
       throw new Error(error.message);
     }
-
-    if (!data[0]) {
-      throw new Error("User characters info not found");
-    }
-  
+    
     return data[0];
     
   } catch (error: any) {
     throw new Error(error.message);
   }
-};
+}
 
 export const selectUserRoom = async (uuid: string, room: string) => {
 
-  try {
-    const { data: roomsData, error: roomsError } = await supabase
-      .from("rooms_tb")
-      .select("id")
-      .eq("room", room)
-      .single();
-    
-    if (roomsError) {
+  let roomId = await checkRoomExists(room);
 
-      return {
-        code: 1,
-        status: "error",
-        message: "Room don't exist"
-      }
-    }
-
-    const { data, error } = await supabase
-      .from("users_tb")
-      .select(`
-        id,
-        uuid, 
-        users_characters_tb (
-          room_id,
-          user_id
-        )
-      `)
-      .eq("uuid", uuid)
-      .eq("users_characters_tb.room_id", roomsData.id);
-
-    if (!data || !data[0].users_characters_tb || data[0].users_characters_tb.length < 1 || error) {
-
-      return {
-        code: 2,
-        status: "error",
-        message: "Character is not in room"
-      }
-    }
+  if(!roomId) {
 
     return {
-      code: 0,
-      status: "success",
-      data: data
-    };
-
-  } catch (error: any) {
-
-    return {
-      code: 3,
       status: "error",
-      message: error.message
+      message: "Room don't exist"
     }
   }
+    
+  const { data, error } = await supabase
+    .from("users_tb")
+    .select(`
+      id,
+      uuid,
+
+      characters:users_characters_tb (
+        room_id,
+        user_id,
+        role_id,
+
+        room:rooms_tb (
+          id,
+          open
+        )
+      )
+    `)
+    .eq("uuid", uuid)
+    .eq("characters.room_id", roomId);
+
+  if (!data || error) {
+
+    return {
+      code: 401,
+      status: "error",
+      message: "Character is not in room"
+    }
+  }
+
+  return {
+    code: 200,
+    status: "success",
+    data: data
+  };
 };
 
 export const selectUserData = async (uuid: string) => {

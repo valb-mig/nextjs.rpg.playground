@@ -4,6 +4,7 @@ interface InputProps {
   label?: string;
   name: string;
   type?: "text" | "password" | "email" | "number" | "file";
+  value?: string;
   placeholder?: string;
   errors?: any;
   style?: "primary" | "secondary";
@@ -11,7 +12,7 @@ interface InputProps {
   children?: React.ReactNode;
 }
 
-const Input = ({ label, name, placeholder, onChange, type, errors, style, children }: InputProps) => {
+const Input = ({ label, name, placeholder, onChange, type, value, errors, style, children }: InputProps) => {
 
   const variants = tv({
     variants: {
@@ -50,6 +51,7 @@ const Input = ({ label, name, placeholder, onChange, type, errors, style, childr
           onChange={onChange}
           placeholder={placeholder}
           type={type}
+          value={value}
         />
       </div>
 
