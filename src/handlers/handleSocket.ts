@@ -33,6 +33,20 @@ const handleSocket = (
     updateCharactersRoomData(characterSocektInfo, otherCharacters);
   });
 
+  socket.on( "res_pin_map", async (pinsSocketInfo: PinSocketInfo[]) => {
+
+    let pseudoCharacter = {};
+
+    pinsSocketInfo.map((value) => {
+      pseudoCharacter = {
+        name: value.name,
+        position: value.position
+      };
+    });
+
+    // refreshOtherCharacters(otherCharacters);
+  });
+
   const updateCharactersRoomData = async (characterSocektInfo: CharacterSocketInfo, otherCharacters: RoomCharacterSocketInfo) => {
 
     const cookieData = await getUserCookies();
@@ -61,9 +75,22 @@ const handleSocket = (
     setRoomCharacters(updatedCharactersRoom);
   }
 
+  const refreshOtherCharacters = async (otherCharacters: RoomCharacterSocketInfo) => {
+
+    let updatedCharactersRoom: CharacterSocketInfo[] = [];
+
+    Object.keys(otherCharacters).map((key) => {
+      let currentUser: CharacterSocketInfo = otherCharacters[key];
+      updatedCharactersRoom.push(currentUser);
+    });
+
+    setRoomCharacters(updatedCharactersRoom);
+  }
+
   return () => {
     socket.off("res_hello");
     socket.off("res_map_movement");
+    socket.off("res_pin_map");
     socket.off("res_map_clear");
     socket.off("res_roll_dice");
   };

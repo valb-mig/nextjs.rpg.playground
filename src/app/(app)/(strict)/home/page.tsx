@@ -18,9 +18,7 @@ import {
   Cloud,
   LoaderIcon,
   PackageOpen,
-  Paperclip,
-  X,
-  Notebook
+  Paperclip
 } from "lucide-react";
 
 import Form from "@ui/Form";

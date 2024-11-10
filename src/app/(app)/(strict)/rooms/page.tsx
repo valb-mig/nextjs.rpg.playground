@@ -14,8 +14,7 @@ import {
   Filter,
   LoaderIcon, 
   LogIn, 
-  PackageOpen, 
-  X
+  PackageOpen
 } from "lucide-react";
 
 import Button from "@/components/ui/Button";

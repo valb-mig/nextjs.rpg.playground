@@ -101,6 +101,20 @@ interface RoomCharacterSocketInfo {
   [index: string]: CharacterSocketInfo;
 }
 
+/* Pins */
+
+interface PinSocketInfo {
+  id: any,
+  uuid: any,
+  name: string,
+  color: string,
+  position: { 
+    row: number,
+    col: number
+  }
+}
+
+
 /* Config */
 
 interface CookieData {

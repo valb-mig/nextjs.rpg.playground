@@ -8,7 +8,9 @@ import {
   User,
   MapIcon,
   NotepadText,
-  Trash
+  Trash,
+  PinIcon,
+  LoaderIcon
 } from "lucide-react";
 
 import { useRoomContext } from "@/context/RoomContext";
@@ -22,21 +24,45 @@ import LoadingScreen from "@layout/LoadingScreen";
 import ToolBar from "@layout/ToolBar";
 import Map from "@/components/layout/Map";
 import Button from "@/components/ui/Button";
+import Modal from "@/components/layout/Modal";
+import Input from "@/components/ui/Input";
 
 const Room = ({ params }: { params: { id: string} }) => {
 
   const roomContext = useRoomContext();
 
   const { 
-    characterInfo, 
-    setCharacterInfo, 
+    characterInfo, setCharacterInfo, 
     roomCharacters, 
-    roomData,
-    setRoomData
+    roomData, setRoomData
   } = roomContext;
   
-  const [ loading, setLoading ] = useState(false);
+  const [ loading, setLoading ] = useState<{
+    form: boolean,
+    screen: boolean,
+  }>({
+    form: false,
+    screen: false
+  });
+
+  const [ showPinOption, setShowPinOption ] = useState(false);
+
+  const [ pinConfig, setPinConfig ] = useState<{
+    name?: string,
+    color?: string
+  }>();
+
   const { getCharacterInfo, getRoomData } = useRoom(params.id);
+
+  const submitPin = async () => {
+
+    setLoading({...loading, form: true});
+    socket.emit("req_pin_map", params.id, characterInfo?.uuid, pinConfig);
+    setLoading({...loading, form: false});
+
+    setPinConfig({ name: '', color: '' });
+    setShowPinOption(false);
+  }
 
   useEffect(() => {
 
@@ -85,9 +111,42 @@ const Room = ({ params }: { params: { id: string} }) => {
 
   return (
     <>
-      <LoadingScreen loading={loading} />
+      {showPinOption && (
+        <Modal.Root>
+          <Modal.Header title="Pin configuration" modal={showPinOption} setModal={setShowPinOption} />
+          <Modal.Body>
 
-      { !loading && characterInfo && roomData && (
+            <Input type="text" label="Name" name="name" onChange={(e) => setPinConfig({
+              ...pinConfig,
+              name: e.target.value
+            })} />
+
+            {/* [TODO] Transform in a select input */}
+
+            <Input type="text" label="Color" name="pin_color" onChange={(e) => setPinConfig({
+              ...pinConfig,
+              color: e.target.value
+            })} />
+
+            <div className="flex w-full justify-end">
+              <Button 
+                role="success" 
+                type="submit"
+                onClick={() => submitPin()}
+              >
+                {loading.form && (
+                  <LoaderIcon className="animate-spin h-5 w-5 text-primary" />
+                )}
+                Create
+              </Button>
+            </div>
+          </Modal.Body>
+        </Modal.Root>
+      )}
+
+      <LoadingScreen loading={loading.screen} />
+
+      { !loading.screen && characterInfo && roomData && (
         <div className="flex w-full">
 
           <div role="content" className="flex flex-col gap-4 w-full p-2">
@@ -157,21 +216,40 @@ const Room = ({ params }: { params: { id: string} }) => {
               ))}
             </div>
 
-            <div className="flex gap-2 text-foreground-1 text-lg md:text-3xl sm:text-2xl items-center font-medium">
-              <h2 className="flex gap-2 items-center">
+            <div className="text-foreground-1 items-center">
+              <h2 className="flex gap-2 items-center text-lg md:text-3xl sm:text-2xl font-medium">
                 <MapIcon className="text-primary size-10" />
                 Map
               </h2>
-              <Button 
-                style="button" 
-                role="default" 
-                onClick={() => socket.emit("req_map_clear", characterInfo)}
-              >
-                <Trash /> <span className="text-lg">Clear</span>
-              </Button>
             </div>
 
-            <div role="map" className="bg-shade-4 rounded-lg p-2">
+            <section className="flex gap-2 flex-col">
+              
+              <div className="flex">
+                <h3 className="bg-shade-4 px-2 rounded-full font-medium">
+                  Map toolbar
+                </h3>
+              </div>
+
+              <div className="border border-shade-4 p-2 rounded-full">
+                <Button 
+                  style="button" 
+                  role="default" 
+                  onClick={() => setShowPinOption(!showPinOption)}
+                >
+                  <PinIcon className="size-4"/> <span className="text-lg">pin option</span>
+                </Button>
+              </div>
+            </section>
+
+            <div role="map" className="flex gap-2 w-full flex-col bg-shade-4 rounded-lg p-2">
+              <Button 
+                style="button" 
+                role="inherit" 
+                onClick={() => socket.emit("req_map_clear", characterInfo)}
+              >
+                <Trash className="size-4"/> <span className="text-lg">clear</span>
+              </Button>
               <Map />
             </div>
 

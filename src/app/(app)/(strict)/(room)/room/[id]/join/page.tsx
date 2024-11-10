@@ -75,8 +75,6 @@ const JoinRoom = ({ params }: { params: { id: string} }) => {
       }
 
       if(response.data){
-        console.log(response.data);
-        
         setRoomData(response.data);
       }
 
